@@ -1,4 +1,5 @@
 import './App.css'
+import React from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Route, Routes } from 'react-router'
 import First from './components/First/First'
@@ -9,7 +10,7 @@ import { CamControls } from './three/components/CamControl/CamControl'
 function App() {
 
   return (
-    <>
+    <React.Fragment>
       <Routes>
         <Route path="/first" element={<First />} />
         <Route path="/second" element={<Second />} />
@@ -22,7 +23,7 @@ function App() {
           <r3ftunnel.Out />
       </Canvas>
       <uitunnel.Out />
-    </>
+    </React.Fragment>
   )
 }
 

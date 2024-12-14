@@ -1,7 +1,9 @@
-import { Sphere } from "@react-three/drei";
 import { useNavigate } from "react-router";
 import { uitunnel, r3ftunnel } from '../../helpers/tunnelling'
-
+import { motion } from 'framer-motion-3d'
+import { Color } from "three";
+import { useDateTime } from "../../hooks/dateTime";
+import { useEffect } from "react";
 function UI() {
   return (
     <uitunnel.In>
@@ -17,7 +19,17 @@ function R3F() {
   return (
     <>
       <r3ftunnel.In>
-        <Sphere position={[1.2, 0, 0]} onClick={() => navi('/second')}/>
+        <motion.mesh
+          position={[1.2, 0, 0]}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onHoverStart={() => console.log('hover start')}
+          onAnimationComplete={() => console.log('anim complete')}
+          onTap={() => navi('/second')}
+        >
+          <sphereGeometry />
+          <meshBasicMaterial color={new Color(0xff00ff)} />
+        </motion.mesh>
       </r3ftunnel.In>
     </>
   )

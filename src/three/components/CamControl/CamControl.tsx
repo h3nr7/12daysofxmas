@@ -11,6 +11,7 @@ export function CamControls({}: ICamControls) {
   const ref = useRef<CameraControls>(null);
   const { data:{ 
     cam: {
+      enabled,
       lookAt, position,
       minMaxDistance
     }
@@ -25,8 +26,8 @@ export function CamControls({}: ICamControls) {
   return (
     <CameraControls
       ref={ref}
-      touches={{ one: 0, two: 0, three: 0  }}
-      mouseButtons={{ left: 0, right: 0, middle: 0, wheel: 0 }}
+      touches={enabled ? undefined : { one: 0, two: 0, three: 0  }}
+      mouseButtons={enabled ? undefined : { left: 0, right: 0, middle: 0, wheel: 0 }}
       minDistance={minMaxDistance[0]}
       maxDistance={minMaxDistance[1]}
     />

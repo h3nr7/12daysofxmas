@@ -1,29 +1,44 @@
-import './App.css'
-import React from 'react'
+import './App.scss'
+import { useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Route, Routes } from 'react-router'
 import First from './components/First/First'
 import Second from './components/Second/Second'
+import Third from './components/Third/Third'
 import { uitunnel, r3ftunnel } from './helpers/tunnelling'
 import { CamControls } from './three/components/CamControl/CamControl'
+import { EffectComposer, Noise } from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
+import { Lightings } from './three/components/Lightings/Lightings'
+import Zero from './components/Zero/Zero'
+import { EffectControls } from './three/components/EffectControls/EffectControls'
+import { Navi } from './components/Navi/Navi'
+import { DAYS } from './helpers/constants'
+import { DateTimeProvider } from './hooks/dateTime'
 
 function App() {
 
+  const main = useRef<HTMLDivElement>(null)
+
   return (
-    <React.Fragment>
-      <Routes>
-        <Route path="/first" element={<First />} />
-        <Route path="/second" element={<Second />} />
-      </Routes>
-      <Canvas>
-          <CamControls />
-          <ambientLight intensity={Math.PI / 2} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-          <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-          <r3ftunnel.Out />
-      </Canvas>
-      <uitunnel.Out />
-    </React.Fragment>
+    <DateTimeProvider>
+      <div className='main' ref={main || null}>
+        <Routes>
+          <Route index element={<Zero />} />
+          {DAYS.map((d, i) => <Route key={i} path={d.day} element={d.element} />)}
+        </Routes>
+        <Canvas className='canvas' eventSource={main?.current || undefined}>
+            <CamControls />
+            <EffectControls />
+            <Lightings />
+            <r3ftunnel.Out />
+        </Canvas>
+        <section className="ui">
+          <uitunnel.Out />
+        </section>
+        <Navi />
+      </div>
+    </DateTimeProvider>
   )
 }
 

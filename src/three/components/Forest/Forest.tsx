@@ -18,7 +18,7 @@ export default function Forest() {
   const isMobile = useMobile()
 
   const { maxTree, maxFatTree, maxTinyTree, maxTrunk, distance } = useMemo(() => isMobile === true || isMobile === undefined ? {
-    maxTree: 50, maxFatTree: 50, maxTinyTree: 10, maxTrunk: 20, distance: 5
+    maxTree: 5, maxFatTree: 5, maxTinyTree: 2, maxTrunk: 10, distance: 5
   } : {
     maxTree: 350, maxFatTree: 300, maxTinyTree: 150, maxTrunk: 150, distance: 30
   }, [isMobile])

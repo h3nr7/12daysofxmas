@@ -1,3 +1,9 @@
+
+
+$phone: 640px;
+$tablet: 768px;
+$desktop: 1024px;
+
 #root {
   display: block;
   width: 100vw;
@@ -70,6 +76,13 @@ h1 {
   padding: 0;
   margin: 1rem 0 0rem 0;
   line-height: 7rem;
+
+  @media screen and (max-width: $phone) {
+    font-size: 6rem;
+    line-height: 5rem;
+  }
+
+  
 }
 
 h3 {

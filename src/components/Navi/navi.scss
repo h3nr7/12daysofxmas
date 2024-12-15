@@ -5,12 +5,13 @@
   top: 0;
   width: 100vw;
   height: auto;
-  margin: 10px 20px;
   z-index: 999;
 
-  ul {
+  &__container {
+    margin: 10px 20px;
+  }
 
-    margin: 0;
+  ul {
     padding: 0;
 
     > li {

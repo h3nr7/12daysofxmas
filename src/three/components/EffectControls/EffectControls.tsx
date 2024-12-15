@@ -7,9 +7,9 @@ export function EffectControls() {
   return (
     <>    
       <EffectComposer>
-        <Noise premultiply blendFunction={BlendFunction.ADD} />
+        <Noise premultiply blendFunction={BlendFunction.DARKEN} />
       </EffectComposer>
-      <fogExp2 attach="fog" color="#666666" density={1} />
+      <fogExp2 attach="fog" color="#000000" density={1} />
     </>
   )
 }

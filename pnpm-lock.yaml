@@ -14,6 +14,9 @@ dependencies:
   '@react-three/postprocessing':
     specifier: ^2.16.3
     version: 2.16.3(@react-three/fiber@8.17.10)(@types/three@0.170.0)(react@18.3.1)(three@0.171.0)
+  framer-motion:
+    specifier: ^11.14.4
+    version: 11.14.4(react-dom@18.3.1)(react@18.3.1)
   framer-motion-3d:
     specifier: ^11.13.5
     version: 11.14.1(@react-three/fiber@8.17.10)(react-dom@18.3.1)(react@18.3.1)(three@0.171.0)
@@ -1699,7 +1702,7 @@ packages:
       three: '>=0.133'
     dependencies:
       '@react-three/fiber': 8.17.10(@types/react@18.3.16)(react-dom@18.3.1)(react@18.3.1)(three@0.171.0)
-      framer-motion: 11.14.1(react-dom@18.3.1)(react@18.3.1)
+      framer-motion: 11.14.4(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-merge-refs: 2.1.1
@@ -1708,8 +1711,8 @@ packages:
       - '@emotion/is-prop-valid'
     dev: false
 
-  /framer-motion@11.14.1(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-6B7jC54zgnefmUSa2l4gkc/2CrqclHL9AUbDxxRfbFyWKLd+4guUYtEabzoYMU8G5ICZ6CdJdydOLy74Ekd7ag==}
+  /framer-motion@11.14.4(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-NQuzr9JbeJDMQmy0FFLhLzk9h1kAjVC1tGE/HY4ubF02B95EBm2lpA21LE3Od/OpXqXgp0zl5Hdqu25hliBRsA==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -1722,8 +1725,8 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      motion-dom: 11.14.1
-      motion-utils: 11.14.1
+      motion-dom: 11.14.3
+      motion-utils: 11.14.3
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       tslib: 2.8.1
@@ -1971,12 +1974,12 @@ packages:
       brace-expansion: 2.0.1
     dev: true
 
-  /motion-dom@11.14.1:
-    resolution: {integrity: sha512-Y68tHWR0d2HxHDskNxpeY3pzUdz7L/m5A8TV7VSE6Sq4XUNJdZV8zXco1aeAQ44o48u0i8UKjt8TGIqkZSQ8ew==}
+  /motion-dom@11.14.3:
+    resolution: {integrity: sha512-lW+D2wBy5vxLJi6aCP0xyxTxlTfiu+b+zcpVbGVFUxotwThqhdpPRSmX8xztAgtZMPMeU0WGVn/k1w4I+TbPqA==}
     dev: false
 
-  /motion-utils@11.14.1:
-    resolution: {integrity: sha512-R6SsehArpkEBUHydkcwQ/8ij8k2PyKWAJ7Y8PN3ztnFwq5RBU3zIamYH6esTp09OgsbwB57mBEZ9DORaN1WTxQ==}
+  /motion-utils@11.14.3:
+    resolution: {integrity: sha512-Xg+8xnqIJTpr0L/cidfTTBFkvRw26ZtGGuIhA94J9PQ2p4mEa06Xx7QVYZH0BP+EpMSaDlu+q0I0mmvwADPsaQ==}
     dev: false
 
   /ms@2.1.3:

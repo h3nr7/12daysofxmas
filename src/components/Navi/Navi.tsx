@@ -28,6 +28,6 @@ function NaviDays() {
   const next = cur === DAYS.length - 1 ? 0 : cur + 1
   
   return day && (
-    <>It's the {day} of Christmas <Link to={`/${DAYS[prev].day}`}>{'<'}</Link> <Link to={`/${DAYS[next].day}`}>{'>'}</Link></>
+    <div className="navi__container">It's the {day} of Christmas <Link to={`/${DAYS[prev].day}`}>{'<'}</Link> <Link to={`/${DAYS[next].day}`}>{'>'}</Link></div>
   )
 }

@@ -1,6 +1,6 @@
 import './App.scss'
-import { useRef } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { MutableRefObject, useEffect, useMemo, useRef } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
 import { Route, Routes } from 'react-router'
 import First from './components/First/First'
 import Second from './components/Second/Second'
@@ -15,10 +15,12 @@ import { EffectControls } from './three/components/EffectControls/EffectControls
 import { Navi } from './components/Navi/Navi'
 import { DAYS } from './helpers/constants'
 import { DateTimeProvider } from './hooks/dateTime'
+import { useFiberStore } from './stores/fiberStore'
 
 function App() {
-
   const main = useRef<HTMLDivElement>(null)
+
+  const evtSrc = useMemo(() => main as MutableRefObject<HTMLDivElement>, [main])
 
   return (
     <DateTimeProvider>
@@ -27,7 +29,7 @@ function App() {
           <Route index element={<Zero />} />
           {DAYS.map((d, i) => <Route key={i} path={d.day} element={d.element} />)}
         </Routes>
-        <Canvas className='canvas' eventSource={main?.current || undefined}>
+        <Canvas className='canvas' eventSource={evtSrc}>
             <CamControls />
             <EffectControls />
             <Lightings />

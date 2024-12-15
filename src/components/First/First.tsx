@@ -4,6 +4,7 @@ import { motion } from 'framer-motion-3d'
 import { Color } from "three";
 import { useDateTime } from "../../hooks/dateTime";
 import { useEffect } from "react";
+import { useFiberStore } from "../../stores/fiberStore";
 function UI() {
   return (
     <uitunnel.In>
@@ -15,6 +16,9 @@ function UI() {
 function R3F() {
 
   const navi = useNavigate();
+  const { setCamera } = useFiberStore()
+
+  useEffect(() => setCamera({enabled: false}), [])
 
   return (
     <>

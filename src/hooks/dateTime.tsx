@@ -1,9 +1,10 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { DateTime } from 'luxon'
+import { DateTime, Interval } from 'luxon'
 
 const initials = {
   curDay: 0,
   isNearXmas: true,
+  isXmas: false,
   timeLeft: { months: 12, days: 0, hours: 0, mins: 0, secs: 0 },
   curIso: ""
 }
@@ -15,13 +16,17 @@ export function DateTimeProvider({ children }: PropsWithChildren) {
   const [curIso, setCurIso] = useState(initials.curIso)
   const [curDay, setCurDay] = useState(initials.curDay)
   const [isNearXmas, setIsNearXmas] = useState(initials.isNearXmas)
+  const [isXmas, setIsXmas] = useState(initials.isXmas)
   const [timeLeft, setTimeLeft] = useState(initials.timeLeft)
 
   useEffect(() => {
     const id = setInterval(() => {
       const dt = DateTime.now()
-      const thisXmas = DateTime.utc(dt.year, 12, 25, 0, 0, 0, 0)
-      const left = thisXmas.diffNow('seconds').seconds
+      const start = DateTime.utc(dt.year, 12, 25, 0, 0, 0, 0)
+      const end = DateTime.utc(dt.year + 1, 1, 6, 0, 0, 0, 0)
+      const period = Interval.fromDateTimes(start, end)
+      const left = start.diffNow('seconds').seconds
+      period.contains(dt)
       setCurIso(dt.toISO())
       setCurDay(dt.day)
       setIsNearXmas(dt.month === 12)
@@ -37,6 +42,7 @@ export function DateTimeProvider({ children }: PropsWithChildren) {
         mins,
         secs
       })
+      setIsXmas(period.contains(dt))
     }, 1000);
     return () => clearInterval(id)
   }, [])
@@ -46,6 +52,7 @@ export function DateTimeProvider({ children }: PropsWithChildren) {
       curIso,
       curDay,
       isNearXmas,
+      isXmas,
       timeLeft
     }}>{children}</dtCtx.Provider>
   )

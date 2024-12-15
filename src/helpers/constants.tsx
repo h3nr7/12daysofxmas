@@ -25,3 +25,15 @@ export const DAYS = [
   {day: "eleventh", element: <Eleventh />},
   {day: "twelve", element: <Twelfth />}
 ]
+
+export const WAITING_PHRASE = [
+  "Look! Santa's On His Way!",
+  "We are almost There!",
+  "Countdown to Christmas!",
+  "We are wrapping the Magic!",
+  "Ho-Ho-Hold On!",
+  "Wait! We are decking the Halls!",
+  "Wait for the Jingle!",
+  "Snow Much Fun Soon!",
+  "Loading Christmas Cheer!"
+]

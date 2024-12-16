@@ -79,7 +79,7 @@ function R3F() {
 
   return (
     <r3ftunnel.In>
-      {/* <Diamond /> */}
+      <Diamond />
       <Forest />
       {/* // <Sphere position={[-1.2, 0, 0]} onClick={() => navi('/first')} /> */}
     </r3ftunnel.In>

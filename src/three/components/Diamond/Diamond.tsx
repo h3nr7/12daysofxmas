@@ -1,5 +1,6 @@
-import { CubeCamera, MeshRefractionMaterial, useGLTF } from '@react-three/drei'
+import { CubeCamera, MeshDistortMaterial, MeshRefractionMaterial, useGLTF } from '@react-three/drei'
 import { MeshProps, useLoader } from '@react-three/fiber'
+import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import { motion,  } from 'framer-motion-3d'
 import { useMemo, useRef } from 'react'
 import { Mesh } from 'three'
@@ -15,10 +16,7 @@ export default function Diamond() {
   const config = useMemo(() => {
 
     return {
-      bounces: 5,
-      aberrationStrength: 0.1,
-      ior: 2.75,
-      fresnel: 0.5,
+      aberrationStrength: 0.02,
       color: 'rgb(150, 150, 150)'
     }
   }, [])
@@ -26,14 +24,18 @@ export default function Diamond() {
   return (
     <CubeCamera resolution={256} frames={1} envMap={texture}>
       {(texture) => (
-        <motion.mesh ref={ref} 
-          transition={{ duration: 1.75, delay: 2, easings: ['anticipate', 'circIn'] }}
-          initial={{ scale: 0, rotateX: degToRad(90), y: 0  }}
-          animate={{ scale:0.12, y: 1.3, rotateZ: degToRad(1080) }}
-          geometry={(nodes.Cylinder002 as Mesh).geometry}>
-          
-          <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} />
-        </motion.mesh>
+        <>
+          <motion.mesh ref={ref} 
+            transition={{ duration: 1.75, delay: 2, easings: ['anticipate', 'circIn'] }}
+            initial={{ scale: 0, rotateX: degToRad(90), y: 0  }}
+            animate={{ scale:0.12, y: 1.3, rotateZ: degToRad(1080) }}
+            geometry={(nodes.Cylinder002 as Mesh).geometry}>
+            
+            <meshBasicMaterial envMap={texture} toneMapped={false} />
+            {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
+          </motion.mesh>
+
+        </>
       )}
     </CubeCamera>
   )

@@ -2,7 +2,7 @@ import { CubeCamera, MeshRefractionMaterial, useGLTF } from '@react-three/drei'
 import { MeshProps, useLoader } from '@react-three/fiber'
 import { motion,  } from 'framer-motion-3d'
 import { Suspense, useMemo, useRef } from 'react'
-import { Mesh } from 'three'
+import { Mesh, MeshBasicMaterial } from 'three'
 import { RGBELoader } from 'three/examples/jsm/Addons.js'
 import { useMobile } from '../../../hooks/isMobile'
 
@@ -18,19 +18,19 @@ export default function Forest() {
   const isMobile = useMobile()
 
   const { maxTree, maxFatTree, maxTinyTree, maxTrunk, distance } = useMemo(() => isMobile === true || isMobile === undefined ? {
-    maxTree: 5, maxFatTree: 5, maxTinyTree: 2, maxTrunk: 10, distance: 5
+    maxTree: 5, maxFatTree: 5, maxTinyTree: 2, maxTrunk: 10, distance: 4
   } : {
-    maxTree: 350, maxFatTree: 300, maxTinyTree: 150, maxTrunk: 150, distance: 30
+    maxTree: 250, maxFatTree: 100, maxTinyTree: 50, maxTrunk: 50, distance: 15
   }, [isMobile])
 
   const config = useMemo(() => {
 
     return {
-      bounces: 10,
-      aberrationStrength: 0.15,
-      ior: 1.05,
-      fresnel: 0.25,
-      color: 'rgba(1, 1, 1, 1)'
+      // bounces: 2,
+      aberrationStrength: 0.02,
+      // ior: 1.05,
+      fresnel: 0,
+      color: '#111111'
     }
   }, [])
 
@@ -106,7 +106,10 @@ export default function Forest() {
                   initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
                   animate={{ scale: t.scale }}
                   geometry={(nodes.Cylinder001 as Mesh).geometry}>
-                  <MeshRefractionMaterial envMap={texture} {...config} fresnel={t.fresnel} ior={t.ior} toneMapped={false} />
+                  {/* <meshBasicMaterial color={"rgb(46, 46, 46)"}/> */}
+                  {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
+                  <meshToonMaterial color={"rgb(56, 56, 56)"} />
+                  {/* <MeshRefractionMaterial envMap={texture} aberrationStrength={0.02} toneMapped={false} /> */}
                 </motion.mesh>
                 <motion.mesh 
                   initial={{ scale: 0}}
@@ -123,7 +126,10 @@ export default function Forest() {
                   initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
                   animate={{ scale: t.scale }}
                   geometry={(fat_nodes.Cylinder as Mesh).geometry}>
-                  <MeshRefractionMaterial envMap={texture} {...config} fresnel={t.fresnel} ior={t.ior} toneMapped={false} />
+                    {/* <meshBasicMaterial color={"rgb(46, 46, 46)"}/> */}
+                  {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
+                  <meshToonMaterial color={"rgb(42, 42, 42)"} />
+                  {/* <MeshRefractionMaterial envMap={texture} aberrationStrength={0.02} toneMapped={false} /> */}
                 </motion.mesh>
                 <motion.mesh 
                   initial={{ scale: 0}}
@@ -140,7 +146,10 @@ export default function Forest() {
                   initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
                   animate={{ scale: t.scale }}
                   geometry={(tiny_nodes.Cylinder006 as Mesh).geometry}>
-                  <MeshRefractionMaterial envMap={texture} {...config} fresnel={t.fresnel} ior={t.ior} toneMapped={false} />
+                  {/* <meshBasicMaterial color={"rgb(46, 46, 46)"}/> */}
+                  {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
+                  <meshToonMaterial color={"rgb(49, 49, 49)"} />
+                  {/* <MeshRefractionMaterial envMap={texture} aberrationStrength={0.02} toneMapped={false} /> */}
                 </motion.mesh>
                 <motion.mesh 
                   initial={{ scale: 0}}
@@ -158,7 +167,6 @@ export default function Forest() {
               // geometry={(nodes.Cylinder001 as Mesh).geometry}>
               material={(trunk_nodes.Tree_5 as Mesh).material}
               geometry={(trunk_nodes.Tree_5 as Mesh).geometry}>
-              {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
             </motion.mesh>
             ))}
           </Suspense>

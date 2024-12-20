@@ -11,7 +11,7 @@ export function EffectControls() {
         <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
         <Noise premultiply blendFunction={BlendFunction.DARKEN} />
       </EffectComposer>
-      <fogExp2 attach="fog" color="#000000" density={0.3} />
+      <fogExp2 attach="fog" color="#310000" density={0.3} />
     </>
   )
 }

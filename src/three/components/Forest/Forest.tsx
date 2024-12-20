@@ -32,10 +32,10 @@ export default function Forest({ visible }: PropsWithChildren<IForest>) {
 
   const isMobile = useMobile()
   const { maxTree, maxFatTree, maxTinyTree, maxTrunk, distance } = useMemo(() => isMobile === true || isMobile === undefined ? {
-    maxTree: 15, 
-    maxFatTree: 15, 
-    maxTinyTree: 8, 
-    maxTrunk: 10, 
+    maxTree: 40, 
+    maxFatTree: 25, 
+    maxTinyTree: 30, 
+    maxTrunk: 15, 
     distance: 5.0
   } : {
     maxTree: 250, 

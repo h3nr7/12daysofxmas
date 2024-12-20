@@ -25,22 +25,23 @@ export function First() {
 
   return (
     <AnimatePresence>
-    {visible && (
-      <motion.mesh
-        initial={{ scale: 0, x: 1.2 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0 }}
-        position={[1.2, 0, 0]}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onHoverStart={() => console.log('hover start')}
-        onAnimationComplete={() => console.log('anim complete')}
-        onTap={() => navi('/')}
-      >
-        <sphereGeometry />
-        <meshBasicMaterial color={new Color(0xff00ff)} />
-      </motion.mesh>
-    )}
+      <color attach="background" args={["#310000"]} />
+      {visible && (
+        <motion.mesh
+          initial={{ scale: 0, x: 1.2 }}
+          animate={{ scale: 1 }}
+          exit={{ scale: 0 }}
+          position={[1.2, 0, 0]}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onHoverStart={() => console.log('hover start')}
+          onAnimationComplete={() => console.log('anim complete')}
+          onTap={() => navi('/')}
+        >
+          <sphereGeometry />
+          <meshBasicMaterial color={new Color(0xff00ff)} />
+        </motion.mesh>
+      )}
     </AnimatePresence>
   )
 }

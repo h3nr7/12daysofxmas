@@ -78,8 +78,8 @@ h1 {
   line-height: 7rem;
 
   @media screen and (max-width: $phone) {
-    font-size: 6rem;
-    line-height: 5rem;
+    font-size: 4rem;
+    line-height: 3rem;
   }
 
   
@@ -94,6 +94,12 @@ h3 {
   padding: 0;
   margin: 0rem 0 2rem 0.2rem;
   line-height: 4rem;
+
+  @media screen and (max-width: $phone) {
+    font-size: 3.2rem;
+    line-height: 3rem;
+    margin: 0rem 0 2rem 0.2rem;
+  }
 }
 
 h6 {

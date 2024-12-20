@@ -13,7 +13,7 @@ import { MathUtils } from "three";
 import { AnimText } from "../../components/AnimText";
 import { AnimCounter } from "../../components/AnimCounter/AnimCounter";
 
-const DEBUGGING = false
+const DEBUGGING = true
 
 const variants: Variants = {
   initial: {
@@ -45,7 +45,6 @@ export default function Zero() {
       {isNearXmas ? (
         
         <motion.h3
-        
           initial={'initial'}
           animate={{
             opacity: 1,

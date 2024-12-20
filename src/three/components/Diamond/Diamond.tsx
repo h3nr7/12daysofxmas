@@ -9,9 +9,10 @@ import { degToRad } from 'three/src/math/MathUtils.js'
 
 interface IDiamond {
   visible?: boolean
+  position?: [number, number, number]
 }
 
-export default function Diamond({ visible }: IDiamond) {
+export default function Diamond({ visible, position = [0, 0, 0] }: IDiamond) {
   const texture = useLoader(RGBELoader, 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr')
   const { nodes } = useGLTF('/star.glb')
 
@@ -29,7 +30,11 @@ export default function Diamond({ visible }: IDiamond) {
                   }
                 }}
                 animate={{ 
-                  scale:0.12, y: 1.3, rotateZ: degToRad(1080),
+                  scale: 0.12, 
+                  x: position[0],
+                  y: position[1], 
+                  z: position[2],
+                  rotateZ: degToRad(1080),
                   transition: {
                     easings: ['anticipate', 'circIn'],
                     duration: 1.75,

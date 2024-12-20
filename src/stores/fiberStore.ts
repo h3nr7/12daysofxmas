@@ -38,7 +38,6 @@ export const initialState: IFiberState = {
 export const useFiberStore = create<IFiberState & IFiberReducer>()(immer(set => ({
   data: initialState.data,
   setCamera: ({ enabled, position, lookAt, minMaxDistance, maxPolarAngle }) => set(state => {
-    console.log('setcamera: ', enabled)
     if(enabled != undefined) state.data.cam.enabled = enabled
     if(position) state.data.cam.position = position;
     if(lookAt) state.data.cam.lookAt = lookAt;

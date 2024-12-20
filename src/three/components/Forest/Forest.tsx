@@ -1,38 +1,49 @@
 import { CubeCamera, MeshRefractionMaterial, useGLTF } from '@react-three/drei'
 import { MeshProps, useLoader } from '@react-three/fiber'
 import { motion,  } from 'framer-motion-3d'
-import { Suspense, useMemo, useRef } from 'react'
+import { PropsWithChildren, Suspense, useEffect, useMemo, useRef } from 'react'
 import { Mesh, MeshBasicMaterial } from 'three'
 import { RGBELoader } from 'three/examples/jsm/Addons.js'
 import { useMobile } from '../../../hooks/isMobile'
+import { Tree } from './Tree'
+import { lerp, mapLinear } from 'three/src/math/MathUtils.js'
+import { AnimatePresence } from 'framer-motion'
+import { useLocation } from 'react-router'
 
-export default function Forest() {
-  // const ref = useRef(null)
+interface IForest {
+  visible?: boolean
+}
 
-  const texture = useLoader(RGBELoader, 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr')
-  const { nodes } = useGLTF('/tree.glb')
-  const { nodes: fat_nodes } = useGLTF('/fat_tree.glb')
-  const { nodes: trunk_nodes } = useGLTF('/trunk.glb')
-  const { nodes: tiny_nodes } = useGLTF('/tiny_tree.glb')
+function randomDistance(diameter: number) {
+  return {
+    x: diameter * lerp(-.5, .5, Math.random()),
+    z: diameter * lerp(-.5, .5, Math.random())
+  }
+}
+
+function randomTiming(maxTime: number = 3.3, maxDelay: number = 1.2) {
+  return {
+    duration: maxTime * lerp(0, 1, Math.random()),
+    delay: maxDelay * lerp(0, 1, Math.random())
+  }
+}
+
+export default function Forest({ visible }: PropsWithChildren<IForest>) {
 
   const isMobile = useMobile()
-
   const { maxTree, maxFatTree, maxTinyTree, maxTrunk, distance } = useMemo(() => isMobile === true || isMobile === undefined ? {
-    maxTree: 5, maxFatTree: 5, maxTinyTree: 2, maxTrunk: 10, distance: 4
+    maxTree: 15, 
+    maxFatTree: 15, 
+    maxTinyTree: 8, 
+    maxTrunk: 10, 
+    distance: 5.0
   } : {
-    maxTree: 250, maxFatTree: 100, maxTinyTree: 50, maxTrunk: 50, distance: 15
+    maxTree: 250, 
+    maxFatTree: 100, 
+    maxTinyTree: 50, 
+    maxTrunk: 50, 
+    distance: 9.0
   }, [isMobile])
-
-  const config = useMemo(() => {
-
-    return {
-      // bounces: 2,
-      aberrationStrength: 0.02,
-      // ior: 1.05,
-      fresnel: 0,
-      color: '#111111'
-    }
-  }, [])
 
   const {trees, fatTrees, tinyTrees, trunks} = useMemo(() => {
     const trees:Record<string, any>[] = []
@@ -41,48 +52,50 @@ export default function Forest() {
     const trunks:Record<string, any>[] = []
 
     for (let i=0; i<maxTree; i++) {
+      const {x, z} = randomDistance(distance)
       trees.push({
-        x: -distance/3 + Math.random() * distance*2/3,
+        x,
         y: 0,
-        z: -distance/3 + Math.random() * distance*2/3,
+        z,
         rotateY: 2 * Math.PI * Math.random(),
         scale: 0.05 + Math.random() * .2,
-        fresnel: Math.random() * 0.25,
-        ior: 1 + Math.random() * 0.1
+        transition: randomTiming()
       })
     }
 
     for (let i=0; i<maxFatTree; i++) {
+      const {x, z} = randomDistance(distance)
       fatTrees.push({
-        x: -distance/3 + Math.random() * distance*2/3,
+        x,
         y: 0,
-        z: -distance/3 + Math.random() * distance*2/3,
+        z,
         rotateY: 2 * Math.PI * Math.random(),
         scale: 0.1 + Math.random() * .2,
-        fresnel: Math.random() * 0.25,
-        ior: 1 + Math.random() * 0.1
+        transition: randomTiming()
       })
     }
 
     for (let i=0; i<maxTinyTree; i++) {
+      const {x, z} = randomDistance(distance)
       tinyTrees.push({
-        x: -distance/3 + Math.random() * distance*2/3,
+        x,
         y: 0,
-        z: -distance/3 + Math.random() * distance*2/3,
+        z,
         rotateY: 2 * Math.PI * Math.random(),
         scale: 0.05 + Math.random() * .2,
-        fresnel: Math.random() * 0.25,
-        ior: 1 + Math.random() * .1
+        transition: randomTiming()
       })
     }
 
     for (let i=0; i<maxTrunk; i++) {
+      const {x, z} = randomDistance(distance)
       trunks.push({
-        x: -distance/3 + Math.random() * distance*2/3,
+        x,
         y: 0,
-        z: -distance/3 + Math.random() * distance*2/3,
+        z,
         rotateY: 2 * Math.PI * Math.random(),
-        scale: 0.1 + Math.random() * .1
+        scale: 0.1 + Math.random() * .1,
+        transition: randomTiming()
       })
     }
 
@@ -95,83 +108,67 @@ export default function Forest() {
   }, [isMobile])
 
   return (
-    <CubeCamera resolution={256} frames={1} envMap={texture}>
-      {(texture) => {
+    <>
+      {trees.map((t, i) => (
+        <Tree 
+          visible={visible}
+          type="normal"
+          key={`normal_${i}`}
+          transition={{duration: t.duration}}
+          initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
+          animate={{ scale: t.scale }}
+        />
+        // <group key={i} >
+        //   <motion.mesh
+        //     initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
+        //     animate={{ scale: t.scale }}
+        //     geometry={(nodes.Cylinder001 as Mesh).geometry}>
+        //     {/* <meshBasicMaterial color={"rgb(46, 46, 46)"}/> */}
+        //     {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
+        //     <meshToonMaterial color={"rgb(56, 56, 56)"} />
+        //     {/* <MeshRefractionMaterial envMap={texture} aberrationStrength={0.02} toneMapped={false} /> */}
+        //   </motion.mesh>
+        //   <motion.mesh 
+        //     initial={{ scale: 0}}
+        //     animate={{ scale: t.scale }}
+        //     position={[t.x, t.y, t.z]}
+        //     material={(nodes.Cylinder001_1 as Mesh).material}
+        //     geometry={(nodes.Cylinder001_1 as Mesh).geometry} />
+        // </group>
+      ))}
 
-        return (
-          <Suspense>
-            {trees.map((t, i) => (
-              <group key={i} >
-                <motion.mesh
-                  initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
-                  animate={{ scale: t.scale }}
-                  geometry={(nodes.Cylinder001 as Mesh).geometry}>
-                  {/* <meshBasicMaterial color={"rgb(46, 46, 46)"}/> */}
-                  {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
-                  <meshToonMaterial color={"rgb(56, 56, 56)"} />
-                  {/* <MeshRefractionMaterial envMap={texture} aberrationStrength={0.02} toneMapped={false} /> */}
-                </motion.mesh>
-                <motion.mesh 
-                  initial={{ scale: 0}}
-                  animate={{ scale: t.scale }}
-                  position={[t.x, t.y, t.z]}
-                  material={(nodes.Cylinder001_1 as Mesh).material}
-                  geometry={(nodes.Cylinder001_1 as Mesh).geometry} />
-              </group>
-            ))}
+      {fatTrees.map((t, i) => (
+        <Tree 
+          visible={visible}
+          type="fat"
+          key={`fat_${i}`}
+          transition={t.transition}
+          initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
+          animate={{ scale: t.scale }}
+        />
+      ))}
 
-            {fatTrees.map((t, i) => (
-              <group key={i} >
-                <motion.mesh
-                  initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
-                  animate={{ scale: t.scale }}
-                  geometry={(fat_nodes.Cylinder as Mesh).geometry}>
-                    {/* <meshBasicMaterial color={"rgb(46, 46, 46)"}/> */}
-                  {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
-                  <meshToonMaterial color={"rgb(42, 42, 42)"} />
-                  {/* <MeshRefractionMaterial envMap={texture} aberrationStrength={0.02} toneMapped={false} /> */}
-                </motion.mesh>
-                <motion.mesh 
-                  initial={{ scale: 0}}
-                  animate={{ scale: t.scale }}
-                  position={[t.x, t.y, t.z]}
-                  material={(fat_nodes.Cylinder_1 as Mesh).material}
-                  geometry={(fat_nodes.Cylinder_1 as Mesh).geometry} />
-              </group>
-            ))}
+      {tinyTrees.map((t, i) => (
+        <Tree 
+          visible={visible}
+          type="tiny"
+          key={`tiny_${i}`}
+          transition={t.transition}
+          initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
+          animate={{ scale: t.scale }}
+        />
+      ))}
 
-            {tinyTrees.map((t, i) => (
-              <group key={i} >
-                <motion.mesh
-                  initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
-                  animate={{ scale: t.scale }}
-                  geometry={(tiny_nodes.Cylinder006 as Mesh).geometry}>
-                  {/* <meshBasicMaterial color={"rgb(46, 46, 46)"}/> */}
-                  {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
-                  <meshToonMaterial color={"rgb(49, 49, 49)"} />
-                  {/* <MeshRefractionMaterial envMap={texture} aberrationStrength={0.02} toneMapped={false} /> */}
-                </motion.mesh>
-                <motion.mesh 
-                  initial={{ scale: 0}}
-                  animate={{ scale: t.scale }}
-                  position={[t.x, t.y, t.z]}
-                  material={(tiny_nodes.Cylinder006_1 as Mesh).material}
-                  geometry={(tiny_nodes.Cylinder006_1 as Mesh).geometry} />
-              </group>
-            ))}
-
-            {trunks.map((t, i) => (
-              <motion.mesh key={i} 
-              initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
-              animate={{ scale: t.scale }}
-              // geometry={(nodes.Cylinder001 as Mesh).geometry}>
-              material={(trunk_nodes.Tree_5 as Mesh).material}
-              geometry={(trunk_nodes.Tree_5 as Mesh).geometry}>
-            </motion.mesh>
-            ))}
-          </Suspense>
-        )
-      }}
-    </CubeCamera>
+      {trunks.map((t, i) => (
+        <Tree 
+          visible={visible}
+          type="trunk"
+          key={`trunk_${i}`}
+          transition={t.transition}
+          initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
+          animate={{ scale: t.scale }}
+        />
+      ))}
+    </>
   )
 }

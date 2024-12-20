@@ -21,6 +21,7 @@ export function CamControls({}: ICamControls) {
   }, [data])
   
   useEffect(() => {
+    console.log('haha', enabled, ref.current)
     if(ref.current) {
       ref.current.setLookAt(...position, ...lookAt, true);
     }

@@ -7,11 +7,11 @@ export function EffectControls() {
   return (
     <>    
       <EffectComposer>
-        <Bloom luminanceThreshold={1} intensity={70} levels={9} mipmapBlur />
+        <Bloom luminanceThreshold={1} intensity={15} levels={9} mipmapBlur />
         <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
         <Noise premultiply blendFunction={BlendFunction.DARKEN} />
       </EffectComposer>
-      <fogExp2 attach="fog" color="#000000" density={0.7} />
+      <fogExp2 attach="fog" color="#000000" density={0.3} />
     </>
   )
 }

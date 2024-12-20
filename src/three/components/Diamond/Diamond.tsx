@@ -1,41 +1,48 @@
-import { CubeCamera, MeshDistortMaterial, MeshRefractionMaterial, useGLTF } from '@react-three/drei'
-import { MeshProps, useLoader } from '@react-three/fiber'
-import { Bloom, EffectComposer } from '@react-three/postprocessing'
+import { CubeCamera, useGLTF } from '@react-three/drei'
+import { useLoader } from '@react-three/fiber'
+import { AnimatePresence } from 'framer-motion'
 import { motion,  } from 'framer-motion-3d'
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Mesh } from 'three'
 import { RGBELoader } from 'three/examples/jsm/Addons.js'
 import { degToRad } from 'three/src/math/MathUtils.js'
 
-export default function Diamond() {
-  const ref = useRef(null)
+interface IDiamond {
+  visible?: boolean
+}
+
+export default function Diamond({ visible }: IDiamond) {
   const texture = useLoader(RGBELoader, 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr')
   const { nodes } = useGLTF('/star.glb')
-  // const { nodes } = useGLTF('/dflat.glb')
-  console.log(nodes)
-  const config = useMemo(() => {
-
-    return {
-      aberrationStrength: 0.02,
-      color: 'rgb(150, 150, 150)'
-    }
-  }, [])
 
   return (
     <CubeCamera resolution={256} frames={1} envMap={texture}>
       {(texture) => (
-        <>
-          <motion.mesh ref={ref} 
-            transition={{ duration: 1.75, delay: 2, easings: ['anticipate', 'circIn'] }}
-            initial={{ scale: 0, rotateX: degToRad(90), y: 0  }}
-            animate={{ scale:0.12, y: 1.3, rotateZ: degToRad(1080) }}
-            geometry={(nodes.Cylinder002 as Mesh).geometry}>
-            
-            <meshBasicMaterial envMap={texture} toneMapped={false} />
-            {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
-          </motion.mesh>
-
-        </>
+          <AnimatePresence mode="wait">
+            {
+              visible && <motion.mesh
+                initial={{ scale: 0, rotateX: degToRad(90), y: 0  }}
+                exit={{
+                  scale: 0, rotateX: degToRad(-1080), y: 0,
+                  transition: {
+                    duration: 0.75
+                  }
+                }}
+                animate={{ 
+                  scale:0.12, y: 1.3, rotateZ: degToRad(1080),
+                  transition: {
+                    easings: ['anticipate', 'circIn'],
+                    duration: 1.75,
+                    delay: 2
+                  }
+                }}
+                geometry={(nodes.Cylinder002 as Mesh).geometry}>
+                
+                <meshBasicMaterial envMap={texture} toneMapped={false} />
+                {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
+              </motion.mesh>
+            }
+          </AnimatePresence>
       )}
     </CubeCamera>
   )

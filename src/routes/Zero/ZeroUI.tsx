@@ -40,7 +40,7 @@ export default function Zero() {
   return (
     <div className="zero__ui">
       <h1>
-        <AnimText content={`Twelve days\nof Xmas`} />
+        <AnimText content={`12 days\nof Xmas`} />
       </h1>
       {isNearXmas ? (
         

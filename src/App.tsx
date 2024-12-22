@@ -12,6 +12,9 @@ import Forest from './three/components/Forest/Forest'
 import Diamond from './three/components/Diamond/Diamond'
 import { ThreeView } from './three/ThreeView'
 import Zero from './routes/Zero/ZeroUI'
+import { useWindowSize } from './hooks/windowSize'
+import styled from 'styled-components'
+import { FullscreenDiv } from './components/FullscreenDiv/FullscreenDiv'
 
 function App() {
   const main = useRef<HTMLDivElement>(null)
@@ -34,13 +37,14 @@ function UI() {
   const location = useLocation();
 
   return (
-    <section className="ui">
+    <FullscreenDiv className="ui">
       <Routes location={location} key={location.key}>
         <Route index element={<Zero />} />
         {DAYS.map((d, i) => <Route key={i} path={d.day} element={d.element} />)}
       </Routes>
-    </section>
+    </FullscreenDiv>
   );
 }
+
 
 export default App

@@ -11,7 +11,7 @@ import { WAITING_PHRASE } from "../../helpers/constants";
 import { AnimText } from "../../components/AnimText";
 import { AnimCounter } from "../../components/AnimCounter/AnimCounter";
 
-const DEBUGGING = true
+const DEBUGGING = false
 
 const variants: Variants = {
   initial: {

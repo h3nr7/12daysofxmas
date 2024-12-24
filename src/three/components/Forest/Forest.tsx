@@ -9,23 +9,11 @@ import { Tree } from './Tree'
 import { lerp, mapLinear } from 'three/src/math/MathUtils.js'
 import { AnimatePresence } from 'framer-motion'
 import { useLocation } from 'react-router'
+import { randomDistance } from '../../utils/vecs'
+import { randomTiming } from '../../utils/time'
 
 interface IForest {
   visible?: boolean
-}
-
-function randomDistance(diameter: number) {
-  return {
-    x: diameter * lerp(-.5, .5, Math.random()),
-    z: diameter * lerp(-.5, .5, Math.random())
-  }
-}
-
-function randomTiming(maxTime: number = 3.3, maxDelay: number = 1.2) {
-  return {
-    duration: maxTime * lerp(0, 1, Math.random()),
-    delay: maxDelay * lerp(0, 1, Math.random())
-  }
 }
 
 export default function Forest({ visible }: PropsWithChildren<IForest>) {

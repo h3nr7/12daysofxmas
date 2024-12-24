@@ -6,14 +6,12 @@ import Diamond from "../../three/components/Diamond/Diamond";
 import './Zero.scss'
 import { Button } from "../../components/Button/Button"
 import { AnimatePresence, motion, usePresence, Variants } from 'framer-motion'
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { WAITING_PHRASE } from "../../helpers/constants";
-import { useFiberStore } from "../../stores/fiberStore";
-import { MathUtils } from "three";
 import { AnimText } from "../../components/AnimText";
 import { AnimCounter } from "../../components/AnimCounter/AnimCounter";
 
-const DEBUGGING = false
+const DEBUGGING = true
 
 const variants: Variants = {
   initial: {
@@ -31,7 +29,7 @@ const variants: Variants = {
 }
 
 
-export default function Zero() {
+export default function ZeroUI() {
 
   const { isNearXmas, timeLeft, isXmas } = useDateTime()
   const navi = useNavigate();

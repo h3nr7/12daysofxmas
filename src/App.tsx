@@ -11,7 +11,7 @@ import { AnimatePresence } from 'framer-motion'
 import Forest from './three/components/Forest/Forest'
 import Diamond from './three/components/Diamond/Diamond'
 import { ThreeView } from './three/ThreeView'
-import Zero from './routes/Zero/ZeroUI'
+import ZeroUI from './routes/Zero/ZeroUI'
 import { useWindowSize } from './hooks/windowSize'
 import styled from 'styled-components'
 import { FullscreenDiv } from './components/FullscreenDiv/FullscreenDiv'
@@ -26,7 +26,7 @@ function App() {
         <div className='main' ref={main || null}>
           {evtSrc && <ThreeView eventSource={evtSrc} />}
           <UI />
-          <Navi />
+          {/* <Navi /> */}
         </div>
       </DateTimeProvider>
     </Suspense>
@@ -39,7 +39,7 @@ function UI() {
   return (
     <FullscreenDiv className="ui">
       <Routes location={location} key={location.key}>
-        <Route index element={<Zero />} />
+        <Route index element={<ZeroUI />} />
         {DAYS.map((d, i) => <Route key={i} path={d.day} element={d.element} />)}
       </Routes>
     </FullscreenDiv>

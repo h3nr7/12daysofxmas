@@ -114,27 +114,11 @@ export default function Forest({ visible }: PropsWithChildren<IForest>) {
           visible={visible}
           type="normal"
           key={`normal_${i}`}
+          position={[t.x, t.y, t.z]}
           transition={{duration: t.duration}}
-          initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
+          initial={{ scale: 0, rotateY: t.rotateY }}
           animate={{ scale: t.scale }}
         />
-        // <group key={i} >
-        //   <motion.mesh
-        //     initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
-        //     animate={{ scale: t.scale }}
-        //     geometry={(nodes.Cylinder001 as Mesh).geometry}>
-        //     {/* <meshBasicMaterial color={"rgb(46, 46, 46)"}/> */}
-        //     {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
-        //     <meshToonMaterial color={"rgb(56, 56, 56)"} />
-        //     {/* <MeshRefractionMaterial envMap={texture} aberrationStrength={0.02} toneMapped={false} /> */}
-        //   </motion.mesh>
-        //   <motion.mesh 
-        //     initial={{ scale: 0}}
-        //     animate={{ scale: t.scale }}
-        //     position={[t.x, t.y, t.z]}
-        //     material={(nodes.Cylinder001_1 as Mesh).material}
-        //     geometry={(nodes.Cylinder001_1 as Mesh).geometry} />
-        // </group>
       ))}
 
       {fatTrees.map((t, i) => (
@@ -142,8 +126,9 @@ export default function Forest({ visible }: PropsWithChildren<IForest>) {
           visible={visible}
           type="fat"
           key={`fat_${i}`}
+          position={[t.x, t.y, t.z]}
           transition={t.transition}
-          initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
+          initial={{ scale: 0, rotateY: t.rotateY }}
           animate={{ scale: t.scale }}
         />
       ))}
@@ -153,8 +138,9 @@ export default function Forest({ visible }: PropsWithChildren<IForest>) {
           visible={visible}
           type="tiny"
           key={`tiny_${i}`}
+          position={[t.x, t.y, t.z]}
           transition={t.transition}
-          initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
+          initial={{ scale: 0, rotateY: t.rotateY }}
           animate={{ scale: t.scale }}
         />
       ))}
@@ -164,8 +150,9 @@ export default function Forest({ visible }: PropsWithChildren<IForest>) {
           visible={visible}
           type="trunk"
           key={`trunk_${i}`}
+          position={[t.x, t.y, t.z]}
           transition={t.transition}
-          initial={{ scale: 0, x: t.x, y: t.y, z: t.z, rotateY: t.rotateY }}
+          initial={{ scale: 0, rotateY: t.rotateY }}
           animate={{ scale: t.scale }}
         />
       ))}

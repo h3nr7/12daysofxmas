@@ -9,12 +9,16 @@ interface ITree {
   visible?: boolean
   type?: 'fat' | 'normal' |'tiny' | 'trunk'
   material?: Material
+  position?: [number, number, number]
   initial?: Target | VariantLabels
   animate?: AnimationControls | TargetAndTransition | VariantLabels
   transition?: Transition
 }
 
-export function Tree({ transition, visible, type, initial = {}, animate, material }: PropsWithChildren<ITree>) {
+export function Tree({ 
+  position,
+  transition, visible, type, initial = {}, animate, material 
+}: PropsWithChildren<ITree>) {
 
   const {glbSrc, meshName} = useMemo(() => {
     const glbSrc = type === 'fat' ? '/fat_tree.glb' : type === 'tiny' ? '/tiny_tree.glb' :
@@ -34,6 +38,7 @@ export function Tree({ transition, visible, type, initial = {}, animate, materia
   return (
     <AnimatePresence>
       { visible && nodes && <motion.group
+        position={position}
         transition={transition}
         initial={initial}
         exit={initial}

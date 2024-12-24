@@ -48,8 +48,8 @@ export function OrbitalTrails({
           {curvePoints.map(c => (
             <Trail
               width={0.05} // Width of the line
-              color={'white'} // Color of the line
-              length={10} // Length of the line
+              color={'rgb(198, 198, 198)'} // Color of the line
+              length={5} // Length of the line
               decay={2} // How fast the line fades away
               local={false} // Wether to use the target's world or local positions
               stride={0} // Min distance between previous and current point
@@ -58,8 +58,8 @@ export function OrbitalTrails({
               attenuation={(width) => width} // A function to define the width in each point along it.
             >
               <motion.mesh
-                transition={{ duration: 12, repeat: Infinity }}
-                initial={{ x: 0, y: 0, z: 0 }}
+                transition={{ duration: 8, repeat: Infinity }}
+                initial={{ x: 0, y: -10, z: 0 }}
                 animate={{ x: c.map(p => p.x), y: c.map(p => p.y), z: c.map(p => p.z) }}
                 exit={{ x: 0, y: 20, z: 0 }}
               >

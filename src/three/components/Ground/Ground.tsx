@@ -13,7 +13,7 @@ export function Ground({ visible }:{ visible?: boolean }) {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0 }}
           rotation={[-Math.PI / 2, 0, 0]}>
-          <circleGeometry args={[5,16]}/>
+          <circleGeometry args={[7,16]}/>
           <meshBasicMaterial color={'#310000'}/>
         </motion.mesh>
       )}

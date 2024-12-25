@@ -19,14 +19,15 @@ export default function Diamond({ visible, position = [0, 0, 0] }: IDiamond) {
   return (
     <CubeCamera resolution={256} frames={1} envMap={texture}>
       {(texture) => (
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {
               visible && <motion.mesh
                 initial={{ scale: 0, rotateX: degToRad(90), y: 0  }}
                 exit={{
                   scale: 0, rotateX: degToRad(-1080), y: 0,
                   transition: {
-                    duration: 0.75
+                    duration: 1.15,
+                    delay: 1.7
                   }
                 }}
                 animate={{ 

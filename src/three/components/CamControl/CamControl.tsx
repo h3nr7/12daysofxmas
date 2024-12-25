@@ -1,7 +1,7 @@
 import { CameraControls } from "@react-three/drei";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFiberStore } from "../../../stores/fiberStore"
-import { MathUtils } from "three";
+import { MathUtils, Vector3 } from "three";
 
 interface ICamControls {
 
@@ -21,11 +21,21 @@ export function CamControls({}: ICamControls) {
   }, [data])
   
   useEffect(() => {
-    console.log('haha', enabled, ref.current)
-    if(ref.current) {
-      ref.current.setLookAt(...position, ...lookAt, true);
-    }
-  }, [ref.current, enabled, position, lookAt, minMaxDistance]);
+    if(!ref.current) return
+    console.log('reset lookat and position', position, lookAt)
+    ref.current.setLookAt(...position, ...lookAt, true)
+  }, [ref.current, lookAt]);
+
+  useEffect(() => {
+    if(!ref.current) return
+    const tmp = new Vector3()
+    ref.current.getPosition(tmp)
+    console.log('reset position', position, lookAt, tmp)
+    ref.current.setLookAt(...position, ...lookAt, true)
+    ref.current.getPosition(tmp)
+    console.log('new reset position', tmp)
+  }, [ref.current, position])
+
 
 
   return (

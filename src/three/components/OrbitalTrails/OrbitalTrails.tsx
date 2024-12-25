@@ -42,10 +42,16 @@ export function OrbitalTrails({
   const texture = useLoader(RGBELoader, 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr')
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.group>
-          {curvePoints.map(c => (
+    <>
+      {curvePoints.map((c, i) => (
+        <AnimatePresence key={`orbital_trail_group_${i}`}>
+        {visible && (
+          <motion.group
+            transition={{duration: 1.25, delay: 1}}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0, transition: { duration: 1.05 }}}
+          >
             <Trail
               width={0.05} // Width of the line
               color={'rgb(198, 198, 198)'} // Color of the line
@@ -58,18 +64,29 @@ export function OrbitalTrails({
               attenuation={(width) => width} // A function to define the width in each point along it.
             >
               <motion.mesh
-                transition={{ duration: 8, repeat: Infinity }}
                 initial={{ x: 0, y: -10, z: 0 }}
-                animate={{ x: c.map(p => p.x), y: c.map(p => p.y), z: c.map(p => p.z) }}
-                exit={{ x: 0, y: 20, z: 0 }}
+                animate={{ 
+                  x: c.map(p => p.x), y: c.map(p => p.y), z: c.map(p => p.z),
+                  transition: {
+                    duration: 8,
+                    repeat: Infinity
+                  } 
+                }}
+                exit={{ 
+                  x: 0, y: 1.8, z: 0, 
+                  transition: {
+                    duration: 1.2
+                  }  
+                }}
               >
                 <sphereGeometry args={[0.01]} />
                 <meshBasicMaterial envMap={texture} color={'white'}/>
               </motion.mesh>
             </Trail>
-          ))}
-        </motion.group>
-      )}
-    </AnimatePresence>
+          </motion.group>
+        )}
+        </AnimatePresence>
+      ))}
+    </>
   )
 }

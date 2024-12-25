@@ -10,6 +10,7 @@ import { BufferGeometry, CircleGeometry, Color, MathUtils, Mesh, PlaneGeometry, 
 import { useWindowSize } from "../hooks/windowSize"
 import { Ground } from "./components/Ground/Ground"
 import { useLocation } from "react-router"
+import { BlockText } from "./components/BlockText/BlockText"
 
 
 export interface ThreeViewProps {
@@ -29,9 +30,11 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
 
   return eventSource && (
     <Canvas className='canvas' eventSource={eventSource} style={{ width, height }}>
+        <color attach="background" args={["#310000"]} />
         <Zero />
         <First />
         <Ground visible={groundVisible}/>
+        <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />
         <Lightings />
         <CamControls />
         <EffectControls />

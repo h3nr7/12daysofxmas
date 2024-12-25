@@ -6,6 +6,7 @@ import { CatmullRomCurve3, Color, MathUtils, QuadraticBezierCurve3, Vector3 } fr
 import { AnimatePresence } from "framer-motion";
 import { Sphere, Trail } from "@react-three/drei";
 import { Satellite } from "../../components/Satellite/Satellite";
+import { BlockText } from "../../components/BlockText/BlockText";
 
 const PATH = '/first'
 
@@ -21,9 +22,10 @@ export function First() {
       setVisible(true)
       setCamera({ 
         enabled: true, 
-        // position: [0, 0, -10]
+        position: [0, 2.5, 2.5],
+        lookAt: [0, 1.8, 0]
       })
-      setEffect({ tiltshift: false })
+      setEffect({ tiltshift: true })
     } else {
       setVisible(false)
     }
@@ -31,24 +33,7 @@ export function First() {
 
   return (
     <AnimatePresence>
-      <color attach="background" args={["#310000"]} />
-      {visible && (
-        <motion.mesh
-          key={'test_sphere'}
-          initial={{ scale: 0, x: 2.2 }}
-          animate={{ scale: 0.1 }}
-          exit={{ scale: 0 }}
-          position={[1.2, 1.5, 0.0]}
-          whileHover={{ scale: 0.2 }}
-          whileTap={{ scale: 0.2 }}
-          onHoverStart={() => console.log('hover start')}
-          onAnimationComplete={() => console.log('anim complete')}
-          onTap={() => navi('/')}
-        >
-          <sphereGeometry />
-          <meshBasicMaterial color={new Color(0xff00ff)} />
-        </motion.mesh>
-      )}
+      <BlockText visible={visible} text="Merry Christmas" size={0.3} height={0.2} letterSpacing={-0.05}/>
       <Satellite key={'test_satellite'}/>
     </AnimatePresence>
   )

@@ -34,10 +34,8 @@ export default function Zero() {
 
   return (
       <>
-        <color attach="background" args={["#310000"]} />
         <Diamond visible={visible} position={[0, 1.8, 0]}/>
         <Forest visible={visible}/>
-        <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />
         <OrbitalTrails visible={visible} center={[0, 1.8, 0]} />
       </>
   )

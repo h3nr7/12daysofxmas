@@ -3,11 +3,13 @@ import { BallCollider, CylinderCollider, RigidBody } from "@react-three/rapier";
 import { MathUtils, Mesh, MeshLambertMaterial, MeshStandardMaterial, SphereGeometry } from "three";
 
 interface IBauble {
+  visible?: boolean
   scale?: number
   position?: Vec3
 }
 
 export function Bauble({
+  visible,
   scale = 1,
   position = [0,0,0]
 }: IBauble) {
@@ -21,7 +23,7 @@ export function Bauble({
 
   const r = MathUtils.randFloatSpread
 
-  return (
+  return visible && nodes && (
     <RigidBody position={position} colliders={false}>
       <BallCollider args={[scale]} />
       <CylinderCollider rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 1.2 * scale]} args={[0.15 * scale, 0.275 * scale]} />

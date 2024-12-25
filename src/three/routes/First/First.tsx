@@ -46,7 +46,7 @@ export function First() {
         {/* <Satellite key={'test_satellite'}/> */}
       </AnimatePresence>
       <Physics>
-      {[...Array(100)].map((g, i) => <Bauble key={i} scale={0.088} position={[lerp(-1, 1, Math.random()), lerp(5, 10, Math.random()), lerp(-1, 1, Math.random())]}/>)}
+      {[...Array(100)].map((g, i) => <Bauble key={i} visible={visible} scale={0.088} position={[lerp(-1, 1, Math.random()), lerp(5, 10, Math.random()), lerp(-1, 1, Math.random())]}/>)}
         {[...Array(100)].map((g, i) => <Gift key={i} visible={visible} position={[lerp(-1, 1, Math.random()), lerp(5, 10, Math.random()), lerp(-1, 1, Math.random())]}/>)}
         <RigidBody position={[0, 0, 0]} type="fixed" colliders={false}>
           <CuboidCollider friction={2} restitution={0.5} args={[7, 0, 7]} />

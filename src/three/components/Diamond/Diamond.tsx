@@ -9,7 +9,7 @@ import { degToRad } from 'three/src/math/MathUtils.js'
 
 interface IDiamond {
   visible?: boolean
-  position?: [number, number, number]
+  position?: Vec3
 }
 
 export default function Diamond({ visible, position = [0, 0, 0] }: IDiamond) {

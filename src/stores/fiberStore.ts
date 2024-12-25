@@ -3,8 +3,6 @@ import { fog } from 'three/webgpu'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
-type Vec2 = [number, number]
-type Vec3 = [number, number, number]
 
 interface IFiberState {
   data: {
@@ -45,7 +43,7 @@ export const initialState: IFiberState = {
     },
     effect: {
       fog: true,
-      noise: true,
+      noise: false,
       tiltshift: true
     }
   }

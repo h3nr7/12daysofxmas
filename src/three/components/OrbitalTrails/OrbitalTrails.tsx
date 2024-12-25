@@ -8,7 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { randomOrbit } from "../../utils/vecs";
 interface IProps {
   visible?: boolean
-  center?: Vector3 | [number, number, number]
+  center?: Vector3 | Vec3
   maxRadius?: number
   numParticles?: number
   numCurvePoints?: number

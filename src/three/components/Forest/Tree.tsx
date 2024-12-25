@@ -9,7 +9,7 @@ interface ITree {
   visible?: boolean
   type?: 'fat' | 'normal' |'tiny' | 'trunk'
   material?: Material
-  position?: [number, number, number]
+  position?: Vec3
   initial?: Target | VariantLabels
   animate?: AnimationControls | TargetAndTransition | VariantLabels
   transition?: Transition

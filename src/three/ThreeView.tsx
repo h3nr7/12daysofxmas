@@ -11,6 +11,7 @@ import { useWindowSize } from "../hooks/windowSize"
 import { Ground } from "./components/Ground/Ground"
 import { useLocation } from "react-router"
 import { BlockText } from "./components/BlockText/BlockText"
+import { Physics } from "@react-three/rapier"
 
 
 export interface ThreeViewProps {

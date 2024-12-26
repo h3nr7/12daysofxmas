@@ -1,5 +1,6 @@
 import { useGLTF } from "@react-three/drei";
 import { BallCollider, CylinderCollider, RigidBody } from "@react-three/rapier";
+import { useEffect } from "react";
 import { MathUtils, Mesh, MeshLambertMaterial, MeshStandardMaterial, SphereGeometry } from "three";
 
 interface IBauble {
@@ -8,8 +9,10 @@ interface IBauble {
   position?: Vec3
 }
 
+const URL = "cap.glb"
+
 export function Bauble({
-  visible,
+  visible = true,
   scale = 1,
   position = [0,0,0]
 }: IBauble) {

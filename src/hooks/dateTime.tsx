@@ -5,6 +5,7 @@ const initials = {
   curDay: 0,
   isNearXmas: true,
   isXmas: false,
+  xmasDayCount: -1,
   timeLeft: { months: 12, days: 0, hours: 0, mins: 0, secs: 0 },
   curIso: ""
 }
@@ -17,6 +18,7 @@ export function DateTimeProvider({ children }: PropsWithChildren) {
   const [curDay, setCurDay] = useState(initials.curDay)
   const [isNearXmas, setIsNearXmas] = useState(initials.isNearXmas)
   const [isXmas, setIsXmas] = useState(initials.isXmas)
+  const [xmasDayCount, setXmasDayCount] = useState(-1)
   const [timeLeft, setTimeLeft] = useState(initials.timeLeft)
 
   useEffect(() => {
@@ -26,7 +28,8 @@ export function DateTimeProvider({ children }: PropsWithChildren) {
       const end = DateTime.utc(dt.year + 1, 1, 6, 0, 0, 0, 0)
       const period = Interval.fromDateTimes(start, end)
       const left = start.diffNow('seconds').seconds
-      period.contains(dt)
+      
+
       setCurIso(dt.toISO())
       setCurDay(dt.day)
       setIsNearXmas(dt.month === 12)
@@ -43,6 +46,11 @@ export function DateTimeProvider({ children }: PropsWithChildren) {
         secs
       })
       setIsXmas(period.contains(dt))
+
+      // if it is during xmas
+      if(period.contains(dt)) {
+        setXmasDayCount(Math.abs(days))
+      }
     }, 1000);
     return () => clearInterval(id)
   }, [])
@@ -53,6 +61,7 @@ export function DateTimeProvider({ children }: PropsWithChildren) {
       curDay,
       isNearXmas,
       isXmas,
+      xmasDayCount,
       timeLeft
     }}>{children}</dtCtx.Provider>
   )

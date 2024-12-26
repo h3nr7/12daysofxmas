@@ -12,9 +12,16 @@ interface IDiamond {
   position?: Vec3
 }
 
+const URL = 'star.glb'
+
 export default function Diamond({ visible, position = [0, 0, 0] }: IDiamond) {
   const texture = useLoader(RGBELoader, 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr')
-  const { nodes } = useGLTF('/star.glb')
+  const { nodes } = useGLTF(URL)
+
+  useEffect(() => {
+    // destroy when done
+    return () => useGLTF.clear(URL)
+  }, [])
 
   return (
     <CubeCamera resolution={256} frames={1} envMap={texture}>

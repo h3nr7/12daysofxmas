@@ -7,7 +7,7 @@ import './Zero.scss'
 import { Button } from "../../components/Button/Button"
 import { AnimatePresence, motion, usePresence, Variants } from 'framer-motion'
 import { useMemo } from "react";
-import { WAITING_PHRASE } from "../../helpers/constants";
+import { DAYS, WAITING_PHRASE } from "../../helpers/constants";
 import { AnimText } from "../../components/AnimText";
 import { AnimCounter } from "../../components/AnimCounter/AnimCounter";
 
@@ -31,7 +31,7 @@ const variants: Variants = {
 
 export default function ZeroUI() {
 
-  const { isNearXmas, timeLeft, isXmas } = useDateTime()
+  const { isNearXmas, timeLeft, isXmas, xmasDayCount } = useDateTime()
   const navi = useNavigate();
   const phrase = useMemo(() => WAITING_PHRASE[Math.round(Math.random()*(WAITING_PHRASE.length - 1))], [isXmas])
 
@@ -71,7 +71,7 @@ export default function ZeroUI() {
         </motion.h1>
       )}
       <Button
-        onClick={() => navi("/first")}
+        onClick={() => navi(`/${DAYS[xmasDayCount - 1].day}`)}
         btnProps={{
           disabled: !isXmas,
           initial: {
@@ -88,7 +88,7 @@ export default function ZeroUI() {
           },
           transition: { delay: 2.35, ease: "easeOut", duration: 0.35 }} 
         }  
-      >{isXmas ? 'Begin experience' : phrase}</Button>
+      >{isXmas ? DAYS[xmasDayCount - 1].text : phrase}</Button>
       {!isNearXmas || DEBUGGING && <motion.h6
         initial={{
           opacity: 0,

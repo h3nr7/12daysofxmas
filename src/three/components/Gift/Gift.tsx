@@ -9,13 +9,15 @@ interface IGift {
   position?: Vec3
 }
 
+const URL = "giftbox.glb"
+
 export function Gift({
-  visible,
+  visible = true,
   scale = 0.1,
   position
 }:IGift) {
 
-  const { nodes } = useGLTF("giftbox.glb")
+  const { nodes } = useGLTF(URL)
 
   const scene = useMemo(() => {
     const s = nodes['Scene'] as Scene

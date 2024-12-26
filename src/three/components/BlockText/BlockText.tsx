@@ -3,7 +3,7 @@ import { forwardRef, PropsWithChildren, Ref, useEffect, useImperativeHandle, use
 import { motion } from 'framer-motion-3d'
 import { Group, Mesh, Quaternion, Vector3 } from "three";
 import { AnimatePresence } from "framer-motion";
-import { useLoader } from "@react-three/fiber";
+import { ThreeEvent, useLoader } from "@react-three/fiber";
 import { RGBELoader } from "three/examples/jsm/Addons.js";
 import { useNavigate } from "react-router";
 
@@ -20,6 +20,9 @@ interface IBlockText {
   fonts?: string | FontData
   quaternion?: Quaternion
   position?: [number, number , number]
+  onClick?: (event: ThreeEvent<MouseEvent>) => void
+  onPointerOver?: (event: ThreeEvent<PointerEvent>) => void
+  onPointerOut?: (event: ThreeEvent<PointerEvent>) => void
 }
 
 export interface IBlockTextRef {
@@ -35,7 +38,10 @@ export const BlockText = forwardRef<IBlockTextRef, IBlockText>(({
   letterSpacing = -0.15,
   curveSegments = 12,
   bevelEnabled = false,
-  position = [0, 0, 0]
+  position = [0, 0, 0],
+  onClick,
+  onPointerOver,
+  onPointerOut
 }, ref) => {
 
   const textRef = useRef<Mesh>(null)
@@ -60,7 +66,17 @@ export const BlockText = forwardRef<IBlockTextRef, IBlockText>(({
     <AnimatePresence>
     {visible && (
       <motion.group
-        onClick={() => navi('/')}
+        whileHover={{
+          rotateX: [-0.1, 0.25],
+          transition: {
+            type: 'tween',
+            repeat: Infinity,
+            repeatType: 'mirror'
+          }
+        }}
+        onPointerOver={onPointerOver}
+        onPointerOut={onPointerOut}
+        onClick={onClick}
         position={position}
         initial={{x: 0, y: 1.6, z: -20, opacity: 0 }}
         animate={{x:0, y: 1.6, z: 0, opacity: 1, transition: { delay: 3.2, duration: 1.25 }}}

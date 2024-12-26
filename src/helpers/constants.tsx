@@ -1,21 +1,21 @@
 import First from "../routes/First/FirstUI"
-import Second from "../routes/Second"
+import Second from "../routes/Second/SecondUI"
 import Third from "../routes/Third"
 
 
 export const DAYS = [
-  {day: "first", element: <First />},
-  {day: "second", element: <Second />},
-  {day: "third", element: <Third />},
-  {day: "fourth", element: <Third />},
-  {day: "fifth", element: <Third />},
-  {day: "sixth", element: <Third />},
-  {day: "seventh", element: <Third />},
-  {day: "eighth", element: <Third />},
-  {day: "ninth", element: <Third />},
-  {day: "tenth", element: <Third />},
-  {day: "eleventh", element: <Third />},
-  {day: "twelve", element: <Third />}
+  {day: "first", element: <First />, text: 'Begin Day 1 Experience'},
+  {day: "second", element: <Second />, text: 'Let\'s Unbox Day 2'},
+  {day: "third", element: <Third />, text: 'Day 3 awaits'},
+  {day: "fourth", element: <Third />, text: 'Dive into Day 4'},
+  {day: "fifth", element: <Third />, text: 'Day 5 is a Sunday'},
+  {day: "sixth", element: <Third />, text: 'Unlock Day 6'},
+  {day: "seventh", element: <Third />, text: 'The end is nagh'},
+  {day: "eighth", element: <Third />, text: 'Kick off to a new beginning'},
+  {day: "ninth", element: <Third />, text: 'Step into Day 9'},
+  {day: "tenth", element: <Third />, text: 'Day 10, Are we there yet?'},
+  {day: "eleventh", element: <Third />, text: 'Embark on Day 11'},
+  {day: "twelve", element: <Third />, text: 'Make the last day count!'}
 ]
 
 export const WAITING_PHRASE = [

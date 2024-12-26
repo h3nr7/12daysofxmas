@@ -12,6 +12,7 @@ import { Ground } from "./components/Ground/Ground"
 import { useLocation } from "react-router"
 import { BlockText } from "./components/BlockText/BlockText"
 import { Physics } from "@react-three/rapier"
+import { Second } from "./routes/Second/Second"
 
 
 export interface ThreeViewProps {
@@ -34,6 +35,7 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
         <color attach="background" args={["#310000"]} />
         <Zero />
         <First />
+        <Second />
         <Ground visible={groundVisible}/>
         <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />
         <Lightings />

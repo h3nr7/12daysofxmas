@@ -7,6 +7,7 @@ import { immer } from 'zustand/middleware/immer'
 interface IFiberState {
   data: {
     cam: {
+      duration?: number 
       enabled: boolean
       position: Vec3
       lookAt: Vec3
@@ -22,8 +23,12 @@ interface IFiberState {
 }
 
 interface IFiberReducer {
-  setCamera: (props: { 
-    enabled?: boolean, position?: Vec3, lookAt?: Vec3, minMaxDistance?: Vec2,
+  setCamera: (props: {
+    duration?: number 
+    enabled?: boolean, 
+    position?: Vec3, 
+    lookAt?: Vec3, 
+    minMaxDistance?: Vec2,
     maxPolarAngle?: number
   }) => void
   setEffect: (props: {
@@ -36,6 +41,7 @@ interface IFiberReducer {
 export const initialState: IFiberState = {
   data: {
     cam: {
+      duration: 1.5,
       enabled: true,
       position: [2, 2, 1],
       lookAt: [0, 0, 0],
@@ -52,8 +58,9 @@ export const initialState: IFiberState = {
 export const useFiberStore = create<IFiberState & IFiberReducer>()(immer(set => ({
   data: initialState.data,
   setCamera: ({ 
-    enabled, position, lookAt, minMaxDistance, maxPolarAngle
+    duration, enabled, position, lookAt, minMaxDistance, maxPolarAngle
   }) => set(state => {
+    if(duration!=undefined) state.data.cam.duration = duration
     if(enabled != undefined) state.data.cam.enabled = enabled
     if(position != undefined) state.data.cam.position = position;
     if(lookAt != undefined) state.data.cam.lookAt = lookAt;

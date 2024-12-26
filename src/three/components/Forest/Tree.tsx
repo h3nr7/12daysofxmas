@@ -1,9 +1,8 @@
 import { useGLTF } from '@react-three/drei'
 import { AnimatePresence, AnimationControls, Target, TargetAndTransition, Transition, VariantLabels } from 'framer-motion'
 import { motion } from 'framer-motion-3d'
-import { PropsWithChildren, useMemo } from 'react'
+import { PropsWithChildren, useEffect, useMemo } from 'react'
 import { Material, Mesh } from 'three'
-import { generateUUID } from 'three/src/math/MathUtils.js'
 
 interface ITree {
   visible?: boolean
@@ -14,6 +13,7 @@ interface ITree {
   animate?: AnimationControls | TargetAndTransition | VariantLabels
   transition?: Transition
 }
+
 
 export function Tree({ 
   position,

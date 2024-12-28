@@ -27,7 +27,7 @@ export const GestureControls = forwardRef<
   const [width, height] = useWindowSize()
   const minDistance = useMemo(() => Math.min(width, height), [width, height])
   const bind = useGest({
-    onDrag: ({ movement: [x, y] }) => setDrag([x/height, -y/height]),
+    onDrag: ({ delta: [x, y] }) => setDrag([x/minDistance, -y/minDistance]),
   })
 
 

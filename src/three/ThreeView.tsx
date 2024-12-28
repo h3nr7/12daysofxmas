@@ -1,5 +1,5 @@
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react"
-import { CamControls } from "./components/CamControl/CamControl"
+import { CamControls } from "./components/CamControls/CamControls"
 import { EffectControls } from "./components/EffectControls/EffectControls"
 import { Lightings } from "./components/Lightings/Lightings"
 import { Canvas } from "@react-three/fiber"
@@ -15,6 +15,7 @@ import { Physics } from "@react-three/rapier"
 import { Second } from "./routes/Second/Second"
 import { Third } from "./routes/Third/Third"
 import { useGesture } from "@use-gesture/react"
+import { Fourth } from "./routes/Fourth/Fourth"
 
 
 export interface ThreeViewProps {
@@ -41,6 +42,7 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
         <First />
         <Second />
         <Third />
+        <Fourth />
         <Ground visible={groundVisible}/>
         <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />
         <Lightings />

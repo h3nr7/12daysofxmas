@@ -7,7 +7,7 @@ import { immer } from 'zustand/middleware/immer'
 interface IFiberState {
   data: {
     cam: {
-      duration?: number 
+      duration: number 
       enabled: boolean
       position: Vec3
       lookAt: Vec3
@@ -18,6 +18,11 @@ interface IFiberState {
       fog?: boolean
       noise?: boolean
       tiltshift?: boolean
+    },
+    gesture: {
+      drag: {
+        xy: [number, number]
+      }
     }
   }
 }
@@ -36,6 +41,9 @@ interface IFiberReducer {
     noise?:boolean,
     tiltshift?: boolean
   }) => void
+  setDrag: (props: {
+    x: number, y: number
+  }) => void
 }
 
 export const initialState: IFiberState = {
@@ -51,6 +59,11 @@ export const initialState: IFiberState = {
       fog: true,
       noise: false,
       tiltshift: true
+    },
+    gesture: {
+      drag: {
+        xy: [0, 0]
+      }
     }
   }
 }
@@ -73,5 +86,8 @@ export const useFiberStore = create<IFiberState & IFiberReducer>()(immer(set => 
     if(fog != undefined) state.data.effect.fog = fog
     if(noise != undefined) state.data.effect.noise = noise
     if(tiltshift != undefined) state.data.effect.tiltshift = tiltshift
+  }),
+  setDrag: ({ x, y }) => set(state => {
+    state.data.gesture.drag.xy = [x, y]
   })
 })))

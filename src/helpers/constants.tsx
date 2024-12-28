@@ -1,6 +1,6 @@
 import First from "../routes/First/FirstUI"
 import Second from "../routes/Second/SecondUI"
-import Third from "../routes/Third"
+import Third from "../routes/Third/ThirdUI"
 
 
 export const DAYS = [

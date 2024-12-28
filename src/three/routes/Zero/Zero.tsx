@@ -35,7 +35,7 @@ export default function Zero() {
   return (
       <>
         <Diamond visible={visible} position={[0, 1.8, 0]}/>
-        <Forest visible={visible}/>
+        {/* <Forest visible={visible}/> */}
         <OrbitalTrails visible={visible} center={[0, 1.8, 0]} />
       </>
   )

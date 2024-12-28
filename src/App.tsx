@@ -6,7 +6,7 @@ import { Navi } from './components/Navi/Navi'
 import { DAYS } from './helpers/constants'
 import { DateTimeProvider } from './hooks/dateTime'
 import { useFiberStore } from './stores/fiberStore'
-import { DeviceOrientationControls } from '@react-three/drei'
+import { DeviceOrientationControls, Stats } from '@react-three/drei'
 import { AnimatePresence } from 'framer-motion'
 import Forest from './three/components/Forest/Forest'
 import Diamond from './three/components/Diamond/Diamond'
@@ -15,6 +15,8 @@ import ZeroUI from './routes/Zero/ZeroUI'
 import { useWindowSize } from './hooks/windowSize'
 import styled from 'styled-components'
 import { FullscreenDiv } from './components/FullscreenDiv/FullscreenDiv'
+import { useGesture } from '@use-gesture/react'
+import { GestureControls } from './hooks/gestureControls'
 
 function App() {
   const main = useRef<HTMLDivElement>(null)
@@ -23,11 +25,12 @@ function App() {
   return (
     <Suspense>
       <DateTimeProvider>
-        <div className='main' ref={main || null}>
+        <GestureControls className='main' ref={main}>
           {evtSrc && <ThreeView eventSource={evtSrc} />}
           <UI />
+          <Stats />
           {/* <Navi /> */}
-        </div>
+        </GestureControls>
       </DateTimeProvider>
     </Suspense>
   )

@@ -13,6 +13,8 @@ import { useLocation } from "react-router"
 import { BlockText } from "./components/BlockText/BlockText"
 import { Physics } from "@react-three/rapier"
 import { Second } from "./routes/Second/Second"
+import { Third } from "./routes/Third/Third"
+import { useGesture } from "@use-gesture/react"
 
 
 export interface ThreeViewProps {
@@ -30,12 +32,15 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
     return false
   }, [pathname])
 
+
+
   return eventSource && (
     <Canvas className='canvas' eventSource={eventSource} style={{ width, height }}>
         <color attach="background" args={["#310000"]} />
         <Zero />
         <First />
         <Second />
+        <Third />
         <Ground visible={groundVisible}/>
         <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />
         <Lightings />

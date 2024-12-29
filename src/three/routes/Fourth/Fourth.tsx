@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
-
+import { Bauble } from "../../components/Bauble/Bauble"
+import { motion } from 'framer-motion-3d'
+import { Physics } from "@react-three/rapier"
 const PATH = '/fourth'
 
-const sceneCenter:Vec3 = [7, 2.0, 7]
+const sceneCenter:Vec3 = [12, 2.0, 12]
 
 export function Fourth() {
 
@@ -27,8 +29,11 @@ export function Fourth() {
     }
   }, [pathname])
 
-  return (
-    <mesh>
-    </mesh>
+  return visible && (
+    <motion.group position={sceneCenter}>
+      <Physics gravity={[0,0,0]}>
+        <Bauble />
+      </Physics>
+    </motion.group>
   )
 }

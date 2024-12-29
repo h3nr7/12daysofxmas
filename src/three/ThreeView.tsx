@@ -16,6 +16,7 @@ import { Second } from "./routes/Second/Second"
 import { Third } from "./routes/Third/Third"
 import { useGesture } from "@use-gesture/react"
 import { Fourth } from "./routes/Fourth/Fourth"
+import { Fifth } from "./routes/Fifth/Fifth"
 
 
 export interface ThreeViewProps {
@@ -43,6 +44,7 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
         <Second />
         <Third />
         <Fourth />
+        <Fifth />
         <Ground visible={groundVisible}/>
         <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />
         <Lightings />

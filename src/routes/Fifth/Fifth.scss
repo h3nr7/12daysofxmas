@@ -1,13 +1,9 @@
 
+@use '../../styles//container.scss';
 
 .fifth {
 
   &__ui {
-    position: absolute;
-    top: 10px;
-    left: 30px;
-    width: 80%;
-    height: 400px;
-    z-index: 1;
+    @include container.main_container;
   }
 }

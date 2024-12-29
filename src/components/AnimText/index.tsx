@@ -3,13 +3,14 @@ import { ReactNode, useRef } from "react";
 
 interface IAnimText {
   content: string
-  delay?: number 
+  charDelay?: number 
+  delay?: number
   duration?: number
 }
 
-export function AnimText({ content, delay = 2, duration = 0.75 }: IAnimText){
+export function AnimText({ content, charDelay = 2, delay = 0, duration = 0.75 }: IAnimText){
 
-  const charDelay = delay/content.length
+  charDelay = charDelay/content.length
 
   const lines = content.split(/\r?\n|\r|\n/g)
 
@@ -18,8 +19,9 @@ export function AnimText({ content, delay = 2, duration = 0.75 }: IAnimText){
 
     const words = line.split('').map((c, j) => {
       counter++
+      const d = counter*charDelay + delay
       return (
-        <Character key={`${i}_${j}`} char={c === ' ' ? '\u00A0' : c === '\n' ? <br /> : c} delay={counter*charDelay} duration={duration} />
+        <Character key={`${i}_${j}`} char={c === ' ' ? '\u00A0' : c === '\n' ? <br /> : c} delay={d} duration={duration} />
       )
     })
 

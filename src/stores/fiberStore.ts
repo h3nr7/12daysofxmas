@@ -6,11 +6,13 @@ import { immer } from 'zustand/middleware/immer'
 
 interface IFiberState {
   data: {
+    debug?: boolean
     cam: {
+      isDefault?: boolean
       duration: number 
       enabled: boolean
-      position: Vec3
-      lookAt: Vec3
+      localPosition: Vec3
+      worldLookAt: Vec3
       minMaxDistance: Vec2
       maxPolarAngle?: number
     },
@@ -29,10 +31,11 @@ interface IFiberState {
 
 interface IFiberReducer {
   setCamera: (props: {
+    isDefault?: boolean
     duration?: number 
     enabled?: boolean, 
-    position?: Vec3, 
-    lookAt?: Vec3, 
+    localPosition?: Vec3, 
+    worldLookAt?: Vec3, 
     minMaxDistance?: Vec2,
     maxPolarAngle?: number
   }) => void
@@ -44,16 +47,19 @@ interface IFiberReducer {
   setDrag: (props: {
     x: number, y: number
   }) => void
+  setDebug: (state: boolean) => void
 }
 
 export const initialState: IFiberState = {
   data: {
+    debug: false,
     cam: {
+      isDefault: true,
       duration: 1.5,
       enabled: true,
-      position: [2, 2, 1],
-      lookAt: [0, 0, 0],
-      minMaxDistance: [200, 1000]
+      localPosition: [2, 2, 1],
+      worldLookAt: [0, 0, 0],
+      minMaxDistance: [0.5, 4]
     },
     effect: {
       fog: true,
@@ -70,13 +76,15 @@ export const initialState: IFiberState = {
 
 export const useFiberStore = create<IFiberState & IFiberReducer>()(immer(set => ({
   data: initialState.data,
+  setDebug: isDebug => set(state => { state.data.debug = isDebug }),
   setCamera: ({ 
-    duration, enabled, position, lookAt, minMaxDistance, maxPolarAngle
+    isDefault, duration, enabled, localPosition: position, worldLookAt: lookAt, minMaxDistance, maxPolarAngle
   }) => set(state => {
+    if(isDefault!=undefined) state.data.cam.isDefault = isDefault
     if(duration!=undefined) state.data.cam.duration = duration
     if(enabled != undefined) state.data.cam.enabled = enabled
-    if(position != undefined) state.data.cam.position = position;
-    if(lookAt != undefined) state.data.cam.lookAt = lookAt;
+    if(position != undefined) state.data.cam.localPosition = position;
+    if(lookAt != undefined) state.data.cam.worldLookAt = lookAt;
     if(minMaxDistance != undefined) state.data.cam.minMaxDistance = minMaxDistance;
     if(maxPolarAngle != undefined) state.data.cam.maxPolarAngle = maxPolarAngle
   }),

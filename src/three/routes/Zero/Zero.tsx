@@ -23,8 +23,8 @@ export default function Zero() {
       setCamera({ 
         enabled: true, 
         maxPolarAngle: MathUtils.degToRad(80),
-        position: [2.5, 2.5, 2.5],
-        lookAt: [0, 1.8, 0]
+        localPosition: [2.5, 2.5, 2.5],
+        worldLookAt: [0, 1.8, 0]
       })
       setEffect({ tiltshift: true })
     } else {

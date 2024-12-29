@@ -1,0 +1,11 @@
+$ver_gap: 10px;
+$hor_gap: 30px;
+
+@mixin main_container {
+  position: absolute;
+  top: $ver_gap;
+  left: $hor_gap;
+  width: 80%;
+  height: 400px;
+  z-index: 1;
+}

@@ -1,18 +1,37 @@
-import { Link, NavLink, Route, Routes, useParams } from 'react-router'
+import { Link, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router'
 import './navi.scss'
 import { DAYS } from '../../helpers/constants'
 import { DateTimeProvider, useDateTime } from '../../hooks/dateTime'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
+import { AnimText } from '../AnimText'
+import { AnimatePresence, motion} from 'framer-motion'
 
 export function Navi() {
 
+  const { pathname } = useLocation()
+  const navi = useNavigate()
+  const { isNearXmas, timeLeft, isXmas, xmasDayCount } = useDateTime()
+
+  const isVisible = useMemo(() => pathname !== '/', [pathname])
+
   return (
-    <section className="navi">
-      <Routes>
-        <Route index element={<NaviDays />} />
-        <Route path='/:day' element={<NaviDays />} />
-      </Routes>
-    </section>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.section className="navi">
+          <motion.h3
+            style={{
+              cursor: 'pointer'
+            }}
+            whileHover={{
+              scale: 1.2
+            }}
+            onClick={() => navi('/')}
+          >
+            <AnimText content={`*Bk`} delay={3} charDelay={0.5}/>
+          </motion.h3>
+        </motion.section>
+      )}      
+    </AnimatePresence>
   )
 }
 

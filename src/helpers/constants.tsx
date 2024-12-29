@@ -3,6 +3,7 @@ import First from "../routes/First/FirstUI"
 import Second from "../routes/Second/SecondUI"
 import Third from "../routes/Third/ThirdUI"
 
+export const UNIVERSE_BG_COLOR = "#310000"
 
 export const DAYS = [
   {day: "first", element: <First />, text: 'Begin Day 1 Experience'},

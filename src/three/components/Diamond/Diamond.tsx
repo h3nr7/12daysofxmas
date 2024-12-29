@@ -10,11 +10,16 @@ import { degToRad } from 'three/src/math/MathUtils.js'
 interface IDiamond {
   visible?: boolean
   position?: Vec3
+  scale?: number
 }
 
 const URL = 'star.glb'
 
-export default function Diamond({ visible, position = [0, 0, 0] }: IDiamond) {
+export default function Diamond({ 
+  visible, 
+  position = [0, 0, 0],
+  scale = 0.12
+}: IDiamond) {
   const texture = useLoader(RGBELoader, 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr')
   const { nodes } = useGLTF(URL)
 
@@ -38,7 +43,7 @@ export default function Diamond({ visible, position = [0, 0, 0] }: IDiamond) {
                   }
                 }}
                 animate={{ 
-                  scale: 0.12, 
+                  scale, 
                   x: position[0],
                   y: position[1], 
                   z: position[2],

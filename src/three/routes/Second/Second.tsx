@@ -4,7 +4,7 @@ import { useFiberStore } from "../../../stores/fiberStore"
 
 const PATH = '/second'
 
-const sceneCenter = [10, -1.8, 10]
+const sceneCenter: Vec3 = [10, -1.8, 10]
 
 export function Second() {
 
@@ -19,8 +19,8 @@ export function Second() {
     if(pathname === PATH) {
       setVisible(true)
       setCamera({
-        position: [-2.5, 1.8, -2.5],
-        lookAt: [-5, 0, -5]
+        localPosition: [-2.5, 1.8, -2.5],
+        worldLookAt: sceneCenter
       })
     } else {
       setVisible(false)

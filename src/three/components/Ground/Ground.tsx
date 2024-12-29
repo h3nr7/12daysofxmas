@@ -1,5 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { motion } from 'framer-motion-3d'
+import { UNIVERSE_BG_COLOR } from "../../../helpers/constants";
 
 export function Ground({ visible }:{ visible?: boolean }) {
 
@@ -14,7 +15,7 @@ export function Ground({ visible }:{ visible?: boolean }) {
           exit={{ opacity: 0, scale: 0 }}
           rotation={[-Math.PI / 2, 0, 0]}>
           <circleGeometry args={[7,16]}/>
-          <meshBasicMaterial color={'#310000'}/>
+          <meshBasicMaterial color={UNIVERSE_BG_COLOR}/>
         </motion.mesh>
       )}
     </AnimatePresence>

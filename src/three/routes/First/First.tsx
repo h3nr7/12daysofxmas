@@ -37,8 +37,8 @@ export function First() {
       setVisible(true)
       setCamera({ 
         enabled: true, 
-        position: [0, 2.5, 2.5],
-        lookAt: [0, 1.8, 0]
+        localPosition: [0, 2.5, 2.5],
+        worldLookAt: [0, 1.8, 0]
       })
     } else {
       setGravity(undefined)

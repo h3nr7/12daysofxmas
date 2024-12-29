@@ -21,20 +21,21 @@ import { GestureControls } from './hooks/gestureControls'
 function App() {
   const main = useRef<HTMLDivElement>(null)
   const evtSrc = useMemo(() => main as MutableRefObject<HTMLDivElement>, [main])
-
+  const { data: { debug } } = useFiberStore()
   return (
     <Suspense>
       <DateTimeProvider>
         <GestureControls className='main' ref={main}>
           {evtSrc && <ThreeView eventSource={evtSrc} />}
           <UI />
-          <Stats />
-          {/* <Navi /> */}
+          {debug && <Stats/>}
+          <Navi />
         </GestureControls>
       </DateTimeProvider>
     </Suspense>
   )
 }
+
 
 function UI() {
   const location = useLocation();

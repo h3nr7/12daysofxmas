@@ -22,7 +22,7 @@ export function Fourth() {
       setVisible(true)
       setCamera({
         // position: [-2.5, 1.8, -2.5],
-        lookAt: sceneCenter
+        worldLookAt: sceneCenter
       })
     } else {
       setVisible(false)

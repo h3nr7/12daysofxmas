@@ -1,9 +1,11 @@
+@use '../../styles//container.scss';
+
 .navi {
   display: block;
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100vw;
+  right: container.$hor_gap;
+  bottom: container.$ver_gap;
+  width: auto;
   height: auto;
   z-index: 999;
 

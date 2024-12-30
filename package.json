@@ -18,6 +18,7 @@
     "camera-controls": "^2.9.0",
     "framer-motion": "^11.15.0",
     "framer-motion-3d": "^11.15.0",
+    "gl-matrix": "^3.4.3",
     "immer": "^10.1.1",
     "luxon": "^3.5.0",
     "postprocessing": "^6.36.4",
@@ -27,6 +28,7 @@
     "styled-components": "^6.1.13",
     "three": "^0.171.0",
     "tunnel-rat": "^0.1.2",
+    "typed-glsl": "^0.11.2",
     "zustand": "^5.0.2"
   },
   "devDependencies": {

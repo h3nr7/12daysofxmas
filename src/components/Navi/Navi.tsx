@@ -23,7 +23,7 @@ export function Navi() {
               cursor: 'pointer'
             }}
             whileHover={{
-              scale: 1.2
+              y: -8
             }}
             onClick={() => navi('/')}
           >

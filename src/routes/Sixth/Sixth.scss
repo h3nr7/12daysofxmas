@@ -1,0 +1,9 @@
+
+@use '../../styles//container.scss';
+
+.sixth {
+
+  &__ui {
+    @include container.main_container;
+  }
+}

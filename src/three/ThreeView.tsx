@@ -19,6 +19,7 @@ import { Fourth } from "./routes/Fourth/Fourth"
 import { Fifth } from "./routes/Fifth/Fifth"
 import { UNIVERSE_BG_COLOR } from "../helpers/constants"
 import { useFiberStore } from "../stores/fiberStore"
+import { Sixth } from "./routes/Sixth/Sixth"
 
 
 export interface ThreeViewProps {
@@ -49,6 +50,7 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
         {/* <Third /> */}
         {/* <Fourth /> */}
         <Fifth />
+        <Sixth />
         {/* default element that can appear and disappear in each scene */}
         <Ground visible={groundVisible}/>
         <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />

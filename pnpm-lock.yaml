@@ -32,6 +32,9 @@ importers:
       framer-motion-3d:
         specifier: ^11.15.0
         version: 11.15.0(@emotion/is-prop-valid@1.2.2)(@react-three/fiber@8.17.10(@types/react@18.3.16)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.171.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.171.0)
+      gl-matrix:
+        specifier: ^3.4.3
+        version: 3.4.3
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -59,6 +62,9 @@ importers:
       tunnel-rat:
         specifier: ^0.1.2
         version: 0.1.2(@types/react@18.3.16)(immer@10.1.1)(react@18.3.1)
+      typed-glsl:
+        specifier: ^0.11.2
+        version: 0.11.2
       zustand:
         specifier: ^5.0.2
         version: 5.0.2(@types/react@18.3.16)(immer@10.1.1)(react@18.3.1)(use-sync-external-store@1.2.2(react@18.3.1))
@@ -1059,6 +1065,9 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
+  gl-matrix@3.4.3:
+    resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==}
+
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
     engines: {node: '>= 6'}
@@ -1493,6 +1502,9 @@ packages:
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
+
+  typed-glsl@0.11.2:
+    resolution: {integrity: sha512-E2NzPuROUYEYtS36YqF5HlxpqsaT764kjOJH34Kzi71xNlZlaKH46yJ+/x22TfqCGNXtTM273/d3teuxe9Y7uw==}
 
   typescript-eslint@8.18.0:
     resolution: {integrity: sha512-Xq2rRjn6tzVpAyHr3+nmSg1/9k9aIHnJ2iZeOH7cfGOWqTkXTm3kwpQglEuLGdNrYvPF+2gtAs+/KF5rjVo+WQ==}
@@ -2508,6 +2520,8 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
+  gl-matrix@3.4.3: {}
+
   glob-parent@5.1.2:
     dependencies:
       is-glob: 4.0.3
@@ -2912,6 +2926,8 @@ snapshots:
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
+
+  typed-glsl@0.11.2: {}
 
   typescript-eslint@8.18.0(eslint@9.16.0)(typescript@5.6.3):
     dependencies:

@@ -27,7 +27,6 @@ export default function Zero() {
         worldLookAt: [0, 1.8, 0]
       })
       setEffect({
-        fog: true,
         fogDensity: 0.2,
         bloomIntensity: 15,
         tiltshift: true

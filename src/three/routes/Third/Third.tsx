@@ -19,8 +19,8 @@ export function Third() {
     if(pathname === PATH) {
       setVisible(true)
       setCamera({
-        position: [-2.5, 1.8, -2.5],
-        lookAt: sceneCenter
+        localPosition: [-2.5, 1.8, -2.5],
+        worldLookAt: sceneCenter
       })
     } else {
       setVisible(false)

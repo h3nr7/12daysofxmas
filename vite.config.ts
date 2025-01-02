@@ -12,7 +12,7 @@ export default defineConfig({
         './public/**'
       ],
       reload: [
-        './src/**/*.(tsx|ts)'
+        './src/**/*.(tsx|ts|scss)'
       ]
     }),
     glsl()

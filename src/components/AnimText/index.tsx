@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, Variants, useInView } from "framer-motion";
-import { ReactNode, useRef } from "react";
+import { ReactNode, useMemo, useRef } from "react";
 
 interface IAnimText {
   content: string
@@ -10,12 +10,11 @@ interface IAnimText {
 
 export function AnimText({ content, charDelay = 2, delay = 0, duration = 0.75 }: IAnimText){
 
-  charDelay = charDelay/content.length
+  const lines = useMemo(() => content.split(/\r?\n|\r|\n/g), [content])
 
-  const lines = content.split(/\r?\n|\r|\n/g)
-
-  let counter = 0
-  const output = lines.map((line, i) => {
+  const output = useMemo(() => lines.map((line, i) => {
+    let counter = 0
+    charDelay = charDelay/content.length
 
     const words = line.split('').map((c, j) => {
       counter++
@@ -28,11 +27,11 @@ export function AnimText({ content, charDelay = 2, delay = 0, duration = 0.75 }:
     if(i <= lines.length - 1) words.push(<br key={`${i}_br`}/>)
 
     return words
-  })
+  }), [lines])
 
   return (
     <AnimatePresence>
-      !!content && {...output.flat()}
+      {...output.flat()}
     </AnimatePresence>
   )
 }

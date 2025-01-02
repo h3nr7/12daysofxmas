@@ -15,9 +15,12 @@ const SCENE_CENTERES:Vec3[] = [[0, 0, 0], [-5, 0, -5], [65, 0, 65]]
 export function Eighth() {
 
   const { pathname } = useLocation()
-  const { setCamera, setEffect, setDebug } = useFiberStore()
+  const { setCamera, setDebug } = useFiberStore()
   const [visible, setVisible] = useState(PATH.includes(pathname))
   const activeCam = useThree(state => state.camera)
+
+  useEffect(() => console.log('Eighth path: ', pathname), [pathname])
+  
 
   const spRef = useRef<Mesh>(null)
   setDebug(false)
@@ -56,7 +59,9 @@ export function Eighth() {
     {visible && (
       <motion.group 
         initial={{ opacity: 0}}
-        animate={{ opacity: 1, transition: { duration: 3.5 }}}
+        animate={{ 
+          opacity: 1, 
+          transition: { duration: 3.5 }}}
         exit={{ opacity: 0, transition: { duration: 3.25 }}}
         position={sceneCenter}
       >

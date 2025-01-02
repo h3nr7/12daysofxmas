@@ -50,7 +50,7 @@ interface IFiberReducer {
 
 export const initialState: IFiberState = {
   data: {
-    debug: true,
+    debug: false,
     cam: {
       isDefault: true,
       duration: 1.5,

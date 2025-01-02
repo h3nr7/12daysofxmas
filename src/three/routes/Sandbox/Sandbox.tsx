@@ -6,7 +6,6 @@ import { Boids, BoidsSimple } from "../../components/Boids"
 import Diamond from "../../components/Diamond/Diamond"
 import { Mesh, Vector2, Vector3 } from "three"
 import { OrbitControls, Wireframe } from "@react-three/drei"
-// import { useGestureControls } from "../../../hooks/gestureControls"
 import { useThree } from "@react-three/fiber"
 import { MoveGesture } from '@use-gesture/vanilla'
 import { useGestureControls } from "../../../hooks/gestureControls"

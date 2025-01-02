@@ -17,6 +17,8 @@ import styled from 'styled-components'
 import { FullscreenDiv } from './components/FullscreenDiv/FullscreenDiv'
 import { GestureControls } from './hooks/gestureControls'
 import SandboxUI from './routes/Sandbox/Sandbox'
+import { AssetsLoader } from './hooks/AssetsLoader/AssetsLoader'
+import { Loading } from './components/Loading/Loading'
 
 function App() {
   const main = useRef<HTMLDivElement>(null)
@@ -26,12 +28,15 @@ function App() {
     <Suspense>
       <DateTimeProvider>
         <div className='main' ref={main}>
-          <GestureControls>
-            {evtSrc && <ThreeView eventSource={evtSrc} />}
-            <UI />
-            {debug && <Stats/>}
-            <Navi />
-          </GestureControls>
+          <AssetsLoader>
+            <GestureControls>
+              {evtSrc && <ThreeView eventSource={evtSrc} />}
+              <UI />
+              {debug && <Stats/>}
+              <Navi />
+            </GestureControls>
+            <Loading />
+          </AssetsLoader>
         </div>
       </DateTimeProvider>
     </Suspense>
@@ -41,10 +46,9 @@ function App() {
 
 function UI() {
   const location = useLocation();
-
   return (
     <FullscreenDiv className="ui">
-      <Routes location={location} key={location.key}>
+      <Routes key={location.key}>
         <Route index element={<ZeroUI />} />
         <Route path='/sandbox' element={<SandboxUI />} />
         {DAYS.map((d, i) => <Route key={i} path={d.day} element={d.element} />)}

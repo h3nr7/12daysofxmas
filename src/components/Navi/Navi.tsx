@@ -5,6 +5,7 @@ import { DateTimeProvider, useDateTime } from '../../hooks/dateTime'
 import { useEffect, useMemo } from 'react'
 import { AnimText } from '../AnimText'
 import { AnimatePresence, motion} from 'framer-motion'
+import { useAssetsLoader } from '../../hooks/AssetsLoader/AssetsLoader'
 
 export function Navi() {
 
@@ -13,6 +14,12 @@ export function Navi() {
   const { isNearXmas, timeLeft, isXmas, xmasDayCount } = useDateTime()
 
   const isVisible = useMemo(() => pathname !== '/', [pathname])
+
+  const { progress } = useAssetsLoader()
+
+  useEffect(() => {
+    console.log('load progress: ', progress)
+  }, [progress])
 
   return (
     <AnimatePresence>
@@ -32,21 +39,5 @@ export function Navi() {
         </motion.section>
       )}      
     </AnimatePresence>
-  )
-}
-
-function NaviDays() {
-
-  const { day } = useParams()
-
-  const { curIso } = useDateTime()
-
-
-  const cur = DAYS.findIndex(d => d.day === day)
-  const prev = cur === 0 ? (DAYS.length - 1) : cur - 1
-  const next = cur === DAYS.length - 1 ? 0 : cur + 1
-  
-  return day && (
-    <div className="navi__container">It's the {day} of Christmas <Link to={`/${DAYS[prev].day}`}>{'<'}</Link> <Link to={`/${DAYS[next].day}`}>{'>'}</Link></div>
   )
 }

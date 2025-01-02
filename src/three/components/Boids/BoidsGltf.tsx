@@ -5,7 +5,7 @@ import {
 } from "three";
 import { useBoids } from "./Boids";
 import { useGLTF } from "@react-three/drei";
-import { PropsWithChildren, useEffect, useMemo, useState } from "react";
+import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
 import { BIRDS, WIDTH } from ".";
 import { glsl } from "typed-glsl";
 import { vec3 } from 'gl-matrix'
@@ -143,11 +143,12 @@ export function BoidsGltf({
   }, [gltf])
 
 
+
+
   // generate the material
   const material = useMemo(() => {
-
     // generate mesh standard material
-    const m = new MeshStandardMaterial( {
+    return new MeshStandardMaterial( {
       vertexColors: false,
       flatShading: true,
       roughness: 1,
@@ -155,83 +156,80 @@ export function BoidsGltf({
       fog: false,
       map: birdMaterialMap
     })
+  }, [birdMaterialMap])
 
-    // modify shanders on before compile
-    m.onBeforeCompile = shader => {
+  // modify shanders on before compile
+  material.onBeforeCompile = useCallback(shader => {
 
-      shader.uniforms.texturePosition = { value: null };
-      shader.uniforms.textureVelocity = { value: null };
-      shader.uniforms.textureAnimation = { value: textureAnimation };
-      shader.uniforms.time = { value: 1.0 };
-      shader.uniforms.size = { value: size };
-      shader.uniforms.delta = { value: 0.0 };
+    shader.uniforms.texturePosition = { value: null };
+    shader.uniforms.textureVelocity = { value: null };
+    shader.uniforms.textureAnimation = { value: textureAnimation };
+    shader.uniforms.time = { value: 1.0 };
+    shader.uniforms.size = { value: size };
+    shader.uniforms.delta = { value: 0.0 };
 
-      let token = '#define STANDARD';
-      let insert = glsl`
-        attribute vec4 reference;
-        attribute vec4 seeds;
-        uniform sampler2D texturePosition;
-        uniform sampler2D textureVelocity;
-        uniform sampler2D textureAnimation;
-        uniform float size;
-        uniform float time;
-      `;
-      shader.vertexShader = shader.vertexShader.replace( token, token + insert );
+    let token = '#define STANDARD';
+    let insert = glsl`
+      attribute vec4 reference;
+      attribute vec4 seeds;
+      uniform sampler2D texturePosition;
+      uniform sampler2D textureVelocity;
+      uniform sampler2D textureAnimation;
+      uniform float size;
+      uniform float time;
+    `;
+    shader.vertexShader = shader.vertexShader.replace( token, token + insert );
 
-      token = '#include <begin_vertex>';
-      insert = glsl`
-        // get position from boid position texture
-        vec4 tmpPos = texture2D( texturePosition, reference.xy );
-        vec3 pos = tmpPos.xyz;
-        // get velocity from boid velocity texture and normalise
-        vec3 velocity = normalize(texture2D( textureVelocity, reference.xy ).xyz);
-        // get animation from data texture generated above in time.
-        vec3 aniPos = texture2D( textureAnimation, vec2( reference.z, mod( time + ( seeds.x ) * ( ( 0.0004 + seeds.y / 10000.0) + velocity / 20000.0 ), reference.w ) ) ).xyz;
-        
-        // adding all the positions together and multiply by the model matrix
-        vec3 newPosition = position;
-        newPosition = mat3( modelMatrix ) * ( newPosition + aniPos );
-        // applying the size and initial random position
-        newPosition *= size + seeds.y * size * 0.2;
+    token = '#include <begin_vertex>';
+    insert = glsl`
+      // get position from boid position texture
+      vec4 tmpPos = texture2D( texturePosition, reference.xy );
+      vec3 pos = tmpPos.xyz;
+      // get velocity from boid velocity texture and normalise
+      vec3 velocity = normalize(texture2D( textureVelocity, reference.xy ).xyz);
+      // get animation from data texture generated above in time.
+      vec3 aniPos = texture2D( textureAnimation, vec2( reference.z, mod( time + ( seeds.x ) * ( ( 0.0004 + seeds.y / 10000.0) + velocity / 20000.0 ), reference.w ) ) ).xyz;
+      
+      // adding all the positions together and multiply by the model matrix
+      vec3 newPosition = position;
+      newPosition = mat3( modelMatrix ) * ( newPosition + aniPos );
+      // applying the size and initial random position
+      newPosition *= size + seeds.y * size * 0.2;
 
-        // applying the rotations through quanternion 
-        velocity.z *= -1.;
-        float xz = length( velocity.xz );
-        float xyz = 1.;
-        float x = sqrt( 1. - velocity.y * velocity.y );
+      // applying the rotations through quanternion 
+      velocity.z *= -1.;
+      float xz = length( velocity.xz );
+      float xyz = 1.;
+      float x = sqrt( 1. - velocity.y * velocity.y );
 
-        float cosry = velocity.x / xz;
-        float sinry = velocity.z / xz;
+      float cosry = velocity.x / xz;
+      float sinry = velocity.z / xz;
 
-        float cosrz = x / xyz;
-        float sinrz = velocity.y / xyz;
+      float cosrz = x / xyz;
+      float sinrz = velocity.y / xyz;
 
-        mat3 maty =  mat3( cosry, 0, -sinry, 0    , 1, 0     , sinry, 0, cosry );
-        mat3 matz =  mat3( cosrz , sinrz, 0, -sinrz, cosrz, 0, 0     , 0    , 1 );
+      mat3 maty =  mat3( cosry, 0, -sinry, 0    , 1, 0     , sinry, 0, cosry );
+      mat3 matz =  mat3( cosrz , sinrz, 0, -sinrz, cosrz, 0, 0     , 0    , 1 );
 
-        newPosition =  maty * matz * newPosition;
-        newPosition += pos;
+      newPosition =  maty * matz * newPosition;
+      newPosition += pos;
 
-        vec3 transformed = vec3( newPosition );
-      `;
-      shader.vertexShader = shader.vertexShader.replace( token, insert );
+      vec3 transformed = vec3( newPosition );
+    `;
+    shader.vertexShader = shader.vertexShader.replace( token, insert );
 
 
-      // set material shader, accessibly by the animation useFrame 
-      // (cannot use react useState as it would break!)
-      // materialShader = shader
-    
-      // initial position and velocity applied before useFrame 
-      // Not really required however good for debuggin when we stop the animation
-      if(!computationRenderer || !positionVariable || !velocityVariable) return
-      shader.uniforms[ 'texturePosition' ].value = computationRenderer.getCurrentRenderTarget( positionVariable ).texture;
-      shader.uniforms[ 'textureVelocity' ].value = computationRenderer.getCurrentRenderTarget( velocityVariable ).texture;
+    // set material shader, accessibly by the animation useFrame 
+    // (cannot use react useState as it would break!)
+    // materialShader = shader
+  
+    // initial position and velocity applied before useFrame 
+    // Not really required however good for debuggin when we stop the animation
+    if(!computationRenderer || !positionVariable || !velocityVariable) return
+    shader.uniforms[ 'texturePosition' ].value = computationRenderer.getCurrentRenderTarget( positionVariable ).texture;
+    shader.uniforms[ 'textureVelocity' ].value = computationRenderer.getCurrentRenderTarget( velocityVariable ).texture;
 
-      setMaterialShader(shader)
-
-    }
-
-    return m
+    setMaterialShader(shader)
 
   }, [textureAnimation, birdMaterialMap])
 

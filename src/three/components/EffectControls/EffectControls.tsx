@@ -11,8 +11,6 @@ export function EffectControls() {
 
   const { data: {
     effect: {
-      fogDensity,
-      bloomIntensity,
       noise,
       tiltshift
     }

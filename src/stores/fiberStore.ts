@@ -17,8 +17,6 @@ interface IFiberState {
       maxPolarAngle?: number
     },
     effect: {
-      fogDensity?: number
-      bloomIntensity?: number
       noise?: boolean
       tiltshift?: boolean
     },
@@ -41,8 +39,6 @@ interface IFiberReducer {
     maxPolarAngle?: number
   }) => void
   setEffect: (props: {
-    fogDensity?: number,
-    bloomIntensity?: number,
     noise?:boolean,
     tiltshift?: boolean
   }) => void
@@ -64,8 +60,6 @@ export const initialState: IFiberState = {
       minMaxDistance: [0.5, 4]
     },
     effect: {
-      fogDensity: 0.2,
-      bloomIntensity: 15,
       noise: false,
       tiltshift: true
     },
@@ -93,11 +87,7 @@ export const useFiberStore = create<IFiberState & IFiberReducer>()(immer(set => 
   }),
   setEffect: ({
     noise, tiltshift,
-    fogDensity,
-    bloomIntensity
   }) => set(state => {
-    if(fogDensity != undefined) state.data.effect.fogDensity = fogDensity
-    if(bloomIntensity != undefined) state.data.effect.bloomIntensity = bloomIntensity
     if(noise != undefined) state.data.effect.noise = noise
     if(tiltshift != undefined) state.data.effect.tiltshift = tiltshift
   }),

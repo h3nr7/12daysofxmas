@@ -38,7 +38,8 @@ export function First() {
       setCamera({ 
         enabled: true, 
         localPosition: [1.5, 0.8, 2.5],
-        worldLookAt: [0, 1.8, 0]
+        worldLookAt: [0, 1.8, 0],
+        maxPolarAngle: Math.PI
       })
     } else {
       setGravity(undefined)

@@ -20,9 +20,9 @@ importers:
       '@react-three/rapier':
         specifier: ^1.5.0
         version: 1.5.0(@react-three/fiber@8.17.10(@types/react@18.3.16)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.171.0))(react@18.3.1)(three@0.171.0)
-      '@use-gesture/react':
+      '@use-gesture/vanilla':
         specifier: ^10.3.1
-        version: 10.3.1(react@18.3.1)
+        version: 10.3.1
       camera-controls:
         specifier: ^2.9.0
         version: 2.9.0(three@0.171.0)
@@ -802,6 +802,9 @@ packages:
     resolution: {integrity: sha512-Yy19y6O2GJq8f7CHf7L0nxL8bf4PZCPaVOCgJrusOeFHY1LvHgYXnmnXg6N5iwAnbgbZCDjo60SiM6IPJi9C5g==}
     peerDependencies:
       react: '>= 16.8.0'
+
+  '@use-gesture/vanilla@10.3.1':
+    resolution: {integrity: sha512-lT4scGLu59ovA3zmtUonukAGcA0AdOOh+iwNDS05Bsu7Lq9aZToDHhI6D8Q2qvsVraovtsLLYwPrWdG/noMAKw==}
 
   '@vitejs/plugin-react-swc@3.7.2':
     resolution: {integrity: sha512-y0byko2b2tSVVf5Gpng1eEhX1OvPC7x8yns1Fx8jDzlJp4LS6CMkCPfLw47cjyoMrshQDoQw4qcgjsU9VvlCew==}
@@ -2230,6 +2233,10 @@ snapshots:
     dependencies:
       '@use-gesture/core': 10.3.1
       react: 18.3.1
+
+  '@use-gesture/vanilla@10.3.1':
+    dependencies:
+      '@use-gesture/core': 10.3.1
 
   '@vitejs/plugin-react-swc@3.7.2(vite@6.0.3(sass@1.83.0))':
     dependencies:

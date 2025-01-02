@@ -1,0 +1,8 @@
+
+@use '../../styles//container.scss';
+.sandbox {
+
+  &__ui {
+    @include container.main_container;
+  }
+}

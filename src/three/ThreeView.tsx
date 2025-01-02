@@ -14,12 +14,13 @@ import { BlockText } from "./components/BlockText/BlockText"
 import { Physics } from "@react-three/rapier"
 import { Second } from "./routes/Second/Second"
 import { Third } from "./routes/Third/Third"
-import { useGesture } from "@use-gesture/react"
 import { Fourth } from "./routes/Fourth/Fourth"
 import { Fifth } from "./routes/Fifth/Fifth"
 import { UNIVERSE_BG_COLOR } from "../helpers/constants"
 import { useFiberStore } from "../stores/fiberStore"
 import { Sixth } from "./routes/Sixth/Sixth"
+import { Sandbox } from "./routes/Sandbox/Sandbox"
+import { Eighth } from "./routes/Eighth/Eighth"
 
 
 export interface ThreeViewProps {
@@ -50,7 +51,8 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
         {/* <Third /> */}
         {/* <Fourth /> */}
         <Fifth />
-        <Sixth />
+        <Eighth />
+        <Sandbox />
         {/* default element that can appear and disappear in each scene */}
         <Ground visible={groundVisible}/>
         <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />

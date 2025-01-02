@@ -69,9 +69,13 @@ export default class SimpleBirdGeometry extends THREE.BufferGeometry {
       const x = ( birdIndex % WIDTH ) / WIDTH;
       const y = ~ ~ ( birdIndex / WIDTH ) / WIDTH;
 
+      // the double tilde symbol below "~~" is 
+      // a faster operation for Math.floor however
+      // it works slightly differently with negative 
+      // number
       const c = new THREE.Color(
-        0x666666 +
-        ~ ~ ( v / 9 ) / BIRDS * 0x666666
+        0xff0000 +
+        ~ ~ ( v / 9 ) / BIRDS * 0x00ff00
       );
 
       birdColors.array[ v * 3 + 0 ] = c.r;

@@ -1,0 +1,9 @@
+
+@use '../../styles//container.scss';
+
+.eighth {
+
+  &__ui {
+    @include container.main_container;
+  }
+}

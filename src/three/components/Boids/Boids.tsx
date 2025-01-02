@@ -7,6 +7,7 @@ import { velocityFrag } from "./shaders/velocityFrag";
 import { positionFrag } from "./shaders/positionFrag";
 import { fillPositionTexture, fillVelocityTexture } from "./helpers/initialisers";
 import { BOUNDS, WIDTH } from ".";
+import { Wireframe } from "@react-three/drei";
 
 /**
  * Boids Context
@@ -39,7 +40,14 @@ export function Boids({
 
   // const [pauseAnim, setPauseAnim] = useState(pause)
 
-
+  const vPredator = useMemo(() => new Vector3(...predator), [])
+  useEffect(() => { vPredator.set(...predator) }, [predator])
+  
+  const [sDistance, aDistance, cDistance] = useMemo(() => [
+    separationDistance, 
+    alignmentDistance, 
+    cohesionDistance
+  ], [separationDistance, alignmentDistance, cohesionDistance])
   const { gl } = useThree()
 
   // memoised computation renderer, variables and uniforms
@@ -72,11 +80,11 @@ export function Boids({
     velocityUniform['delta'] = { value: 0.0 }
     velocityUniform['testing'] = { value: 1.0 }
     velocityUniform['preyRadius'] = { value: preyRadius }
-    velocityUniform['separationDistance'] = { value: separationDistance }
-    velocityUniform['alignmentDistance'] = { value: alignmentDistance }
-    velocityUniform['cohesionDistance'] = { value: cohesionDistance }
+    velocityUniform['separationDistance'] = { value: sDistance }
+    velocityUniform['alignmentDistance'] = { value: aDistance }
+    velocityUniform['cohesionDistance'] = { value: cDistance }
     velocityUniform['freedomFactor'] = { value: freedomFactor }
-    velocityUniform['predator'] = { value: new Vector3(predator[0], predator[1], predator[2]) }
+    velocityUniform['predator'] = { value: vPredator }
 
     positionUniform['time'] = { value: 0.0 }
     positionUniform['delta'] = { value: 0.0 }

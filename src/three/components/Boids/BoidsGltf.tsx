@@ -9,9 +9,10 @@ import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { BIRDS, WIDTH } from ".";
 import { glsl } from "typed-glsl";
 import { vec3 } from 'gl-matrix'
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useLoader } from "@react-three/fiber";
 import { nextPowerOf2 } from "./helpers/math";
 import { BoidsGltfProps } from "./Boids.interface";
+import { RGBELoader } from "three/examples/jsm/Addons.js";
 
 
 export function BoidsGltf({
@@ -20,7 +21,7 @@ export function BoidsGltf({
   url
 }: PropsWithChildren<BoidsGltfProps>) {
 
-  let materialShader:WebGLProgramParametersWithUniforms
+  let [materialShader, setMaterialShader] = useState<WebGLProgramParametersWithUniforms>()
   const { computationRenderer, positionVariable, velocityVariable } = useBoids()
   const gltf = useGLTF(url)
 
@@ -141,6 +142,7 @@ export function BoidsGltf({
 
   }, [gltf])
 
+
   // generate the material
   const material = useMemo(() => {
 
@@ -150,7 +152,8 @@ export function BoidsGltf({
       flatShading: true,
       roughness: 1,
       metalness: 0,
-      map: birdMaterialMap,
+      fog: false,
+      map: birdMaterialMap
     })
 
     // modify shanders on before compile
@@ -216,13 +219,15 @@ export function BoidsGltf({
 
       // set material shader, accessibly by the animation useFrame 
       // (cannot use react useState as it would break!)
-      materialShader = shader
-      
+      // materialShader = shader
+    
       // initial position and velocity applied before useFrame 
       // Not really required however good for debuggin when we stop the animation
       if(!computationRenderer || !positionVariable || !velocityVariable) return
-      materialShader.uniforms[ 'texturePosition' ].value = computationRenderer.getCurrentRenderTarget( positionVariable ).texture;
-      materialShader.uniforms[ 'textureVelocity' ].value = computationRenderer.getCurrentRenderTarget( velocityVariable ).texture;
+      shader.uniforms[ 'texturePosition' ].value = computationRenderer.getCurrentRenderTarget( positionVariable ).texture;
+      shader.uniforms[ 'textureVelocity' ].value = computationRenderer.getCurrentRenderTarget( velocityVariable ).texture;
+
+      setMaterialShader(shader)
 
     }
 
@@ -237,14 +242,15 @@ export function BoidsGltf({
     let now = f.clock.oldTime
     let delta = ( now - last ) / 1000;
 
+
     if ( delta > 1 ) delta = 1; // safety cap on large deltas
     last = now;
-
     materialShader.uniforms[ 'time' ].value = now / 1000;
     materialShader.uniforms[ 'delta' ].value = delta;
 
     materialShader.uniforms[ 'texturePosition' ].value = computationRenderer.getCurrentRenderTarget( positionVariable ).texture;
     materialShader.uniforms[ 'textureVelocity' ].value = computationRenderer.getCurrentRenderTarget( velocityVariable ).texture;
+
   })
 
   return (

@@ -1,5 +1,5 @@
 import SimpleBirdGeometry from "./geometry/SimpleBirdGeometry"
-import { DoubleSide, ShaderMaterial, Color, Texture } from 'three'
+import { DoubleSide, ShaderMaterial, Color, Texture, MeshBasicMaterial } from 'three'
 import { useMemo } from 'react'
 import { vert } from "./shaders/vert";
 import { frag } from "./shaders/frag";
@@ -15,10 +15,15 @@ export function BoidsSimple() {
 
   const { computationRenderer, positionVariable, velocityVariable } = useBoids()
 
+
+
   const birdUniforms = useMemo(() => {
 
+    const nColor = new Color( 0x00ff00 )
+    nColor.setHex( Math.random() * 0xffffff )
+
     return  {
-      color: { value: new Color( 0xff2200 ) },
+      birdColor: { value: new Color( 0x00ff00 ) },
       texturePosition: { value: new Texture() },
       textureVelocity: { value: new Texture() },
       time: { value: 1.0 },

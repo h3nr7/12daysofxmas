@@ -14,7 +14,7 @@
     "@react-three/fiber": "8.17.10",
     "@react-three/postprocessing": "^2.16.3",
     "@react-three/rapier": "^1.5.0",
-    "@use-gesture/react": "^10.3.1",
+    "@use-gesture/vanilla": "^10.3.1",
     "camera-controls": "^2.9.0",
     "framer-motion": "^11.15.0",
     "framer-motion-3d": "^11.15.0",

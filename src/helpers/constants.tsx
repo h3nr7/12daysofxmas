@@ -1,3 +1,4 @@
+import EighthUI from "../routes/Eighth/Eighth"
 import FifthUI from "../routes/Fifth/FifthUI"
 import First from "../routes/First/FirstUI"
 import Second from "../routes/Second/SecondUI"
@@ -15,9 +16,9 @@ export const DAYS = [
   {day: "fifth", element: <FifthUI />, text: 'Day 5 is a Sunday'},
   {day: "sixth", element: <SixthUI />, text: 'Unlock Day 6'},
   {day: "seventh", element: <Third />, text: 'The end is nagh'},
-  {day: "eighth", element: <Third />, text: 'Kick off to a new beginning'},
-  {day: "ninth", element: <Third />, text: 'Step into Day 9'},
-  {day: "tenth", element: <Third />, text: 'Day 10, Are we there yet?'},
+  {day: "eighth", element: <EighthUI />, text: 'Kick off to a new beginning'},
+  {day: "ninth", element: <EighthUI />, text: 'Step into Day 9'},
+  {day: "tenth", element: <EighthUI />, text: 'Day 10, Are we there yet?'},
   {day: "eleventh", element: <Third />, text: 'Embark on Day 11'},
   {day: "twelve", element: <Third />, text: 'Make the last day count!'}
 ]

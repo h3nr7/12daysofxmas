@@ -24,15 +24,17 @@ export function DateTimeProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     const id = setInterval(() => {
       const dt = DateTime.now()
-      const start = DateTime.utc(dt.year, 12, 25, 0, 0, 0, 0)
-      const end = DateTime.utc(dt.year + 1, 1, 6, 0, 0, 0, 0)
+      // work out if it is that special 5 days in new year
+      let activeYear = dt.year
+      if(dt.month === 1 && dt.day < 5) activeYear = dt.year - 1
+      const start = DateTime.utc(activeYear, 12, 25, 0, 0, 0, 0)
+      const end = DateTime.utc((activeYear + 1), 1, 6, 0, 0, 0, 0)
       const period = Interval.fromDateTimes(start, end)
       const left = start.diffNow('seconds').seconds
-      
 
       setCurIso(dt.toISO())
       setCurDay(dt.day)
-      setIsNearXmas(dt.month === 12)
+      setIsNearXmas(dt.month === 12 || dt.month === 1)
       const secs = Math.ceil(left%60)
       const mins = Math.floor(left/60%60)
       const hours = Math.floor(left/(60*60)%24)

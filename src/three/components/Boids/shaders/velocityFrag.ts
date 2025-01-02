@@ -141,16 +141,6 @@ export const velocityFrag = glsl`
 
         }
 
-        // this make tends to fly around than down or up
-				// if (velocity.y > 0.) velocity.y *= (1. - 0.2 * delta);
-
-				// Speed Limits
-				if ( length( velocity ) > limit ) {
-					velocity = normalize( velocity ) * limit;
-				}
-
-				gl_FragColor = vec4( velocity, 1.0 );
-
       }
 
     }

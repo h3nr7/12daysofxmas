@@ -7,9 +7,11 @@ import { Physics } from "@react-three/rapier"
 import { AnimatePresence } from "framer-motion"
 import Diamond from "../../components/Diamond/Diamond"
 import { BoidsGltf } from "../../components/Boids/BoidsGltf"
+import { Boids, BoidsSimple } from "../../components/Boids"
 const PATH = '/sixth'
 
-const sceneCenter:Vec3 = [0, 0, 0]
+const camPosition :Vec3 = [28, 0, 28]
+const sceneCenter:Vec3 = [15, 0, 15]
 
 export function Sixth() {
 
@@ -25,7 +27,7 @@ export function Sixth() {
       setVisible(true)
       setCamera({
         enabled: true,
-        localPosition: [200, 200, 200],
+        localPosition: camPosition,
         worldLookAt: sceneCenter
       })
     } else {
@@ -35,19 +37,21 @@ export function Sixth() {
 
   return (
     <AnimatePresence>
-      <Diamond visible={visible} position={sceneCenter} />
     {visible && (
-      <motion.group position={sceneCenter}>
-        
-        <hemisphereLight position={[0, 50, 0]}/>
-    <directionalLight 
-      intensity={2}
-      position={[-30, 57, 30]}
-      castShadow={true} />
-      color={'#ffcc33'}
-      position={[100, -30, -10]}
-    <ambientLight intensity={1}/>
-        <BoidsGltf url="Flamingo.glb"/>
+      <motion.group 
+        initial={{ opacity: 0}}
+        animate={{ opacity: 1, transition: { duration: 3.5 }}}
+        exit={{ opacity: 0, transition: { duration: 3.25 }}}
+        position={sceneCenter}
+      >
+        <Boids 
+          // countSquare={8}
+          separationDistance={0.1}
+          alignmentDistance={0.1}
+          cohesionDistance={0.1}
+          freedomFactor={0.1}>
+            <BoidsSimple />
+        </Boids>
       </motion.group>
     )}
     </AnimatePresence>

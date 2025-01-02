@@ -15,8 +15,8 @@ import ZeroUI from './routes/Zero/ZeroUI'
 import { useWindowSize } from './hooks/windowSize'
 import styled from 'styled-components'
 import { FullscreenDiv } from './components/FullscreenDiv/FullscreenDiv'
-import { useGesture } from '@use-gesture/react'
 import { GestureControls } from './hooks/gestureControls'
+import SandboxUI from './routes/Sandbox/Sandbox'
 
 function App() {
   const main = useRef<HTMLDivElement>(null)
@@ -25,12 +25,14 @@ function App() {
   return (
     <Suspense>
       <DateTimeProvider>
-        <GestureControls className='main' ref={main}>
-          {evtSrc && <ThreeView eventSource={evtSrc} />}
-          <UI />
-          {debug && <Stats/>}
-          <Navi />
-        </GestureControls>
+        <div className='main' ref={main}>
+          <GestureControls>
+            {evtSrc && <ThreeView eventSource={evtSrc} />}
+            <UI />
+            {debug && <Stats/>}
+            <Navi />
+          </GestureControls>
+        </div>
       </DateTimeProvider>
     </Suspense>
   )
@@ -44,6 +46,7 @@ function UI() {
     <FullscreenDiv className="ui">
       <Routes location={location} key={location.key}>
         <Route index element={<ZeroUI />} />
+        <Route path='/sandbox' element={<SandboxUI />} />
         {DAYS.map((d, i) => <Route key={i} path={d.day} element={d.element} />)}
       </Routes>
     </FullscreenDiv>

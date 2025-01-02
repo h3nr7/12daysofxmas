@@ -3,17 +3,21 @@ import { BlendFunction, ToneMappingMode } from "postprocessing";
 import { Tiltshift } from "./components/Tiltshift";
 import { useFiberStore } from "../../../stores/fiberStore";
 import { UNIVERSE_BG_COLOR } from "../../../helpers/constants";
+import { useMotionValue, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
 
 
 export function EffectControls() {
 
   const { data: {
     effect: {
-      fog,
+      fogDensity,
+      bloomIntensity,
       noise,
       tiltshift
     }
   } } = useFiberStore()
+
 
   return (
     <>    
@@ -23,7 +27,7 @@ export function EffectControls() {
         {noise ? <Noise premultiply blendFunction={BlendFunction.DARKEN} /> : <></>}
         {tiltshift ? <Tiltshift /> : <></>}
       </EffectComposer>
-      {fog && <fogExp2 attach="fog" color={UNIVERSE_BG_COLOR} density={0.2} />}
+      <fogExp2 attach="fog" color={UNIVERSE_BG_COLOR} density={0.15} />
     </>
   )
 }

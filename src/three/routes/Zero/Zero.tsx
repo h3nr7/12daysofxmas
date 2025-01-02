@@ -26,7 +26,12 @@ export default function Zero() {
         localPosition: [2.5, 2.5, 2.5],
         worldLookAt: [0, 1.8, 0]
       })
-      setEffect({ tiltshift: true })
+      setEffect({
+        fog: true,
+        fogDensity: 0.2,
+        bloomIntensity: 15,
+        tiltshift: true
+      })
     } else {
       setVisible(false)
     }

@@ -46,7 +46,7 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
         <color attach="background" args={[UNIVERSE_BG_COLOR]} />
         {/* routing each day, not using react-router directly as I can effectively manage the exit cycle */}
         <Zero />
-        {/* <First /> */}
+        <First />
         {/* <Second /> */}
         {/* <Third /> */}
         {/* <Fourth /> */}

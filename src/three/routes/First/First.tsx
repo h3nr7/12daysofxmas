@@ -37,7 +37,7 @@ export function First() {
       setVisible(true)
       setCamera({ 
         enabled: true, 
-        localPosition: [0, 2.5, 2.5],
+        localPosition: [1.5, 0.8, 2.5],
         worldLookAt: [0, 1.8, 0]
       })
     } else {

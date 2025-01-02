@@ -32,12 +32,12 @@ export function Bauble({
     if(!api.current) return
     delta = Math.min(0.1, delta)
 
-    api.current.applyImpulse(
-      vec
-        .copy(api.current.translation())
-        .normalize()
-        .multiply({ x: -5 * delta * scale, y: -15 * delta * scale, z: -5 * delta * scale }),
-    )
+    // api.current.applyImpulse(
+    //   vec
+    //     .copy(api.current.translation())
+    //     .normalize()
+    //     .multiply({ x: -5 * delta * scale, y: -15 * delta * scale, z: -5 * delta * scale }),
+    // )
   })
 
   const r = MathUtils.randFloatSpread

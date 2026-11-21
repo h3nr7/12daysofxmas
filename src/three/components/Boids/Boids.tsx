@@ -2,7 +2,7 @@ import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRe
 import { PropsWithChildren, createContext, useContext, useEffect, useMemo, useRef } from 'react'
 import { BoidsProps, IBoidsCtx } from "./Boids.interface";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Vector3, RepeatWrapping } from 'three'
+import { Vector3, RepeatWrapping } from 'three/webgpu'
 import { velocityFrag } from "./shaders/velocityFrag";
 import { positionFrag } from "./shaders/positionFrag";
 import { fillPositionTexture, fillVelocityTexture } from "./helpers/initialisers";

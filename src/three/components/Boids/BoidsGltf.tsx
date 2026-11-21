@@ -1,8 +1,10 @@
 import { 
   BufferAttribute, BufferGeometry, DataTexture, 
-  FloatType, WebGLProgramParametersWithUniforms, Mesh, 
+  FloatType, Mesh, 
   MeshStandardMaterial, RGBAFormat,
-} from "three";
+} from "three/webgpu";
+// Not in the WebGPU build; this file goes with the old boids (H3N-94).
+import type { WebGLProgramParametersWithUniforms } from "three/src/renderers/webgl/WebGLPrograms.js";
 import { useBoids } from "./Boids";
 import { useGLTF } from "@react-three/drei";
 import { PropsWithChildren, useCallback, useMemo, useRef, useState } from "react";

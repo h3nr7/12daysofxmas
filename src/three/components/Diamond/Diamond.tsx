@@ -3,10 +3,11 @@ import { CubeCamera, useGLTF } from '@react-three/drei'
 import { useLoader } from '@react-three/fiber'
 import { animated } from '@react-spring/three'
 import { useEffect } from 'react'
-import { Mesh } from 'three'
+import { MathUtils, Mesh } from 'three/webgpu'
 import { RGBELoader } from 'three/examples/jsm/Addons.js'
-import { degToRad } from 'three/src/math/MathUtils.js'
 import { useEnterExit } from '../../utils/useEnterExit'
+
+const { degToRad } = MathUtils
 
 interface IDiamond {
   visible?: boolean

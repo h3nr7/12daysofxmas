@@ -2,7 +2,7 @@ import { ENV_MAP_URL } from '../../utils/assets'
 import { CubeCamera, FontData, Text3D } from "@react-three/drei";
 import { forwardRef, useEffect, useRef } from "react";
 import { animated, useSpring } from '@react-spring/three'
-import { Group, Mesh, Quaternion, Vector3 } from "three";
+import { Group, Mesh, Quaternion, Vector3 } from "three/webgpu";
 import { ThreeEvent, useLoader } from "@react-three/fiber";
 import { RGBELoader } from "three/examples/jsm/Addons.js";
 import { toSpring, useEnterExit } from '../../utils/useEnterExit'

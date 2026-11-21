@@ -17,4 +17,8 @@ export default defineConfig({
     }),
     glsl()
   ],
+  // One copy of three: the bare name, which dependencies such as drei import,
+  // resolves to the WebGPU build through the shim. `three/webgpu` and
+  // `three/tsl` are left alone. See src/three/webgpu-canvas/README.md.
+  resolve: { alias: [{ find: /^three$/, replacement: '/src/three-webgpu.ts' }] },
 })

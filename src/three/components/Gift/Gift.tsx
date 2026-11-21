@@ -1,7 +1,7 @@
 import { useGLTF } from "@react-three/drei"
 import { RigidBody} from "@react-three/rapier"
 import { useMemo } from "react"
-import { DoubleSide, Euler, FrontSide, Mesh, MeshStandardMaterial, Scene } from "three"
+import { DoubleSide, Euler, FrontSide, Mesh, MeshStandardMaterial, Scene } from "three/webgpu"
 
 interface IGift {
   visible?: boolean

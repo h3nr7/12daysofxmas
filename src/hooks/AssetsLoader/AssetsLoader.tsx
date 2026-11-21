@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { DefaultLoadingManager } from "three";
+import { DefaultLoadingManager } from "three/webgpu";
 
 
 const initial:{

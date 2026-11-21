@@ -1,5 +1,5 @@
 import SimpleBirdGeometry from "./geometry/SimpleBirdGeometry"
-import { DoubleSide, ShaderMaterial, Color, Texture } from 'three'
+import { DoubleSide, ShaderMaterial, Color, Texture } from 'three/webgpu'
 import { useMemo } from 'react'
 import { vert } from "./shaders/vert";
 import { frag } from "./shaders/frag";

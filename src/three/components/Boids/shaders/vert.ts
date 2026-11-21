@@ -1,5 +1,6 @@
 import { glsl } from "typed-glsl";
-import { ShaderChunk } from 'three'
+// The WebGPU build has no GLSL chunks; this file goes with the old boids (H3N-94).
+import { ShaderChunk } from 'three/src/renderers/shaders/ShaderChunk.js'
 
 export const vert = glsl`
 

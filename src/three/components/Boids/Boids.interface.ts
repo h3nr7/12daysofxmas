@@ -1,4 +1,5 @@
-import { IUniform } from "three";
+// Not in the WebGPU build; this file goes with the old boids (H3N-94).
+import type { IUniform } from "three/src/renderers/shaders/UniformsLib.js";
 import { GPUComputationRenderer, Variable } from "three/examples/jsm/misc/GPUComputationRenderer.js";
 
 export interface BoidsProps {

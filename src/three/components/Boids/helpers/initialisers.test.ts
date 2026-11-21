@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { DataTexture } from 'three'
+import type { DataTexture } from 'three/webgpu'
 import { fillPositionTexture, fillVelocityTexture } from './initialisers'
 
 const TEXELS = 1024

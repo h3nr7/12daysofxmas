@@ -1,7 +1,7 @@
 import { CameraControls, Helper } from "@react-three/drei"
 import { useThree } from "@react-three/fiber"
 import { RefObject, useEffect, useRef } from "react"
-import { CameraHelper, Group, PerspectiveCamera } from "three"
+import { CameraHelper, Group, PerspectiveCamera } from "three/webgpu"
 import { useFiberStore } from "../../../stores/fiberStore"
 import { useDebug } from "../../../hooks/debug"
 import { useRigControl } from "./rigControl"

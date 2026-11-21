@@ -5,6 +5,7 @@ import { Navi } from './components/Navi/Navi'
 import { DAYS } from './helpers/constants'
 import { DateTimeProvider } from './hooks/dateTime'
 import { useDebug } from './hooks/debug'
+import { useWebGPUSupport } from './hooks/webgpu'
 import { Stats } from '@react-three/drei'
 import { ThreeView } from './three/ThreeView'
 import ZeroUI from './routes/Zero/ZeroUI'
@@ -18,13 +19,15 @@ function App() {
   const main = useRef<HTMLDivElement>(null)
   const evtSrc = useMemo(() => main as RefObject<HTMLDivElement>, [main])
   const { on: debug } = useDebug()
+  // No WebGPU, no canvas: the home page says why (ZeroUI.tsx).
+  const webgpu = useWebGPUSupport()
   return (
     <Suspense>
       <DateTimeProvider>
         <div className='main' ref={main}>
           <AssetsLoader>
             <GestureControls>
-              {evtSrc && <ThreeView eventSource={evtSrc} />}
+              {evtSrc && webgpu === 'yes' && <ThreeView eventSource={evtSrc} />}
               <UI />
               {debug && <Stats className="debug-stats" />}
               <Navi />

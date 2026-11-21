@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { ShaderMaterial, Uniform, Vector2 } from "three";
+import { ShaderMaterial, Uniform, Vector2 } from "three/webgpu";
 import orbit_vs from '../../shaders/particles/orbit-vert.glsl'
 import orbit_fs from '../../shaders/particles/orbit-frag.glsl'
 

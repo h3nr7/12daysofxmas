@@ -4,7 +4,7 @@ import Forest from '../../components/Forest/Forest'
 import { useLocation } from 'react-router'
 import { useEffect } from 'react'
 import { useFiberStore } from '../../../stores/fiberStore'
-import { MathUtils } from 'three'
+import { MathUtils } from 'three/webgpu'
 import { OrbitalTrails } from '../../components/OrbitalTrails/OrbitalTrails'
 
 const PATH = '/'

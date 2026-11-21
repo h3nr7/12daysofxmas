@@ -1,6 +1,6 @@
 import { ENV_MAP_URL } from '../../utils/assets'
 import { useEffect, useMemo, useRef } from "react";
-import { Texture, Vector3 } from "three";
+import { Texture, Vector3 } from "three/webgpu";
 import { Trail } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { animated, useSpring } from '@react-spring/three'

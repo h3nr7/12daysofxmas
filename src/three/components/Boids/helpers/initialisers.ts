@@ -1,4 +1,4 @@
-import { DataTexture } from "three";
+import { DataTexture } from "three/webgpu";
 import { BOUNDS, BOUNDS_HALF } from "..";
 
 

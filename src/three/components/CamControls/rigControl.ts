@@ -1,7 +1,7 @@
 import { CameraControls } from "@react-three/drei"
 import { frame, SpringOptions, useMotionValueEvent, useSpring, useTransform } from 'motion/react'
 import { RefObject, useCallback, useEffect, useState } from "react"
-import { Group, PerspectiveCamera, Vector3 } from "three"
+import { Group, PerspectiveCamera, Vector3 } from "three/webgpu"
 
 const DEFAULT_SPRING:SpringOptions = {
   // damping: 10,

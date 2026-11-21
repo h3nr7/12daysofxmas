@@ -4,8 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { BlockText } from "../../components/BlockText/BlockText";
 import { Gift } from "../../components/Gift/Gift";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
-import { generateUUID, lerp } from "three/src/math/MathUtils.js";
+import { MathUtils } from "three/webgpu";
 import { Bauble } from "../../components/Bauble/Bauble";
+
+const { generateUUID, lerp } = MathUtils
 
 const PATH = '/first'
 const MAX_ITEMS = 50

@@ -1,3 +1,4 @@
+import { ENV_MAP_URL } from '../../utils/assets'
 import { CubeCamera, FontData, Text3D } from "@react-three/drei";
 import { forwardRef, PropsWithChildren, Ref, useEffect, useImperativeHandle, useRef } from "react";
 import { motion } from 'framer-motion-3d'
@@ -46,7 +47,7 @@ export const BlockText = forwardRef<IBlockTextRef, IBlockText>(({
 
   const textRef = useRef<Mesh>(null)
 
-  const texture = useLoader(RGBELoader, 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr')
+  const texture = useLoader(RGBELoader, ENV_MAP_URL)
 
   useEffect(() => {
     if(!textRef.current) return

@@ -1,3 +1,4 @@
+import { ENV_MAP_URL } from '../../utils/assets'
 import { CubeCamera, useGLTF } from '@react-three/drei'
 import { useLoader } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
@@ -20,7 +21,7 @@ export default function Diamond({
   position = [0, 0, 0],
   scale = 0.12
 }: IDiamond) {
-  const texture = useLoader(RGBELoader, 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr')
+  const texture = useLoader(RGBELoader, ENV_MAP_URL)
   const { nodes } = useGLTF(URL)
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+import { ENV_MAP_URL } from '../../utils/assets'
 import { PropsWithChildren, useMemo } from "react";
 import { CatmullRomCurve3, Vector3 } from "three";
 import { motion } from 'framer-motion-3d'
@@ -39,7 +40,7 @@ export function OrbitalTrails({
 
   }, [numParticles])
 
-  const texture = useLoader(RGBELoader, 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr')
+  const texture = useLoader(RGBELoader, ENV_MAP_URL)
 
   return (
     <>

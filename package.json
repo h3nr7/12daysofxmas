@@ -14,7 +14,8 @@
     "preview": "vite preview",
     "capture": "node e2e/capture.ts",
     "typecheck": "tsc -b --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@react-three/drei": "^9.120.4",

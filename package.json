@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "capture": "node e2e/capture.ts"
   },
   "dependencies": {
     "@react-three/drei": "^9.120.4",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
+    "@playwright/test": "1.65.1",
     "@types/luxon": "^3.4.2",
     "@types/react": "^18.3.16",
     "@types/react-dom": "^18.3.5",

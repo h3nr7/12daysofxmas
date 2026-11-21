@@ -1,7 +1,7 @@
 import { useGLTF } from '@react-three/drei'
 import { AnimatePresence, AnimationControls, Target, TargetAndTransition, Transition, VariantLabels } from 'framer-motion'
 import { motion } from 'framer-motion-3d'
-import { PropsWithChildren, useEffect, useMemo } from 'react'
+import { PropsWithChildren, useMemo } from 'react'
 import { Material, Mesh } from 'three'
 
 interface ITree {

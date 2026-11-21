@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
-import { Bauble } from "../../components/Bauble/Bauble"
 import { motion } from 'framer-motion-3d'
-import { Physics } from "@react-three/rapier"
 import { AnimatePresence } from "framer-motion"
-import Diamond from "../../components/Diamond/Diamond"
-import { BoidsGltf } from "../../components/Boids/BoidsGltf"
 import { Boids, BoidsSimple } from "../../components/Boids"
 const PATH = '/sixth'
 
@@ -33,7 +29,7 @@ export function Sixth() {
     } else {
       setVisible(false)
     }
-  }, [pathname])
+  }, [pathname, setCamera])
 
   return (
     <AnimatePresence>

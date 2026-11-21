@@ -5,14 +5,13 @@ import {
 } from "three";
 import { useBoids } from "./Boids";
 import { useGLTF } from "@react-three/drei";
-import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
+import { PropsWithChildren, useCallback, useMemo, useState } from "react";
 import { BIRDS, WIDTH } from ".";
 import { glsl } from "typed-glsl";
 import { vec3 } from 'gl-matrix'
-import { useFrame, useLoader } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { nextPowerOf2 } from "./helpers/math";
 import { BoidsGltfProps } from "./Boids.interface";
-import { RGBELoader } from "three/examples/jsm/Addons.js";
 
 
 export function BoidsGltf({
@@ -21,7 +20,7 @@ export function BoidsGltf({
   url
 }: PropsWithChildren<BoidsGltfProps>) {
 
-  let [materialShader, setMaterialShader] = useState<WebGLProgramParametersWithUniforms>()
+  const [materialShader, setMaterialShader] = useState<WebGLProgramParametersWithUniforms>()
   const { computationRenderer, positionVariable, velocityVariable } = useBoids()
   const gltf = useGLTF(url)
 
@@ -231,13 +230,13 @@ export function BoidsGltf({
 
     setMaterialShader(shader)
 
-  }, [textureAnimation, birdMaterialMap])
+  }, [textureAnimation, computationRenderer, positionVariable, velocityVariable, size])
 
   // finally animation frame
   let last = performance.now()
   useFrame(f => {
     if(!computationRenderer || !positionVariable || !velocityVariable || !materialShader) return
-    let now = f.clock.oldTime
+    const now = f.clock.oldTime
     let delta = ( now - last ) / 1000;
 
 

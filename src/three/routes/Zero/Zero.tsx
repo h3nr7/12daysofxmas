@@ -1,12 +1,10 @@
 
-import { AnimatePresence, motion as reactmo, usePresence } from 'framer-motion'
 import Diamond from '../../components/Diamond/Diamond'
 import Forest from '../../components/Forest/Forest'
 import { useLocation } from 'react-router'
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useState } from 'react'
 import { useFiberStore } from '../../../stores/fiberStore'
-import { CatmullRomCurve3, MathUtils, Vector3 } from 'three'
-import { Stars, Trail } from '@react-three/drei'
+import { MathUtils } from 'three'
 import { OrbitalTrails } from '../../components/OrbitalTrails/OrbitalTrails'
 
 const PATH = '/'
@@ -32,7 +30,7 @@ export default function Zero() {
     } else {
       setVisible(false)
     }
-  }, [pathname])
+  }, [pathname, setCamera, setEffect])
 
   return (
       <>

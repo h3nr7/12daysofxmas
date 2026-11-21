@@ -1,4 +1,4 @@
-import { CameraControls, useMotion } from "@react-three/drei"
+import { CameraControls } from "@react-three/drei"
 import { GroupProps } from "@react-three/fiber"
 import { frame, SpringOptions, useMotionValueEvent, useSpring, useTransform } from "framer-motion"
 import { RefObject, useEffect, useState } from "react"
@@ -60,14 +60,16 @@ export function useRigControl(
       cz.set(camPosition[2])
     })
 
-  }, [rigPosition, camPosition]) 
+  }, [rigPosition, camPosition, px, py, pz, cx, cy, cz])
 
   // this is to save the camera position after dolly
-  controlRef.current?.addEventListener('controlend', (e: any) => {
+  controlRef.current?.addEventListener('controlend', (e) => {
+    // camera-controls sets `target` on the events it dispatches, but its types don't declare it.
+    const { camera } = (e as typeof e & { target: CameraControls }).target
     frame.read(() =>{
-      cx.set(e.target.camera.position.x, false)
-      cy.set(e.target.camera.position.y, false)
-      cz.set(e.target.camera.position.z, false)
+      cx.set(camera.position.x, false)
+      cy.set(camera.position.y, false)
+      cz.set(camera.position.z, false)
     })
   })
 

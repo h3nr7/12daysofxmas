@@ -10,7 +10,7 @@ export function Second() {
 
   const { pathname } = useLocation()
   const { setCamera } = useFiberStore()
-  const [visible, setVisible] = useState(pathname === PATH)
+  const [, setVisible] = useState(pathname === PATH)
 
 
 
@@ -25,7 +25,7 @@ export function Second() {
     } else {
       setVisible(false)
     }
-  }, [pathname])
+  }, [pathname, setCamera])
 
   return (
     <>

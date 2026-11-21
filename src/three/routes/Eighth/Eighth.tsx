@@ -1,12 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
 import { motion } from 'framer-motion-3d'
-import { AnimatePresence, useAnimate } from "framer-motion"
+import { AnimatePresence } from "framer-motion"
 import { BoidsGltf } from "../../components/Boids/BoidsGltf"
-import { Boids, BoidsSimple } from "../../components/Boids"
-import { Mesh, Vector3 } from "three"
-import { useFrame, useThree } from "@react-three/fiber"
+import { Boids } from "../../components/Boids"
 
 const PATH = ['/eighth', '/ninth', '/tenth']
 const CAM_POSITIONS:Vec3[] = [[5, 0, 5], [50, 0, 50], [188, 0, 188]]
@@ -17,12 +15,10 @@ export function Eighth() {
   const { pathname } = useLocation()
   const { setCamera, setDebug } = useFiberStore()
   const [visible, setVisible] = useState(PATH.includes(pathname))
-  const activeCam = useThree(state => state.camera)
 
   useEffect(() => console.log('Eighth path: ', pathname), [pathname])
   
 
-  const spRef = useRef<Mesh>(null)
   setDebug(false)
   const [camPosition, sceneCenter] = useMemo(() => [
     CAM_POSITIONS[PATH.findIndex(p => p === pathname)],
@@ -40,10 +36,10 @@ export function Eighth() {
     } else {
       setVisible(false)
     }
-  }, [pathname])
+  }, [pathname, camPosition, sceneCenter, setCamera])
 
   // const { movement } = useGestureControls()
-  const vec = new Vector3()
+  // const vec = new Vector3()
 
   // useFrame(() => {
   //   vec.set(movement.x, movement.y, 0.8)

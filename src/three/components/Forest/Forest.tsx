@@ -1,19 +1,23 @@
-import { CubeCamera, MeshRefractionMaterial, useGLTF } from '@react-three/drei'
-import { MeshProps, useLoader } from '@react-three/fiber'
-import { motion,  } from 'framer-motion-3d'
-import { PropsWithChildren, Suspense, useEffect, useMemo, useRef } from 'react'
-import { Mesh, MeshBasicMaterial } from 'three'
-import { RGBELoader } from 'three/examples/jsm/Addons.js'
+import { PropsWithChildren, useMemo } from 'react'
 import { useMobile } from '../../../hooks/isMobile'
 import { Tree } from './Tree'
-import { lerp, mapLinear } from 'three/src/math/MathUtils.js'
-import { AnimatePresence } from 'framer-motion'
-import { useLocation } from 'react-router'
 import { randomDistance } from '../../utils/vecs'
 import { randomTiming } from '../../utils/time'
 
 interface IForest {
   visible?: boolean
+}
+
+interface TreeSpec {
+  x: number
+  y: number
+  z: number
+  rotateY: number
+  scale: number
+  transition: { duration: number, delay: number }
+  // Never set: normal trees read `duration` here and so get the default
+  // duration. Kept as it is today.
+  duration?: number
 }
 
 export default function Forest({ visible }: PropsWithChildren<IForest>) {
@@ -34,10 +38,10 @@ export default function Forest({ visible }: PropsWithChildren<IForest>) {
   }, [isMobile])
 
   const {trees, fatTrees, tinyTrees, trunks} = useMemo(() => {
-    const trees:Record<string, any>[] = []
-    const fatTrees:Record<string, any>[] = []
-    const tinyTrees:Record<string, any>[] = []
-    const trunks:Record<string, any>[] = []
+    const trees: TreeSpec[] = []
+    const fatTrees: TreeSpec[] = []
+    const tinyTrees: TreeSpec[] = []
+    const trunks: TreeSpec[] = []
 
     for (let i=0; i<maxTree; i++) {
       const {x, z} = randomDistance(distance)
@@ -93,7 +97,7 @@ export default function Forest({ visible }: PropsWithChildren<IForest>) {
       tinyTrees,
       trunks
     }
-  }, [isMobile])
+  }, [maxTree, maxFatTree, maxTinyTree, maxTrunk, distance])
 
   return (
     <>

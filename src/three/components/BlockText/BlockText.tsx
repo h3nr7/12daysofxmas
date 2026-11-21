@@ -1,12 +1,11 @@
 import { ENV_MAP_URL } from '../../utils/assets'
 import { CubeCamera, FontData, Text3D } from "@react-three/drei";
-import { forwardRef, PropsWithChildren, Ref, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { motion } from 'framer-motion-3d'
 import { Group, Mesh, Quaternion, Vector3 } from "three";
 import { AnimatePresence } from "framer-motion";
 import { ThreeEvent, useLoader } from "@react-three/fiber";
 import { RGBELoader } from "three/examples/jsm/Addons.js";
-import { useNavigate } from "react-router";
 
 const DEFAULT_FONT_URL = 'MrsEaves_Roman.json'
 
@@ -43,7 +42,7 @@ export const BlockText = forwardRef<IBlockTextRef, IBlockText>(({
   onClick,
   onPointerOver,
   onPointerOut
-}, ref) => {
+}, _ref) => {
 
   const textRef = useRef<Mesh>(null)
 
@@ -58,8 +57,6 @@ export const BlockText = forwardRef<IBlockTextRef, IBlockText>(({
     geometry.boundingBox.getCenter(centerVector).negate();
     geometry.translate(centerVector.x, 0, centerVector.z);
   })
-
-  const navi = useNavigate()
 
   return (
     <CubeCamera resolution={256} frames={1} envMap={texture}>

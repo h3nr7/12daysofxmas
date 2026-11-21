@@ -12,13 +12,16 @@ export function AnimText({ content, charDelay = 2, delay = 0, duration = 0.75 }:
 
   const lines = useMemo(() => content.split(/\r?\n|\r|\n/g), [content])
 
-  const output = useMemo(() => lines.map((line, i) => {
+  const output = useMemo(() => {
+    // Divided again on every line, as before, so later lines type faster.
+    let lineCharDelay = charDelay
+    return lines.map((line, i) => {
     let counter = 0
-    charDelay = charDelay/content.length
+    lineCharDelay = lineCharDelay/content.length
 
     const words = line.split('').map((c, j) => {
       counter++
-      const d = counter*charDelay + delay
+      const d = counter*lineCharDelay + delay
       return (
         <Character key={`${i}_${j}`} char={c === ' ' ? '\u00A0' : c === '\n' ? <br /> : c} delay={d} duration={duration} />
       )
@@ -27,7 +30,7 @@ export function AnimText({ content, charDelay = 2, delay = 0, duration = 0.75 }:
     if(i <= lines.length - 1) words.push(<br key={`${i}_br`}/>)
 
     return words
-  }), [lines])
+  })}, [lines, charDelay, content.length, delay, duration])
 
   return (
     <AnimatePresence>

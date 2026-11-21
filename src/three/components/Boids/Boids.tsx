@@ -1,13 +1,12 @@
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer.js";
-import { PropsWithChildren, createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { PropsWithChildren, createContext, useContext, useEffect, useMemo } from 'react'
 import { BoidsProps, IBoidsCtx } from "./Boids.interface";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Vector3, Texture, RepeatWrapping } from 'three'
+import { Vector3, RepeatWrapping } from 'three'
 import { velocityFrag } from "./shaders/velocityFrag";
 import { positionFrag } from "./shaders/positionFrag";
 import { fillPositionTexture, fillVelocityTexture } from "./helpers/initialisers";
 import { BOUNDS, WIDTH } from ".";
-import { Wireframe } from "@react-three/drei";
 
 /**
  * Boids Context
@@ -18,6 +17,7 @@ const BoidsCtx = createContext<IBoidsCtx>({})
  * Boids context hook
  * @returns 
  */
+// eslint-disable-next-line react-refresh/only-export-components -- context hook lives beside its provider
 export const useBoids = () => useContext(BoidsCtx)
 
 
@@ -40,8 +40,9 @@ export function Boids({
 
   // const [pauseAnim, setPauseAnim] = useState(pause)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- one vector, created once and updated in place below
   const vPredator = useMemo(() => new Vector3(...predator), [])
-  useEffect(() => { vPredator.set(...predator) }, [predator])
+  useEffect(() => { vPredator.set(...predator) }, [predator, vPredator])
   
   const [sDistance, aDistance, cDistance] = useMemo(() => [
     separationDistance, 
@@ -106,14 +107,14 @@ export function Boids({
     gpu.compute()
 
     return { computationRenderer: gpu, velocityVariable, positionVariable, velocityUniform, positionUniform }
-  }, [gl])
+  }, [gl, countSquare, preyRadius, sDistance, aDistance, cDistance, freedomFactor, vPredator])
 
 
   let last = performance.now()
   // use frame for rendered frames
   useFrame(f => {
     if(!computationRenderer || !velocityUniform || !positionUniform || pause) return
-    let now = f.clock.oldTime
+    const now = f.clock.oldTime
     let delta = ( now - last ) / 1000;
 
     if ( delta > 1 ) delta = 1; // safety cap on large deltas

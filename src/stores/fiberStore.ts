@@ -1,5 +1,3 @@
-import { MathUtils } from 'three'
-import { fog } from 'three/webgpu'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 

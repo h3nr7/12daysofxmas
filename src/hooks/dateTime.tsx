@@ -28,4 +28,5 @@ export function DateTimeProvider({ children }: PropsWithChildren) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- context hook lives beside its provider
 export const useDateTime = () => useContext(dtCtx)

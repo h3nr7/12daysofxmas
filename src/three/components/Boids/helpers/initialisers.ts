@@ -6,7 +6,7 @@ import { BOUNDS, BOUNDS_HALF } from "..";
  * fill position texture
  * @param texture 
  */
-export function fillPositionTexture(texture:Texture, bounds:number = BOUNDS) {
+export function fillPositionTexture(texture:Texture, _bounds:number = BOUNDS) {
   const theArray = texture.image.data;
 
   for ( let k = 0, kl = theArray.length; k < kl; k += 4 ) {

@@ -1,4 +1,4 @@
-import { CatmullRomCurve3, Vector3, CurveType } from "three";
+import { CatmullRomCurve3, Vector3 } from "three";
 import { lerp } from "three/src/math/MathUtils.js";
 
 export function randomDistance(diameter: number) {

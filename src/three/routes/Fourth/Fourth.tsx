@@ -27,7 +27,7 @@ export function Fourth() {
     } else {
       setVisible(false)
     }
-  }, [pathname])
+  }, [pathname, setCamera])
 
   return visible && (
     <motion.group position={sceneCenter}>

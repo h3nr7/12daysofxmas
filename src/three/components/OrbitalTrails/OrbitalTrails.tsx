@@ -1,6 +1,6 @@
 import { ENV_MAP_URL } from '../../utils/assets'
-import { PropsWithChildren, useMemo } from "react";
-import { CatmullRomCurve3, Vector3 } from "three";
+import { useMemo } from "react";
+import { Vector3 } from "three";
 import { motion } from 'framer-motion-3d'
 import { Trail } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
@@ -23,21 +23,21 @@ export function OrbitalTrails({
   numCurvePoints = 50
 }: IProps) {
 
-  const [curves, curvePoints] = useMemo(() => {
+  const curvePoints = useMemo(() => {
 
-    if(!(center instanceof Vector3)) center = new Vector3(...center)
+    const origin = center instanceof Vector3 ? center : new Vector3(...center)
 
-    const curves = [], curvePoints = []
+    const curvePoints = []
     for(let i=0; i<numParticles; i++) {
 
-      const c = randomOrbit(center, maxRadius)
+      const c = randomOrbit(origin, maxRadius)
 
-      curves.push(c)
       curvePoints.push(c.getPoints(numCurvePoints))
     }
 
-    return [curves, curvePoints]
+    return curvePoints
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- orbits are randomised once per particle count; callers pass a new center array each render
   }, [numParticles])
 
   const texture = useLoader(RGBELoader, ENV_MAP_URL)

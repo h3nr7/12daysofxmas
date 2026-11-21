@@ -1,5 +1,4 @@
-import { PropsWithChildren, ButtonHTMLAttributes, MouseEventHandler } from "react"
-import styled from 'styled-components'
+import { PropsWithChildren, MouseEventHandler } from "react"
 import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion'
 import { useMobile } from "../../hooks/isMobile"
 

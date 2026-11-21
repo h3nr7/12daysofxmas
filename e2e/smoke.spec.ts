@@ -76,6 +76,12 @@ for (const clock of CLOCKS) {
     for (const route of ROUTES) {
       test(`${route} mounts with a live canvas and no errors`, async ({ page }) => {
         const errors = watchErrors(page)
+        // index.html loads the Adobe Fonts (Typekit) stylesheet. Fonts aren't
+        // what this test checks, so a slow or failed third-party download
+        // mustn't fail it. See H3N-76.
+        await page.route('https://use.typekit.net/**', (r) =>
+          r.fulfill({ status: 200, contentType: 'text/css', body: '' }),
+        )
         await page.clock.install({ time: new Date(clock.time) })
         await page.goto(route)
 

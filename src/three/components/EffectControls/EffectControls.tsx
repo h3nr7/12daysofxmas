@@ -3,8 +3,6 @@ import { BlendFunction, ToneMappingMode } from "postprocessing";
 import { Tiltshift } from "./components/Tiltshift";
 import { useFiberStore } from "../../../stores/fiberStore";
 import { UNIVERSE_BG_COLOR } from "../../../helpers/constants";
-import { useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useState } from "react";
 
 
 export function EffectControls() {

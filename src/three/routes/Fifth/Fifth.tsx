@@ -5,7 +5,6 @@ import { Bauble } from "../../components/Bauble/Bauble"
 import { motion } from 'framer-motion-3d'
 import { Physics } from "@react-three/rapier"
 import { AnimatePresence } from "framer-motion"
-import Diamond from "../../components/Diamond/Diamond"
 const PATH = '/fifth'
 
 const sceneCenter:Vec3 = [12, 2.0, 12]
@@ -30,7 +29,7 @@ export function Fifth() {
     } else {
       setVisible(false)
     }
-  }, [pathname])
+  }, [pathname, setCamera])
 
   return (
     <AnimatePresence>

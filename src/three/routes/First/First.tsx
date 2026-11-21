@@ -1,11 +1,6 @@
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import { useFiberStore } from "../../../stores/fiberStore";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { motion } from 'framer-motion-3d'
-import { CatmullRomCurve3, Color, MathUtils, QuadraticBezierCurve3, Vector3 } from "three";
-import { AnimatePresence } from "framer-motion";
-import { Sphere, Trail } from "@react-three/drei";
-import { Satellite } from "../../components/Satellite/Satellite";
+import { useEffect, useMemo, useState } from "react";
 import { BlockText } from "../../components/BlockText/BlockText";
 import { Gift } from "../../components/Gift/Gift";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
@@ -17,8 +12,7 @@ const MAX_ITEMS = 50
 export function First() {
 
   const { pathname } = useLocation()
-  const navi = useNavigate();
-  const { setCamera, setEffect } = useFiberStore()
+  const { setCamera } = useFiberStore()
   const [visible, setVisible] = useState(pathname === PATH)
   const [gravity, setGravity] = useState<Vec3>()
   const [keyId, setKeyId] = useState(generateUUID())
@@ -45,7 +39,7 @@ export function First() {
       setGravity(undefined)
       setVisible(false)
     }
-  }, [pathname])
+  }, [pathname, setCamera])
 
 
   const [baubles, gifts] = useMemo(() => {
@@ -61,6 +55,7 @@ export function First() {
 
     return [b, g]
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- re-randomise the gifts and baubles each time the scene is shown
   }, [visible])
 
 

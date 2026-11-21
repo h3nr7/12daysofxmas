@@ -1,6 +1,6 @@
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import { useFiberStore } from "../../../stores/fiberStore"
-import { AnimatePresence, frame, useMotionValueEvent, useSpring, useTransform } from "framer-motion"
+import { AnimatePresence } from "framer-motion"
 import { motion } from "framer-motion-3d"
 
 

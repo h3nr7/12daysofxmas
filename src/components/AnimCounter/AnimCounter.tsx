@@ -12,7 +12,7 @@ export function AnimCounter({ children, value, duration = 2, delay = 0.5 }:Props
   useEffect(() => {
     const controls = animate(count, value, { duration, delay })
     return () => controls.stop()
-  }, [value])
+  }, [value, count, duration, delay])
 
   return <><motion.span>{intCount}</motion.span>{children}</>
 }

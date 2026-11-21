@@ -41,8 +41,7 @@ export default function ZeroUI() {
       <h1>
         <AnimText content={`12 days\nof Xmas`} />
       </h1>
-      {isNearXmas ? (
-        
+      {isNearXmas && (
         <motion.h3
           initial={'initial'}
           animate={{
@@ -60,16 +59,6 @@ export default function ZeroUI() {
           {timeLeft.mins > 0 && <AnimCounter value={timeLeft.mins} duration={0.5}>M</AnimCounter>}&nbsp;
           {timeLeft.secs > 0 && <AnimCounter value={timeLeft.secs} duration={0.1}>S</AnimCounter>}
         </motion.h3>
-      ): (
-        <motion.h1
-          initial={'initial'}
-          animate={'animate'}
-          exit={'exit'}
-          variants={variants}
-        >
-          12 days
-          <br />of Xmas
-        </motion.h1>
       )}
       <Button
         onClick={() => navi(`/${DAYS[xmasDayCount - 1].day}`)}

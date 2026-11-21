@@ -1,9 +1,8 @@
-import { PropsWithChildren, StrictMode } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.scss'
 import App from './App.tsx'
 import { BrowserRouter } from "react-router"
-import { AnimatePresence } from 'framer-motion'
 
 createRoot(document.getElementById('root')!).render(
   // StrictMode causes render twice in development mode,

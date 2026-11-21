@@ -1,15 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
-import { AnimatePresence } from "framer-motion"
-import { Boids, BoidsSimple } from "../../components/Boids"
-import Diamond from "../../components/Diamond/Diamond"
-import { Mesh, Vector2, Vector3 } from "three"
-import { OrbitControls, Wireframe } from "@react-three/drei"
-import { useThree } from "@react-three/fiber"
-import { MoveGesture } from '@use-gesture/vanilla'
-import { useGestureControls } from "../../../hooks/gestureControls"
-import { useWindowSize } from "../../../hooks/windowSize"
+import { Boids } from "../../components/Boids"
 import { BoidsGltf } from "../../components/Boids/BoidsGltf"
 const PATH = '/sandbox'
 
@@ -18,16 +10,10 @@ const sceneCenter:Vec3 = [0, 0, 0]
 
 export function Sandbox() {
 
-  const activeCam = useThree(({ camera }) => camera)
   const { pathname } = useLocation()
   const { setCamera, setEffect } = useFiberStore()
-  const [visible, setVisible] = useState(pathname === PATH)
+  const visible = pathname === PATH
 
-  const spRef = useRef<Mesh>(null)
-  const [width, height] = useWindowSize()
-
-  const { ref } = useGestureControls()
-  const [movement, setMovement] = useState([0, 0, 0])
 
   // useEffect(() => {
   //   if(!ref?.current) return
@@ -53,8 +39,7 @@ export function Sandbox() {
 
 
   useEffect(() => {
-    if(pathname === PATH) {
-      setVisible(true)
+    if(visible) {
       setCamera({
         isDefault: false,
         enabled: false,
@@ -65,13 +50,11 @@ export function Sandbox() {
         noise: false,
         tiltshift: false
       })
-    } else {
-      setVisible(false)
     }
-  }, [pathname])
+  }, [visible, setCamera, setEffect])
 
   return (
-    <AnimatePresence>
+    <>
       {visible && (
         <>
           {/* <mesh position={[0,0,0]}>
@@ -91,6 +74,6 @@ export function Sandbox() {
           </Boids>
         </>
       )}
-    </AnimatePresence>
+    </>
   )
 }

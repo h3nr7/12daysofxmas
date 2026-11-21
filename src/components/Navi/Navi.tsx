@@ -1,17 +1,14 @@
-import { Link, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import './navi.scss'
-import { DAYS } from '../../helpers/constants'
-import { DateTimeProvider, useDateTime } from '../../hooks/dateTime'
 import { useEffect, useMemo } from 'react'
 import { AnimText } from '../AnimText'
-import { AnimatePresence, motion} from 'framer-motion'
+import { AnimatePresence, motion} from 'motion/react'
 import { useAssetsLoader } from '../../hooks/AssetsLoader/AssetsLoader'
 
 export function Navi() {
 
   const { pathname } = useLocation()
   const navi = useNavigate()
-  const { isNearXmas, timeLeft, isXmas, xmasDayCount } = useDateTime()
 
   const isVisible = useMemo(() => pathname !== '/', [pathname])
 

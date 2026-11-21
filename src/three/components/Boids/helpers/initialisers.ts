@@ -1,4 +1,4 @@
-import { Texture } from "three";
+import { DataTexture } from "three";
 import { BOUNDS, BOUNDS_HALF } from "..";
 
 
@@ -6,8 +6,8 @@ import { BOUNDS, BOUNDS_HALF } from "..";
  * fill position texture
  * @param texture 
  */
-export function fillPositionTexture(texture:Texture, bounds:number = BOUNDS) {
-  const theArray = texture.image.data;
+export function fillPositionTexture(texture:DataTexture, _bounds:number = BOUNDS) {
+  const theArray = texture.image.data as Float32Array;
 
   for ( let k = 0, kl = theArray.length; k < kl; k += 4 ) {
 
@@ -27,8 +27,8 @@ export function fillPositionTexture(texture:Texture, bounds:number = BOUNDS) {
  * fill velocity texture
  * @param texture 
  */
-export function fillVelocityTexture(texture:Texture) {
-  const theArray = texture.image.data;
+export function fillVelocityTexture(texture:DataTexture) {
+  const theArray = texture.image.data as Float32Array;
 
   for ( let k = 0, kl = theArray.length; k < kl; k += 4 ) {
 

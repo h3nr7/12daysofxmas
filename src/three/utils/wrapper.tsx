@@ -1,9 +1,10 @@
 import { useThree } from "@react-three/fiber";
 import { BlendFunction, Effect } from "postprocessing";
-import { forwardRef, MutableRefObject, useLayoutEffect, useMemo } from "react";
+import { forwardRef, useLayoutEffect, useMemo } from "react";
 
 type DefaultProps = Partial<{ blendFunction: BlendFunction; opacity: number }>
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- a constructor constraint has to accept any argument list
 export const wrapEffect = <T extends new(...args: any[]) => Effect>(
   effectImpl: T,
   defaultBlendMode: BlendFunction = BlendFunction.NORMAL
@@ -18,7 +19,7 @@ export const wrapEffect = <T extends new(...args: any[]) => Effect>(
     effect.blendMode.blendFunction = !blendFunction && blendFunction !== 0 ? defaultBlendMode : blendFunction
     if(opacity !== undefined) effect.blendMode.opacity.value = opacity
     invalidate()
-  }, [blendFunction, effect.blendMode, opacity])
+  }, [blendFunction, effect.blendMode, opacity, invalidate])
 
   return <primitive ref={ref} object={effect} dispose={null} />
 })

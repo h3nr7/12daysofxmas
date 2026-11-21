@@ -1,11 +1,8 @@
-import { Html, Sphere } from "@react-three/drei";
-import { r3ftunnel, uitunnel } from "../../helpers/tunnelling";
-import { Link, useLocation, useNavigate, useRoutes } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDateTime } from "../../hooks/dateTime";
-import Diamond from "../../three/components/Diamond/Diamond";
 import './Zero.scss'
 import { Button } from "../../components/Button/Button"
-import { AnimatePresence, motion, usePresence, Variants } from 'framer-motion'
+import { motion, Variants } from 'motion/react'
 import { useMemo } from "react";
 import { DAYS, WAITING_PHRASE } from "../../helpers/constants";
 import { AnimText } from "../../components/AnimText";
@@ -29,11 +26,15 @@ const variants: Variants = {
 }
 
 
+// A random waiting phrase. Picked again when Christmas starts or ends (see below).
+const pickPhrase = () => WAITING_PHRASE[Math.round(Math.random()*(WAITING_PHRASE.length - 1))]
+
 export default function ZeroUI() {
 
   const { isNearXmas, timeLeft, isXmas, xmasDayCount } = useDateTime()
   const navi = useNavigate();
-  const phrase = useMemo(() => WAITING_PHRASE[Math.round(Math.random()*(WAITING_PHRASE.length - 1))], [isXmas])
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- pick a new phrase when Christmas starts or ends
+  const phrase = useMemo(() => pickPhrase(), [isXmas])
 
   return (
     <div className="zero__ui">

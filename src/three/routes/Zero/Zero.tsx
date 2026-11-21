@@ -1,12 +1,10 @@
 
-import { AnimatePresence, motion as reactmo, usePresence } from 'framer-motion'
 import Diamond from '../../components/Diamond/Diamond'
 import Forest from '../../components/Forest/Forest'
 import { useLocation } from 'react-router'
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect } from 'react'
 import { useFiberStore } from '../../../stores/fiberStore'
-import { CatmullRomCurve3, MathUtils, Vector3 } from 'three'
-import { Stars, Trail } from '@react-three/drei'
+import { MathUtils } from 'three'
 import { OrbitalTrails } from '../../components/OrbitalTrails/OrbitalTrails'
 
 const PATH = '/'
@@ -15,11 +13,10 @@ export default function Zero() {
 
   const { pathname } = useLocation()
   const { setCamera, setEffect } = useFiberStore()
-  const [visible, setVisible] = useState(pathname === PATH)
+  const visible = pathname === PATH
 
   useEffect(() => {
-    if(pathname === PATH) {
-      setVisible(true)
+    if(visible) {
       setCamera({ 
         enabled: true, 
         maxPolarAngle: MathUtils.degToRad(80),
@@ -29,10 +26,8 @@ export default function Zero() {
       setEffect({
         tiltshift: true
       })
-    } else {
-      setVisible(false)
     }
-  }, [pathname])
+  }, [visible, setCamera, setEffect])
 
   return (
       <>

@@ -1,23 +1,25 @@
 import { useGLTF } from '@react-three/drei'
-import { AnimatePresence, AnimationControls, Target, TargetAndTransition, Transition, VariantLabels } from 'framer-motion'
-import { motion } from 'framer-motion-3d'
-import { PropsWithChildren, useEffect, useMemo } from 'react'
+import { animated } from '@react-spring/three'
+import { PropsWithChildren, useMemo } from 'react'
 import { Material, Mesh } from 'three'
+import { Timing, useEnterExit } from '../../utils/useEnterExit'
 
 interface ITree {
   visible?: boolean
   type?: 'fat' | 'normal' |'tiny' | 'trunk'
   material?: Material
   position?: Vec3
-  initial?: Target | VariantLabels
-  animate?: AnimationControls | TargetAndTransition | VariantLabels
-  transition?: Transition
+  // Rotation about y, fixed for the tree's life.
+  rotateY?: number
+  // Scale the tree grows to from 0 when shown, and shrinks back from.
+  scale?: number
+  timing?: Timing
 }
 
 
-export function Tree({ 
+export function Tree({
   position,
-  transition, visible, type, initial = {}, animate, material 
+  timing = {}, visible, type, rotateY = 0, scale = 1, material
 }: PropsWithChildren<ITree>) {
 
   const {glbSrc, meshName} = useMemo(() => {
@@ -30,29 +32,31 @@ export function Tree({
     return {glbSrc, meshName}
   }, [type])
 
-    
+
   const { nodes } = useGLTF(glbSrc)
   const geom = nodes[meshName] as Mesh
   const baseGeom = nodes[`${meshName}_1`] as Mesh
 
-  return (
-    <AnimatePresence>
-      { visible && nodes && <motion.group
-        position={position}
-        transition={transition}
-        initial={initial}
-        exit={initial}
-        animate={animate}
-      >
-        <motion.mesh 
-          geometry={geom.geometry}
-          material={material || geom.material}
-        />
-        {type !== 'trunk' && <motion.mesh 
-          geometry={baseGeom.geometry}
-          material={baseGeom.material}
-        />}
-      </motion.group>}
-    </AnimatePresence>
-  )
+  const transitions = useEnterExit(visible && nodes, {
+    initial: { scale: 0 },
+    animate: { scale },
+    enter: timing,
+  })
+
+  return transitions((style) => (
+    <animated.group
+      position={position}
+      rotation-y={rotateY}
+      scale={style.scale}
+    >
+      <mesh
+        geometry={geom.geometry}
+        material={material || geom.material}
+      />
+      {type !== 'trunk' && <mesh
+        geometry={baseGeom.geometry}
+        material={baseGeom.material}
+      />}
+    </animated.group>
+  ))
 }

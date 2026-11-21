@@ -3,6 +3,7 @@ import { useThree } from "@react-three/fiber"
 import { RefObject, useEffect, useRef } from "react"
 import { CameraHelper, Group, PerspectiveCamera } from "three"
 import { useFiberStore } from "../../../stores/fiberStore"
+import { useDebug } from "../../../hooks/debug"
 import { useRigControl } from "./rigControl"
 
 interface ICamControl {
@@ -16,7 +17,8 @@ export function CamControls({ ref }: ICamControl) {
   const { set: setThree, viewport }= useThree()
   const camRef = useRef<PerspectiveCamera>(null)
   const controlRef = useRef<CameraControls>(null)
-  const { data: { debug, cam } } = useFiberStore()
+  const { data: { cam } } = useFiberStore()
+  const { on: debug } = useDebug()
   const { setCamPosition, setRigPosition, onControlEnd } = useRigControl(rigRef, controlRef, camRef, cam.worldLookAt)
 
   // update camera aspect ratio when initialised

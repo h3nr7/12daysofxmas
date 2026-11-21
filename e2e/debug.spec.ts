@@ -68,3 +68,49 @@ test.describe('the fake date (H3N-80)', () => {
     })
   }
 })
+
+test.describe('overlays and the Begin here link (H3N-81)', () => {
+  const NOV_21 = '2026-11-21T12:00:00'
+  const stats = (page: Page) => page.locator('.debug-stats')
+  const beginHere = (page: Page) => page.getByRole('link', { name: 'Begin here...' })
+
+  test('/?debug&date=2026-12-27 shows Stats and Begin here, which keeps debug', async ({ page }) => {
+    await open(page, NOV_21, '/?debug&date=2026-12-27')
+    await expect(stats(page)).toBeVisible()
+    await expect(beginHere(page)).toBeVisible()
+    await beginHere(page).click()
+    await expect(page).toHaveURL('/first?debug&date=2026-12-27')
+  })
+
+  test('Stats stays on after moving to a day page', async ({ page }) => {
+    await open(page, NOV_21, '/?debug&date=2026-12-27')
+    await homeButton(page).click()
+    await expect(page).toHaveURL('/third?debug&date=2026-12-27')
+    await expect(stats(page)).toBeVisible()
+  })
+
+  test('/?debug shows Stats and Begin here on the real date, with no page errors', async ({ page }) => {
+    const errors: string[] = []
+    page.on('pageerror', (err) => errors.push(err.message))
+    await open(page, NOV_21, '/?debug')
+    await expect(stats(page)).toBeVisible()
+    await expect(beginHere(page)).toBeVisible()
+    await expect(homeButton(page)).toBeDisabled()
+    expect(errors).toEqual([])
+  })
+
+  test('/eighth?debug keeps Stats once its scene has mounted', async ({ page }) => {
+    await open(page, NOV_21, '/eighth?debug')
+    await expect(page.locator('canvas[data-engine]')).toHaveCount(1, { timeout: 60_000 })
+    await page.waitForTimeout(2000)
+    await expect(stats(page)).toBeVisible()
+  })
+
+  test('/ shows neither Stats nor Begin here', async ({ page }) => {
+    await open(page, NOV_21, '/')
+    await expect(homeButton(page)).toBeVisible()
+    await page.waitForTimeout(4000) // past the link's 3s enter delay
+    await expect(stats(page)).toHaveCount(0)
+    await expect(beginHere(page)).toHaveCount(0)
+  })
+})

@@ -1,5 +1,6 @@
 import { useDateTime } from "../../hooks/dateTime";
 import { DebugLink, useDebugNavigate } from "../../hooks/debugNavigation";
+import { useDebug } from "../../hooks/debug";
 import './Zero.scss'
 import { Button } from "../../components/Button/Button"
 import { motion, Variants } from 'motion/react'
@@ -7,8 +8,6 @@ import { useMemo } from "react";
 import { DAYS, WAITING_PHRASE } from "../../helpers/constants";
 import { AnimText } from "../../components/AnimText";
 import { AnimCounter } from "../../components/AnimCounter/AnimCounter";
-
-const DEBUGGING = false
 
 const variants: Variants = {
   initial: {
@@ -33,6 +32,7 @@ export default function ZeroUI() {
 
   const { isNearXmas, timeLeft, isXmas, xmasDayCount } = useDateTime()
   const navi = useDebugNavigate();
+  const { on: debug } = useDebug();
   // eslint-disable-next-line react-hooks/exhaustive-deps -- pick a new phrase when Christmas starts or ends
   const phrase = useMemo(() => pickPhrase(), [isXmas])
 
@@ -79,7 +79,8 @@ export default function ZeroUI() {
           transition: { delay: 2.35, ease: "easeOut", duration: 0.35 }} 
         }  
       >{isXmas ? DAYS[xmasDayCount - 1].text : phrase}</Button>
-      {!isNearXmas || DEBUGGING && <motion.h6
+      {/* A shortcut into the days for testing; visitors never see it. */}
+      {debug && <motion.h6
         initial={{
           opacity: 0,
           y: -15

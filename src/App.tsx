@@ -4,7 +4,7 @@ import { Route, Routes, useLocation } from 'react-router'
 import { Navi } from './components/Navi/Navi'
 import { DAYS } from './helpers/constants'
 import { DateTimeProvider } from './hooks/dateTime'
-import { useFiberStore } from './stores/fiberStore'
+import { useDebug } from './hooks/debug'
 import { Stats } from '@react-three/drei'
 import { ThreeView } from './three/ThreeView'
 import ZeroUI from './routes/Zero/ZeroUI'
@@ -17,7 +17,7 @@ import { Loading } from './components/Loading/Loading'
 function App() {
   const main = useRef<HTMLDivElement>(null)
   const evtSrc = useMemo(() => main as RefObject<HTMLDivElement>, [main])
-  const { data: { debug } } = useFiberStore()
+  const { on: debug } = useDebug()
   return (
     <Suspense>
       <DateTimeProvider>
@@ -26,7 +26,7 @@ function App() {
             <GestureControls>
               {evtSrc && <ThreeView eventSource={evtSrc} />}
               <UI />
-              {debug && <Stats/>}
+              {debug && <Stats className="debug-stats" />}
               <Navi />
             </GestureControls>
             <Loading />

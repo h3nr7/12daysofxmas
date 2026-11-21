@@ -3,7 +3,7 @@
 Date: 2026-11-21
 Status: approved
 Size: large story
-Linear: H3N-59 (feature 2); features 1 and 3 to be created
+Linear: H3N-82 (feature 1), H3N-59 (feature 2), H3N-83 (feature 3)
 Project: 12daysofxmas (feature 2, H3N-59); h3nr7 coding tools (features 1 and 3)
 Builds on: 2026-11-21-revival-design.md (H3N-63, done); 2026-11-21-debug-mode-design.md (H3N-78, done)
 
@@ -230,7 +230,7 @@ shows its HTML.
 
 **Feature 1. The flock and canvas references, and the skill, in
 h3nr7-coding-tools.**
-Project: h3nr7 coding tools. Linear: to be created. Depends on nothing.
+Project: h3nr7 coding tools. Linear: H3N-82. Depends on nothing.
 
 - `references/webgpu-canvas/`: the lab's `webgpu-canvas.tsx` as is:
   `WebGPUCanvas` (async `WebGPURenderer` factory, no MSAA, `extend` at
@@ -289,8 +289,8 @@ is written when feature 1 is done, and covers:
   the H3N-59 open questions answered on the issue.
 
 **Feature 3. The ui reference in h3nr7-coding-tools.**
-Project: h3nr7 coding tools. Linear: to be created. Depends on nothing; can
-be built beside feature 2.
+Project: h3nr7 coding tools. Linear: H3N-83. Depends on nothing; can be
+built beside feature 2.
 
 - `references/ui/`: h3nr7's own components, the lib, `tokens.css` with the
   font families over system fallbacks, and `scramble.css`. Not shadcn's set,

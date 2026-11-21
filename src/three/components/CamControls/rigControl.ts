@@ -1,6 +1,6 @@
 import { CameraControls } from "@react-three/drei"
 import { frame, SpringOptions, useMotionValueEvent, useSpring, useTransform } from 'motion/react'
-import { RefObject, useEffect, useState } from "react"
+import { RefObject, useCallback, useEffect, useState } from "react"
 import { Group, PerspectiveCamera, Vector3 } from "three"
 
 const DEFAULT_SPRING:SpringOptions = {
@@ -61,23 +61,20 @@ export function useRigControl(
 
   }, [rigPosition, camPosition, px, py, pz, cx, cy, cz])
 
-  // this is to save the camera position after dolly
-  useEffect(() => {
-    const controls = controlRef.current
-    if (!controls) return
-    const onControlEnd = (e: { type: 'controlend' }) => {
-      // camera-controls sets `target` on the events it dispatches, but its types don't declare it.
-      const { camera } = (e as typeof e & { target: CameraControls }).target
-      // Move the springs to where the user left the camera without animating
-      // there (framer-motion 11's set(v, false); motion 14's jump(v)).
-      frame.read(() =>{
-        cx.jump(camera.position.x)
-        cy.jump(camera.position.y)
-        cz.jump(camera.position.z)
-      })
-    }
-    controls.addEventListener('controlend', onControlEnd)
-    return () => controls.removeEventListener('controlend', onControlEnd)
+  // Saves where the visitor left the camera after an orbit or zoom, so the
+  // next glide starts from there. Pass it to <CameraControls onControlEnd>:
+  // drei makes a new controls object whenever the default camera changes and
+  // moves its handlers onto it, which a listener added here would miss.
+  const onControlEnd = useCallback(() => {
+    const camera = controlRef.current?.camera
+    if (!camera) return
+    // Move the springs there without animating (framer-motion 11's
+    // set(v, false); motion 14's jump(v)).
+    frame.read(() =>{
+      cx.jump(camera.position.x)
+      cy.jump(camera.position.y)
+      cz.jump(camera.position.z)
+    })
   }, [controlRef, cx, cy, cz])
 
   useMotionValueEvent(pos, 'change', ([latestCam, latest]) => {
@@ -92,5 +89,5 @@ export function useRigControl(
     camRef.current.updateProjectionMatrix()
   })
 
-  return { setRigPosition, setCamPosition }
+  return { setRigPosition, setCamPosition, onControlEnd }
 }

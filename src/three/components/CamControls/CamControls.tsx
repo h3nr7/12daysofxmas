@@ -17,7 +17,7 @@ export function CamControls({ ref }: ICamControl) {
   const camRef = useRef<PerspectiveCamera>(null)
   const controlRef = useRef<CameraControls>(null)
   const { data: { debug, cam } } = useFiberStore()
-  const { setCamPosition, setRigPosition } = useRigControl(rigRef, controlRef, camRef, cam.worldLookAt)
+  const { setCamPosition, setRigPosition, onControlEnd } = useRigControl(rigRef, controlRef, camRef, cam.worldLookAt)
 
   // update camera aspect ratio when initialised
   useEffect(() => {
@@ -54,7 +54,8 @@ export function CamControls({ ref }: ICamControl) {
         // touches={{ one: CControl.ACTION.TOUCH_ROTATE, two: CControl.ACTION.NONE, three: CControl.ACTION.NONE }}
         minDistance={cam.minMaxDistance[0]}
         maxDistance={cam.minMaxDistance[1]}
-        maxPolarAngle={cam.maxPolarAngle} 
+        maxPolarAngle={cam.maxPolarAngle}
+        onControlEnd={onControlEnd}
         ref={controlRef}>
       </CameraControls>
     </group>

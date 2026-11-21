@@ -1,11 +1,12 @@
 import { useTransition, type SpringConfig } from '@react-spring/three'
-import { easeInOut } from 'motion/react'
+import { easeOut } from 'motion/react'
 
 /**
  * Timing for one phase, written the way framer-motion wrote it (seconds).
  *
- * - A tween: `duration` and/or `delay`. Eased with framer-motion's default
- *   `easeInOut`. A tween with no duration lasts 0.3 s, as framer-motion did.
+ * - A tween: `duration` and/or `delay`. Eased out, as framer-motion 11 did:
+ *   its animateMotionValue sets `ease: "easeOut"` on every transition that
+ *   names no ease. A tween with no duration lasts 0.3 s, as framer-motion did.
  * - A spring: `spring` with tension/friction, which match framer-motion's
  *   stiffness/damping.
  */
@@ -25,7 +26,7 @@ export function toSpring(timing: Timing): { config: SpringConfig; delay: number 
   const seconds = timing.duration ?? DEFAULT_TWEEN_SECONDS
   // react-spring treats a duration of 0 as "no duration" and falls back to
   // a spring, so an instant tween becomes 1 ms.
-  return { config: { duration: Math.max(seconds * 1000, 1), easing: easeInOut }, delay }
+  return { config: { duration: Math.max(seconds * 1000, 1), easing: easeOut }, delay }
 }
 
 type Values = Record<string, number>

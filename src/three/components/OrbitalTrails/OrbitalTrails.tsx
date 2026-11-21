@@ -4,7 +4,7 @@ import { Texture, Vector3 } from "three";
 import { Trail } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { animated, useSpring } from '@react-spring/three'
-import { easeInOut } from 'motion/react'
+import { easeOut } from 'motion/react'
 import { RGBELoader } from "three/examples/jsm/Addons.js";
 import { randomOrbit } from "../../utils/vecs";
 import { toSpring, useEnterExit } from '../../utils/useEnterExit'
@@ -86,8 +86,8 @@ export function OrbitalTrails({
 }
 
 /**
- * A particle that laps its orbit every 8 s, easing in and out between each
- * pair of points as framer-motion's keyframes did, and on exit falls to
+ * A particle that laps its orbit every 8 s, easing out between each pair of
+ * points as framer-motion's keyframes did, and on exit falls to
  * (0, 1.8, 0) over 1.2 s from wherever it is.
  */
 function OrbitParticle({ points, leaving, texture }: { points: Vector3[], leaving: boolean, texture: Texture }) {
@@ -105,7 +105,7 @@ function OrbitParticle({ points, leaving, texture }: { points: Vector3[], leavin
     const lap = ((clock.elapsedTime - startedAt.current) % LAP_SECONDS) / LAP_SECONDS
     const at = lap * segments
     const i = Math.min(Math.floor(at), segments - 1)
-    const t = easeInOut(at - i)
+    const t = easeOut(at - i)
     const a = points[i], b = points[i + 1]
     api.set({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, z: a.z + (b.z - a.z) * t })
   })

@@ -1,18 +1,18 @@
 import { describe, expect, it } from 'vitest'
-import { easeInOut } from 'motion/react'
+import { easeOut } from 'motion/react'
 import { toSpring, TRANSFORM_SPRING } from './useEnterExit'
 
 describe('toSpring', () => {
-  it('turns a framer-motion tween in seconds into a react-spring tween in ms with easeInOut', () => {
+  it('turns a framer-motion tween in seconds into a react-spring tween in ms, eased out as framer-motion did', () => {
     expect(toSpring({ duration: 1.25, delay: 3.2 })).toEqual({
-      config: { duration: 1250, easing: easeInOut },
+      config: { duration: 1250, easing: easeOut },
       delay: 3200,
     })
   })
 
   it('gives a tween with no duration 0.3 s, as framer-motion does', () => {
-    expect(toSpring({ duration: undefined })).toEqual({ config: { duration: 300, easing: easeInOut }, delay: 0 })
-    expect(toSpring({ delay: 1 })).toEqual({ config: { duration: 300, easing: easeInOut }, delay: 1000 })
+    expect(toSpring({ duration: undefined })).toEqual({ config: { duration: 300, easing: easeOut }, delay: 0 })
+    expect(toSpring({ delay: 1 })).toEqual({ config: { duration: 300, easing: easeOut }, delay: 1000 })
   })
 
   it('keeps an instant tween instant instead of falling back to a spring', () => {

@@ -12,9 +12,16 @@ const DAY_ROUTES = [...constantsSource.matchAll(/\bday:\s*["']([^"']+)["']/g)].m
 
 const ROUTES = ['/', ...DAY_ROUTES, '/sandbox']
 
+// Routes with a 3D scene mounted in src/three/ThreeView.tsx.
+const SCENE_ROUTES = ['/', '/first', '/fifth', '/eighth', '/sandbox']
+
+// Until 2026-11-21 every route ran under both clocks (29 tests). The scenes
+// are about to be reworked, so the owner cut it back to the routes with a
+// scene, plus the countdown on / before Christmas. The rest are listed as
+// skipped. To run them all again, set `runs` to ROUTES on both clocks.
 const CLOCKS = [
-  { name: 'during Christmas', time: '2026-12-27T12:00:00' },
-  { name: 'before Christmas', time: '2026-11-21T12:00:00' },
+  { name: 'during Christmas', time: '2026-12-27T12:00:00', runs: SCENE_ROUTES },
+  { name: 'before Christmas', time: '2026-11-21T12:00:00', runs: ['/'] },
 ]
 
 // Errors that are known and harmless. Each entry needs a reason.
@@ -75,6 +82,7 @@ for (const clock of CLOCKS) {
   test.describe(clock.name, () => {
     for (const route of ROUTES) {
       test(`${route} mounts with a live canvas and no errors`, async ({ page }) => {
+        test.skip(!clock.runs.includes(route), 'cut back while the scenes are reworked; see CLOCKS')
         const errors = watchErrors(page)
         // index.html loads the Adobe Fonts (Typekit) stylesheet. Fonts aren't
         // what this test checks, so a slow or failed third-party download

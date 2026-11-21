@@ -92,9 +92,15 @@ const navigateInApp = (page: Page, to: string) =>
     window.dispatchEvent(new PopStateEvent('popstate'))
   }, to)
 
+// Skipped since 2026-11-21 at the owner's request: the scene animations are
+// about to be reworked. Rewrite this test for the new camera moves then.
+// It failed without the fix in 8821135, and passed with the fix and on the
+// original code. Under software rendering each run needs most of its
+// timeout, much of it in the drag, and it timed out in CI.
+//
 // Both scenes have their own viewpoint, so the camera glides to it.
 for (const to of ['/first', '/fifth']) {
-  test(`after an orbit, going to ${to} glides the camera from where the visitor left it`, async ({ page }) => {
+  test.skip(`after an orbit, going to ${to} glides the camera from where the visitor left it`, async ({ page }) => {
     await hookCamera(page)
     // Fonts aren't what this test checks. See H3N-76.
     await page.route('https://use.typekit.net/**', (r) => r.fulfill({ status: 200, contentType: 'text/css', body: '' }))

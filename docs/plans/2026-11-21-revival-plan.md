@@ -237,6 +237,12 @@ constants.
 
 **Linear:** H3N-68
 
+**Ruling (2026-11-21, owner):** after the build, cut back to the five routes
+with a 3D scene during Christmas, plus `/` before Christmas: 6 of the 28
+route tests run, and the rest are listed as skipped. The scenes are about to
+be reworked. `e2e/camera.spec.ts`, added by the final review, is skipped for
+the same reason.
+
 **Goal:** A Playwright test proves every route mounts with a live 3D canvas
 and no errors, against the production build.
 

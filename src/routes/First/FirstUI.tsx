@@ -1,13 +1,8 @@
-import { useNavigate } from "react-router";
-import { motion } from 'framer-motion'
-import { Color } from "three";
-import { AnimatePresence } from "framer-motion";
 import { AnimText } from "../../components/AnimText";
 import './First.scss'
 
 export default function FirstUI() {
 
-  const navi = useNavigate();
   
   return (
     <div className="first__ui">

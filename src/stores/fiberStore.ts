@@ -1,12 +1,9 @@
-import { MathUtils } from 'three'
-import { fog } from 'three/webgpu'
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
 
 interface IFiberState {
   data: {
-    debug?: boolean
     cam: {
       isDefault?: boolean
       duration: number 
@@ -45,12 +42,10 @@ interface IFiberReducer {
   setDrag: (props: {
     x: number, y: number
   }) => void
-  setDebug: (state: boolean) => void
 }
 
 export const initialState: IFiberState = {
   data: {
-    debug: false,
     cam: {
       isDefault: true,
       duration: 1.5,
@@ -73,7 +68,6 @@ export const initialState: IFiberState = {
 
 export const useFiberStore = create<IFiberState & IFiberReducer>()(immer(set => ({
   data: initialState.data,
-  setDebug: isDebug => set(state => { state.data.debug = isDebug }),
   setCamera: ({ 
     isDefault, duration, enabled, localPosition: position, worldLookAt: lookAt, minMaxDistance, maxPolarAngle
   }) => set(state => {

@@ -1,147 +1,119 @@
-import { CubeCamera, MeshRefractionMaterial, useGLTF } from '@react-three/drei'
-import { MeshProps, useLoader } from '@react-three/fiber'
-import { motion,  } from 'framer-motion-3d'
-import { PropsWithChildren, Suspense, useEffect, useMemo, useRef } from 'react'
-import { Mesh, MeshBasicMaterial } from 'three'
-import { RGBELoader } from 'three/examples/jsm/Addons.js'
+import { PropsWithChildren, useMemo } from 'react'
 import { useMobile } from '../../../hooks/isMobile'
 import { Tree } from './Tree'
-import { lerp, mapLinear } from 'three/src/math/MathUtils.js'
-import { AnimatePresence } from 'framer-motion'
-import { useLocation } from 'react-router'
 import { randomDistance } from '../../utils/vecs'
 import { randomTiming } from '../../utils/time'
+import { Timing } from '../../utils/useEnterExit'
 
 interface IForest {
   visible?: boolean
+}
+
+interface TreeSpec {
+  x: number
+  y: number
+  z: number
+  rotateY: number
+  scale: number
+  timing: Timing
+}
+
+// Normal trees grow with a plain 0.3 s tween and no delay. They used to be
+// given `{ duration: t.duration }`, a field that was never set, which
+// framer-motion treated as its 0.3 s default. Kept as it was.
+const NORMAL_TREE_TIMING: Timing = {}
+
+/**
+ * A randomly placed group of trees. The layout is random on purpose and is
+ * made once per forest size (see the useMemo below).
+ */
+function plantTrees(count: number, distance: number, minScale: number, scaleRange: number): TreeSpec[] {
+  const trees: TreeSpec[] = []
+  for (let i = 0; i < count; i++) {
+    const { x, z } = randomDistance(distance)
+    trees.push({
+      x,
+      y: 0,
+      z,
+      rotateY: 2 * Math.PI * Math.random(),
+      scale: minScale + Math.random() * scaleRange,
+      timing: randomTiming(),
+    })
+  }
+  return trees
 }
 
 export default function Forest({ visible }: PropsWithChildren<IForest>) {
 
   const isMobile = useMobile()
   const { maxTree, maxFatTree, maxTinyTree, maxTrunk, distance } = useMemo(() => isMobile === true || isMobile === undefined ? {
-    maxTree: 40, 
-    maxFatTree: 25, 
-    maxTinyTree: 30, 
-    maxTrunk: 15, 
+    maxTree: 40,
+    maxFatTree: 25,
+    maxTinyTree: 30,
+    maxTrunk: 15,
     distance: 5.0
   } : {
-    maxTree: 250, 
-    maxFatTree: 100, 
-    maxTinyTree: 50, 
-    maxTrunk: 50, 
+    maxTree: 250,
+    maxFatTree: 100,
+    maxTinyTree: 50,
+    maxTrunk: 50,
     distance: 9.0
   }, [isMobile])
 
-  const {trees, fatTrees, tinyTrees, trunks} = useMemo(() => {
-    const trees:Record<string, any>[] = []
-    const fatTrees:Record<string, any>[] = []
-    const tinyTrees:Record<string, any>[] = []
-    const trunks:Record<string, any>[] = []
-
-    for (let i=0; i<maxTree; i++) {
-      const {x, z} = randomDistance(distance)
-      trees.push({
-        x,
-        y: 0,
-        z,
-        rotateY: 2 * Math.PI * Math.random(),
-        scale: 0.05 + Math.random() * .2,
-        transition: randomTiming()
-      })
-    }
-
-    for (let i=0; i<maxFatTree; i++) {
-      const {x, z} = randomDistance(distance)
-      fatTrees.push({
-        x,
-        y: 0,
-        z,
-        rotateY: 2 * Math.PI * Math.random(),
-        scale: 0.1 + Math.random() * .2,
-        transition: randomTiming()
-      })
-    }
-
-    for (let i=0; i<maxTinyTree; i++) {
-      const {x, z} = randomDistance(distance)
-      tinyTrees.push({
-        x,
-        y: 0,
-        z,
-        rotateY: 2 * Math.PI * Math.random(),
-        scale: 0.05 + Math.random() * .2,
-        transition: randomTiming()
-      })
-    }
-
-    for (let i=0; i<maxTrunk; i++) {
-      const {x, z} = randomDistance(distance)
-      trunks.push({
-        x,
-        y: 0,
-        z,
-        rotateY: 2 * Math.PI * Math.random(),
-        scale: 0.1 + Math.random() * .1,
-        transition: randomTiming()
-      })
-    }
-
-    return {
-      trees,
-      fatTrees,
-      tinyTrees,
-      trunks
-    }
-  }, [isMobile])
+  const {trees, fatTrees, tinyTrees, trunks} = useMemo(() => ({
+    trees: plantTrees(maxTree, distance, 0.05, 0.2),
+    fatTrees: plantTrees(maxFatTree, distance, 0.1, 0.2),
+    tinyTrees: plantTrees(maxTinyTree, distance, 0.05, 0.2),
+    trunks: plantTrees(maxTrunk, distance, 0.1, 0.1),
+  }), [maxTree, maxFatTree, maxTinyTree, maxTrunk, distance])
 
   return (
     <>
       {trees.map((t, i) => (
-        <Tree 
+        <Tree
           visible={visible}
           type="normal"
           key={`normal_${i}`}
           position={[t.x, t.y, t.z]}
-          transition={{duration: t.duration}}
-          initial={{ scale: 0, rotateY: t.rotateY }}
-          animate={{ scale: t.scale }}
+          rotateY={t.rotateY}
+          scale={t.scale}
+          timing={NORMAL_TREE_TIMING}
         />
       ))}
 
       {fatTrees.map((t, i) => (
-        <Tree 
+        <Tree
           visible={visible}
           type="fat"
           key={`fat_${i}`}
           position={[t.x, t.y, t.z]}
-          transition={t.transition}
-          initial={{ scale: 0, rotateY: t.rotateY }}
-          animate={{ scale: t.scale }}
+          rotateY={t.rotateY}
+          scale={t.scale}
+          timing={t.timing}
         />
       ))}
 
       {tinyTrees.map((t, i) => (
-        <Tree 
+        <Tree
           visible={visible}
           type="tiny"
           key={`tiny_${i}`}
           position={[t.x, t.y, t.z]}
-          transition={t.transition}
-          initial={{ scale: 0, rotateY: t.rotateY }}
-          animate={{ scale: t.scale }}
+          rotateY={t.rotateY}
+          scale={t.scale}
+          timing={t.timing}
         />
       ))}
 
       {trunks.map((t, i) => (
-        <Tree 
+        <Tree
           visible={visible}
           type="trunk"
           key={`trunk_${i}`}
           position={[t.x, t.y, t.z]}
-          transition={t.transition}
-          initial={{ scale: 0, rotateY: t.rotateY }}
-          animate={{ scale: t.scale }}
+          rotateY={t.rotateY}
+          scale={t.scale}
+          timing={t.timing}
         />
       ))}
     </>

@@ -1,6 +1,5 @@
-import { PropsWithChildren, ButtonHTMLAttributes, MouseEventHandler } from "react"
-import styled from 'styled-components'
-import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion'
+import { PropsWithChildren, MouseEventHandler } from "react"
+import { AnimatePresence, HTMLMotionProps, motion } from 'motion/react'
 import { useMobile } from "../../hooks/isMobile"
 
 export function Button({ visible = true, children, onClick, btnProps }: PropsWithChildren<{

@@ -1,16 +1,7 @@
-import { createContext, forwardRef, PropsWithChildren, RefObject, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { useFiberStore } from "../stores/fiberStore";
-import { useWindowSize } from "./windowSize";
-import { MoveGesture } from "@use-gesture/vanilla";
-
-
-interface IGestureControls {
-  className?: string
-
-}
+import { createContext, PropsWithChildren, RefObject, useContext, useRef } from "react";
 
 const initials: {
-  ref: RefObject<HTMLDivElement> | null
+  ref: RefObject<HTMLDivElement | null> | null
   // movement: [number ,number]
 } = {
   ref: null,
@@ -23,9 +14,6 @@ export function GestureControls({ children }: PropsWithChildren) {
 
   const divRef = useRef<HTMLDivElement>(null)
 
-  const [movement, setMovement] = useState([0,0])
-  const [width, height] = useWindowSize()
-  const minDistance = useMemo(() => Math.min(width, height), [width, height])
   // const bind = useGest({
   //   // onDrag: ({ delta: [x, y] }) => setDrag([x/minDistance, -y/minDistance]),
   //   onMove: ({ xy: [x ,y] }) => {
@@ -65,4 +53,5 @@ export function GestureControls({ children }: PropsWithChildren) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- context hook lives beside its provider
 export const useGestureControls = () => useContext(gestureCtx)

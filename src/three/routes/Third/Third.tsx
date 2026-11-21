@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
 
@@ -10,22 +10,19 @@ export function Third() {
 
   const { pathname } = useLocation()
   const { setCamera } = useFiberStore()
-  const [visible, setVisible] = useState(pathname === PATH)
+  const visible = pathname === PATH
 
 
 
 
   useEffect(() => {
-    if(pathname === PATH) {
-      setVisible(true)
+    if(visible) {
       setCamera({
         localPosition: [-2.5, 1.8, -2.5],
         worldLookAt: sceneCenter
       })
-    } else {
-      setVisible(false)
     }
-  }, [pathname])
+  }, [visible, setCamera])
 
   return (
     <scene>

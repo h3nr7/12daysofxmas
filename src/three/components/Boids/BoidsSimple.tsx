@@ -1,5 +1,5 @@
 import SimpleBirdGeometry from "./geometry/SimpleBirdGeometry"
-import { DoubleSide, ShaderMaterial, Color, Texture, MeshBasicMaterial } from 'three'
+import { DoubleSide, ShaderMaterial, Color, Texture } from 'three'
 import { useMemo } from 'react'
 import { vert } from "./shaders/vert";
 import { frag } from "./shaders/frag";
@@ -19,9 +19,6 @@ export function BoidsSimple() {
 
   const birdUniforms = useMemo(() => {
 
-    const nColor = new Color( 0x00ff00 )
-    nColor.setHex( Math.random() * 0xffffff )
-
     return  {
       birdColor: { value: new Color( 0x00ff00 ) },
       texturePosition: { value: new Texture() },
@@ -35,8 +32,10 @@ export function BoidsSimple() {
 
     if(!computationRenderer || !positionVariable || !velocityVariable) return
 
+    /* eslint-disable react-hooks/immutability -- three.js uniforms are written every frame by design */
     birdUniforms[ 'texturePosition' ].value = computationRenderer.getCurrentRenderTarget( positionVariable ).texture;
     birdUniforms[ 'textureVelocity' ].value = computationRenderer.getCurrentRenderTarget( velocityVariable ).texture;
+    /* eslint-enable react-hooks/immutability */
 
   })
 

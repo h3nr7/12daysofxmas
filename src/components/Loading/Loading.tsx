@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useSpring, useTransform } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import { useAssetsLoader } from '../../hooks/AssetsLoader/AssetsLoader'
 import './Loading.scss'
 

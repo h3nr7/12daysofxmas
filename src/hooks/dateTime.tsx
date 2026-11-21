@@ -1,12 +1,14 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { DateTime, Interval } from 'luxon'
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
+import { DateTime } from 'luxon'
+import { computeXmasState, XmasState } from "./xmasCountdown";
+import { debugOffset, useDebug } from "./debug";
 
-const initials = {
+const initials: XmasState = {
   curDay: 0,
   isNearXmas: true,
   isXmas: false,
   xmasDayCount: -1,
-  timeLeft: { months: 12, days: 0, hours: 0, mins: 0, secs: 0 },
+  timeLeft: { days: 0, hours: 0, mins: 0, secs: 0 },
   curIso: ""
 }
 
@@ -14,59 +16,25 @@ const dtCtx = createContext(initials)
 
 export function DateTimeProvider({ children }: PropsWithChildren) {
 
-  const [curIso, setCurIso] = useState(initials.curIso)
-  const [curDay, setCurDay] = useState(initials.curDay)
-  const [isNearXmas, setIsNearXmas] = useState(initials.isNearXmas)
-  const [isXmas, setIsXmas] = useState(initials.isXmas)
-  const [xmasDayCount, setXmasDayCount] = useState(-1)
-  const [timeLeft, setTimeLeft] = useState(initials.timeLeft)
+  // Debug mode's fake date (?debug&date=YYYY-MM-DD) as a fixed shift of the
+  // clock, worked out once per date so the fake clock keeps running. 0 normally.
+  const { date } = useDebug()
+  const offset = useMemo(() => debugOffset(date, DateTime.now()), [date])
+
+  // Computed on mount, so the first render already shows the countdown.
+  const [state, setState] = useState(() => computeXmasState(DateTime.now().plus(offset)))
 
   useEffect(() => {
-    const id = setInterval(() => {
-      const dt = DateTime.now()
-      // work out if it is that special 5 days in new year
-      let activeYear = dt.year
-      if(dt.month === 1 && dt.day < 5) activeYear = dt.year - 1
-      const start = DateTime.utc(activeYear, 12, 25, 0, 0, 0, 0)
-      const end = DateTime.utc((activeYear + 1), 1, 6, 0, 0, 0, 0)
-      const period = Interval.fromDateTimes(start, end)
-      const left = start.diffNow('seconds').seconds
-
-      setCurIso(dt.toISO())
-      setCurDay(dt.day)
-      setIsNearXmas(dt.month === 12 || dt.month === 1)
-      const secs = Math.ceil(left%60)
-      const mins = Math.floor(left/60%60)
-      const hours = Math.floor(left/(60*60)%24)
-      const days = Math.floor(left/(60*60*24))
-      const months = Math.floor(left/(60*60*24*12))
-      setTimeLeft({
-        months,
-        days,
-        hours,
-        mins,
-        secs
-      })
-      setIsXmas(period.contains(dt))
-
-      // if it is during xmas
-      if(period.contains(dt)) {
-        setXmasDayCount(Math.abs(days))
-      }
-    }, 1000);
+    const tick = () => setState(computeXmasState(DateTime.now().plus(offset)))
+    tick() // at once when the offset changes, not a second later
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id)
-  }, [])
+  }, [offset])
 
   return (
-    <dtCtx.Provider value={{
-      curIso,
-      curDay,
-      isNearXmas,
-      isXmas,
-      xmasDayCount,
-      timeLeft
-    }}>{children}</dtCtx.Provider>
+    <dtCtx.Provider value={state}>{children}</dtCtx.Provider>
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- context hook lives beside its provider
 export const useDateTime = () => useContext(dtCtx)

@@ -5,14 +5,13 @@ import {
 } from "three";
 import { useBoids } from "./Boids";
 import { useGLTF } from "@react-three/drei";
-import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
+import { PropsWithChildren, useCallback, useMemo, useRef, useState } from "react";
 import { BIRDS, WIDTH } from ".";
 import { glsl } from "typed-glsl";
 import { vec3 } from 'gl-matrix'
-import { useFrame, useLoader } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { nextPowerOf2 } from "./helpers/math";
 import { BoidsGltfProps } from "./Boids.interface";
-import { RGBELoader } from "three/examples/jsm/Addons.js";
 
 
 export function BoidsGltf({
@@ -21,7 +20,7 @@ export function BoidsGltf({
   url
 }: PropsWithChildren<BoidsGltfProps>) {
 
-  let [materialShader, setMaterialShader] = useState<WebGLProgramParametersWithUniforms>()
+  const [materialShader, setMaterialShader] = useState<WebGLProgramParametersWithUniforms>()
   const { computationRenderer, positionVariable, velocityVariable } = useBoids()
   const gltf = useGLTF(url)
 
@@ -42,6 +41,7 @@ export function BoidsGltf({
     const birdGeo = (gltf.scene.children[ 0 ] as Mesh).geometry
     const birdMaterialMap = ((gltf.scene.children[ 0 ] as Mesh).material as MeshStandardMaterial).map
     const morphAttributes = birdGeo.morphAttributes.position
+    if (!morphAttributes) throw new Error('BoidsGltf: the model has no position morph targets to animate')
     const tWidth = nextPowerOf2( birdGeo.getAttribute( 'position' ).count )
     const tHeight = nextPowerOf2( durationAnimation )
     const indicesPerBird = birdGeo.index?.count || 0
@@ -105,6 +105,7 @@ export function BoidsGltf({
     }
 
     // randomly placed the birds and its references
+    /* eslint-disable react-hooks/purity -- random seeds for the flock, made once per model in this useMemo */
     let r = Math.random();
     for ( let i = 0; i < birdGeo.getAttribute( 'position' ).count * BIRDS; i ++ ) {
 
@@ -118,6 +119,7 @@ export function BoidsGltf({
       seeds.push( bird, r, Math.random(), Math.random() );
 
     }
+    /* eslint-enable react-hooks/purity */
 
     // indices for allt each bird and its vertices
     const birdGeoArr = birdGeo.index?.array || []
@@ -159,6 +161,7 @@ export function BoidsGltf({
   }, [birdMaterialMap])
 
   // modify shanders on before compile
+  // eslint-disable-next-line react-hooks/immutability -- three.js materials take onBeforeCompile by assignment
   material.onBeforeCompile = useCallback(shader => {
 
     shader.uniforms.texturePosition = { value: null };
@@ -231,23 +234,27 @@ export function BoidsGltf({
 
     setMaterialShader(shader)
 
-  }, [textureAnimation, birdMaterialMap])
+  }, [textureAnimation, computationRenderer, positionVariable, velocityVariable, size])
 
   // finally animation frame
-  let last = performance.now()
+  // Time of the previous frame. A ref, so a re-render doesn't reset it.
+  const last = useRef<number | null>(null)
+  // eslint-disable-next-line react-hooks/immutability -- the frame loop writes three.js uniforms by design
   useFrame(f => {
     if(!computationRenderer || !positionVariable || !velocityVariable || !materialShader) return
-    let now = f.clock.oldTime
-    let delta = ( now - last ) / 1000;
+    const now = f.clock.oldTime
+    let delta = last.current === null ? 0 : ( now - last.current ) / 1000;
 
 
     if ( delta > 1 ) delta = 1; // safety cap on large deltas
-    last = now;
+    last.current = now;
+    /* eslint-disable react-hooks/immutability -- three.js uniforms are written every frame by design */
     materialShader.uniforms[ 'time' ].value = now / 1000;
     materialShader.uniforms[ 'delta' ].value = delta;
 
     materialShader.uniforms[ 'texturePosition' ].value = computationRenderer.getCurrentRenderTarget( positionVariable ).texture;
     materialShader.uniforms[ 'textureVelocity' ].value = computationRenderer.getCurrentRenderTarget( velocityVariable ).texture;
+    /* eslint-enable react-hooks/immutability */
 
   })
 

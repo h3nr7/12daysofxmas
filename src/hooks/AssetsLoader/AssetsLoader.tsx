@@ -1,5 +1,5 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { DefaultLoadingManager, LoadingManager } from "three";
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { DefaultLoadingManager } from "three";
 
 
 const initial:{
@@ -23,7 +23,7 @@ export function AssetsLoader({ children }: PropsWithChildren) {
   useEffect(() => {
     if(!DefaultLoadingManager) return
     
-    DefaultLoadingManager.onStart = (url, progress, total) => {
+    DefaultLoadingManager.onStart = () => {
       setLoading(true)
       setErrorMessage(undefined)
     }
@@ -43,7 +43,7 @@ export function AssetsLoader({ children }: PropsWithChildren) {
       setErrorMessage(err)
     }
 
-  }, [DefaultLoadingManager])
+  }, [])
 
   return (
     <ctx.Provider value={{
@@ -54,4 +54,5 @@ export function AssetsLoader({ children }: PropsWithChildren) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- context hook lives beside its provider
 export const useAssetsLoader = () => useContext(ctx);

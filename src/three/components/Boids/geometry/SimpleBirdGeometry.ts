@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { extend, Object3DNode } from '@react-three/fiber'
+import { extend, ThreeElement } from '@react-three/fiber'
 
 const WIDTH = 32;
 const BIRDS = WIDTH * WIDTH;
@@ -103,7 +103,7 @@ extend({ SimpleBirdGeometry })
 // declaration
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    simpleBirdGeometry: Object3DNode<SimpleBirdGeometry, typeof SimpleBirdGeometry>
+    simpleBirdGeometry: ThreeElement<typeof SimpleBirdGeometry>
   }
 }
 

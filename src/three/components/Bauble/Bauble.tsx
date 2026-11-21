@@ -1,16 +1,14 @@
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { BallCollider, CylinderCollider, RigidBody } from "@react-three/rapier";
-import { useEffect, useRef } from "react";
-import { MathUtils, Mesh, MeshLambertMaterial, MeshStandardMaterial, SphereGeometry, Vector3 } from "three";
+import { BallCollider, CylinderCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
+import { useRef } from "react";
+import { Mesh, MeshLambertMaterial, MeshStandardMaterial, SphereGeometry } from "three";
 
 interface IBauble {
   visible?: boolean
   scale?: number
   position?: Vec3
 }
-
-const URL = "cap.glb"
 
 export function Bauble({
   visible = true,
@@ -25,13 +23,12 @@ export function Bauble({
   const capMaterial = new MeshStandardMaterial({ metalness: 0.75, roughness: 0.15, color: "#8a492f", emissive: "#600000", envMapIntensity: 20 })
   const sphereGeometry = new SphereGeometry(1, 28, 28)
 
-  const vec = new Vector3()
-
-  const api = useRef<any>(null)
-  useFrame((state, delta) => {
+  const api = useRef<RapierRigidBody>(null)
+  useFrame(() => {
     if(!api.current) return
-    delta = Math.min(0.1, delta)
 
+    // const vec = new Vector3()
+    // delta = Math.min(0.1, delta)
     // api.current.applyImpulse(
     //   vec
     //     .copy(api.current.translation())
@@ -39,8 +36,6 @@ export function Bauble({
     //     .multiply({ x: -5 * delta * scale, y: -15 * delta * scale, z: -5 * delta * scale }),
     // )
   })
-
-  const r = MathUtils.randFloatSpread
 
   return visible && nodes && (
     <RigidBody position={position} colliders={false} ref={api}>

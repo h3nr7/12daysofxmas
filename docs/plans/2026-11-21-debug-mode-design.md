@@ -3,7 +3,7 @@
 Date: 2026-11-21
 Status: approved
 Size: feature
-Linear: to be created
+Linear: H3N-78
 Project: 12daysofxmas
 Builds on: [Revival design](2026-11-21-revival-design.md) (H3N-63), the countdown rules from H3N-66, and H3N-77 (the home page title).
 

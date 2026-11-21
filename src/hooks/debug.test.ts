@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { parseDebug, withDebug } from './debug'
+import { DateTime } from 'luxon'
+import { debugOffset, parseDebug, withDebug } from './debug'
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -67,5 +68,25 @@ describe('withDebug', () => {
   it('drops an invalid date', () => {
     vi.spyOn(console, 'warn').mockImplementation(() => {})
     expect(withDebug('/', '?debug&date=tomorrow')).toBe('/?debug')
+  })
+})
+
+describe.each(['Europe/London', 'Pacific/Auckland'])('debugOffset in %s', (zone) => {
+  const at = (iso: string) => DateTime.fromISO(iso, { zone })
+  const wallClock = (d: DateTime) => d.toFormat("yyyy-MM-dd'T'HH:mm:ss")
+
+  it('is 0 with no date', () => {
+    expect(debugOffset(undefined, at('2026-11-21T17:10:05'))).toBe(0)
+  })
+
+  it('moves now to the date, keeping the time of day', () => {
+    const now = at('2026-11-21T17:10:05')
+    expect(wallClock(now.plus(debugOffset('2026-12-27', now)))).toBe('2026-12-27T17:10:05')
+  })
+
+  it('lets the fake clock run on past midnight', () => {
+    const now = at('2026-11-21T23:00:00')
+    const later = now.plus(debugOffset('2026-12-27', now)).plus({ hours: 7 })
+    expect(wallClock(later)).toBe('2026-12-28T06:00:00')
   })
 })

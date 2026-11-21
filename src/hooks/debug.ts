@@ -42,6 +42,18 @@ export function withDebug(path: string, search: string): string {
   return date ? `${path}?debug&date=${date}` : `${path}?debug`
 }
 
+/**
+ * How far, in milliseconds, to move the clock so that `now` falls on
+ * `date` at the same time of day, in the same zone. 0 with no date.
+ * Worked out once and added to every reading of the clock, so the fake
+ * clock keeps running and crosses midnight into the next day.
+ */
+export function debugOffset(date: string | undefined, now: DateTime): number {
+  if (!date) return 0
+  const { year, month, day } = DateTime.fromISO(date)
+  return now.set({ year, month, day }).toMillis() - now.toMillis()
+}
+
 /** Debug mode for the current URL. */
 export function useDebug(): DebugState {
   const { search } = useLocation()

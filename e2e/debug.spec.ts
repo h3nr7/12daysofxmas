@@ -40,3 +40,31 @@ test.describe('navigation carries debug (H3N-79)', () => {
     await expect(page).toHaveURL('/')
   })
 })
+
+test.describe('the fake date (H3N-80)', () => {
+  // Before December, so any Christmas state on screen comes from date=.
+  const NOV_21 = '2026-11-21T12:00:00'
+
+  test('date=2026-12-27 is day 3, and the date travels with debug', async ({ page }) => {
+    await open(page, NOV_21, '/?debug&date=2026-12-27')
+    await expect(homeButton(page)).toHaveText('Day 3 awaits')
+    await expect(homeButton(page)).toBeEnabled()
+    await homeButton(page).click()
+    await expect(page).toHaveURL('/third?debug&date=2026-12-27')
+    await back(page).click()
+    await expect(page).toHaveURL('/?debug&date=2026-12-27')
+  })
+
+  test('date=2026-12-01 shows the countdown from that date', async ({ page }) => {
+    await open(page, NOV_21, '/?debug&date=2026-12-01')
+    await expect(page.locator('.zero__ui h3')).toContainText('23D')
+  })
+
+  for (const url of ['/?date=2026-12-27', '/?debug&date=2026-13-40']) {
+    test(`${url} keeps the real date`, async ({ page }) => {
+      await open(page, NOV_21, url)
+      await expect(homeButton(page)).toBeDisabled()
+      await expect(homeButton(page)).not.toHaveText('Day 3 awaits')
+    })
+  }
+})

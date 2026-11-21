@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
 import { Bauble } from "../../components/Bauble/Bauble"
-import { motion } from 'framer-motion-3d'
 import { Physics } from "@react-three/rapier"
-import { AnimatePresence } from "framer-motion"
 const PATH = '/fifth'
 
 const sceneCenter:Vec3 = [12, 2.0, 12]
@@ -13,38 +11,27 @@ export function Fifth() {
 
   const { pathname } = useLocation()
   const { setCamera } = useFiberStore()
-  const [visible, setVisible] = useState(pathname === PATH)
-
-
-
+  const visible = pathname === PATH
 
   useEffect(() => {
-    if(pathname === PATH) {
-      setVisible(true)
+    if(visible) {
       setCamera({
         enabled: true,
         localPosition: [2.5, 3.8, 2.5],
         worldLookAt: sceneCenter
       })
-    } else {
-      setVisible(false)
     }
-  }, [pathname, setCamera])
+  }, [visible, setCamera])
 
-  return (
-    <AnimatePresence>
-    {visible && (
-      <motion.group position={sceneCenter}>
-        <Physics gravity={[0,0,0]}>
-          <Bauble />
-          <Bauble position={[1,4,1]}/>
-          <Bauble />
-          <Bauble position={[4,2,1]}/>
-          <Bauble />
-        </Physics>
-      </motion.group>
-    )}
-    </AnimatePresence>
-
-)
+  return visible && (
+    <group position={sceneCenter}>
+      <Physics gravity={[0,0,0]}>
+        <Bauble />
+        <Bauble position={[1,4,1]}/>
+        <Bauble />
+        <Bauble position={[4,2,1]}/>
+        <Bauble />
+      </Physics>
+    </group>
+  )
 }

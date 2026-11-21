@@ -1,8 +1,7 @@
 import { CameraControls } from "@react-three/drei"
-import { GroupProps } from "@react-three/fiber"
 import { frame, SpringOptions, useMotionValueEvent, useSpring, useTransform } from "framer-motion"
 import { RefObject, useEffect, useState } from "react"
-import { PerspectiveCamera, Vector3 } from "three"
+import { Group, PerspectiveCamera, Vector3 } from "three"
 
 const DEFAULT_SPRING:SpringOptions = {
   // damping: 10,
@@ -24,7 +23,7 @@ const DEFAULT_SPRING:SpringOptions = {
  * @returns 
  */
 export function useRigControl(
-  ref: RefObject<GroupProps>, 
+  ref: RefObject<Group>, 
   controlRef:RefObject<CameraControls>, 
   camRef: RefObject<PerspectiveCamera>,
   initialRigPosition: Vec3 = [0, 0, 0],
@@ -63,20 +62,26 @@ export function useRigControl(
   }, [rigPosition, camPosition, px, py, pz, cx, cy, cz])
 
   // this is to save the camera position after dolly
-  controlRef.current?.addEventListener('controlend', (e) => {
-    // camera-controls sets `target` on the events it dispatches, but its types don't declare it.
-    const { camera } = (e as typeof e & { target: CameraControls }).target
-    frame.read(() =>{
-      cx.set(camera.position.x, false)
-      cy.set(camera.position.y, false)
-      cz.set(camera.position.z, false)
-    })
-  })
+  useEffect(() => {
+    const controls = controlRef.current
+    if (!controls) return
+    const onControlEnd = (e: { type: 'controlend' }) => {
+      // camera-controls sets `target` on the events it dispatches, but its types don't declare it.
+      const { camera } = (e as typeof e & { target: CameraControls }).target
+      frame.read(() =>{
+        cx.set(camera.position.x, false)
+        cy.set(camera.position.y, false)
+        cz.set(camera.position.z, false)
+      })
+    }
+    controls.addEventListener('controlend', onControlEnd)
+    return () => controls.removeEventListener('controlend', onControlEnd)
+  }, [controlRef, cx, cy, cz])
 
   useMotionValueEvent(pos, 'change', ([latestCam, latest]) => {
     if(!ref.current?.position || !controlRef.current || !camRef.current) return;
     // set the position to the look at as the rig is centered at the look at position
-    (ref.current.position as Vector3).set(latest.x, latest.y, latest.z)
+    ref.current.position.set(latest.x, latest.y, latest.z)
     // when it is default CameraControls took over so it needs to be set there
     // when there is no camera control we need to update the lookat directly
     // to the perspective camera.

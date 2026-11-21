@@ -14,6 +14,14 @@ import { mkdir, readdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { LAUNCH_ARGS, VIEWPORT } from './browser.ts'
 
+// Captures should play at a real frame rate. Software WebGL (SwiftShader)
+// runs these scenes at about 2 fps, and react-spring caps each frame's step
+// at 64 ms, so its animations would crawl. On Windows, use the GPU through
+// Direct3D; elsewhere fall back to the shared flags. log.json records which
+// renderer was used.
+const CAPTURE_ARGS =
+  process.platform === 'win32' ? ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist'] : LAUNCH_ARGS
+
 const PORT = 4174
 const BASE_URL = `http://localhost:${PORT}`
 
@@ -78,7 +86,7 @@ async function main() {
   for (const entry of await readdir(outDir)) {
     await rm(path.join(outDir, entry), { recursive: true, force: true })
   }
-  const browser = await chromium.launch({ args: LAUNCH_ARGS })
+  const browser = await chromium.launch({ args: CAPTURE_ARGS })
 
   try {
     for (const scene of SCENES) {

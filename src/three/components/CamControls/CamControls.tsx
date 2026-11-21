@@ -1,18 +1,17 @@
 import { CameraControls, Helper } from "@react-three/drei"
-import { GroupProps, useThree } from "@react-three/fiber"
-import { motion } from "framer-motion-3d"
+import { useThree } from "@react-three/fiber"
 import { RefObject, useEffect, useRef } from "react"
-import { CameraHelper, PerspectiveCamera } from "three"
+import { CameraHelper, Group, PerspectiveCamera } from "three"
 import { useFiberStore } from "../../../stores/fiberStore"
 import { useRigControl } from "./rigControl"
 
 interface ICamControl {
-  ref?: RefObject<GroupProps>
+  ref?: RefObject<Group>
 }
 
 export function CamControls({ ref }: ICamControl) {
 
-  const ownRef = useRef<GroupProps>(null)
+  const ownRef = useRef<Group>(null)
   const rigRef = ref ?? ownRef
   const { set: setThree, viewport }= useThree()
   const camRef = useRef<PerspectiveCamera>(null)
@@ -41,7 +40,7 @@ export function CamControls({ ref }: ICamControl) {
   }, [cam.worldLookAt])
 
   return (
-    <motion.group ref={rigRef}>
+    <group ref={rigRef}>
       <perspectiveCamera ref={camRef} position={[2.5, 4, 2.5]} >
         {debug && <Helper type={CameraHelper} />}
       </perspectiveCamera>
@@ -58,6 +57,6 @@ export function CamControls({ ref }: ICamControl) {
         maxPolarAngle={cam.maxPolarAngle} 
         ref={controlRef}>
       </CameraControls>
-    </motion.group>
+    </group>
   )
 }

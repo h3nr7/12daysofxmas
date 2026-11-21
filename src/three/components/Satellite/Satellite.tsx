@@ -1,6 +1,4 @@
-import { AnimatePresence } from "framer-motion";
 import { PropsWithChildren } from "react";
-import { motion } from 'framer-motion-3d'
 import { ShaderMaterial, Uniform, Vector2 } from "three";
 import orbit_vs from '../../shaders/particles/orbit-vert.glsl'
 import orbit_fs from '../../shaders/particles/orbit-frag.glsl'
@@ -30,14 +28,9 @@ export function Satellite({
     },
   })
 
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.points material={material}>
-          {children}
-        </motion.points>
-      )}
-
-    </AnimatePresence>
+  return visible && (
+    <points material={material}>
+      {children}
+    </points>
   )
 }

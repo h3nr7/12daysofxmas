@@ -2,7 +2,7 @@
 import Diamond from '../../components/Diamond/Diamond'
 import Forest from '../../components/Forest/Forest'
 import { useLocation } from 'react-router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useFiberStore } from '../../../stores/fiberStore'
 import { MathUtils } from 'three'
 import { OrbitalTrails } from '../../components/OrbitalTrails/OrbitalTrails'
@@ -13,11 +13,10 @@ export default function Zero() {
 
   const { pathname } = useLocation()
   const { setCamera, setEffect } = useFiberStore()
-  const [visible, setVisible] = useState(pathname === PATH)
+  const visible = pathname === PATH
 
   useEffect(() => {
-    if(pathname === PATH) {
-      setVisible(true)
+    if(visible) {
       setCamera({ 
         enabled: true, 
         maxPolarAngle: MathUtils.degToRad(80),
@@ -27,10 +26,8 @@ export default function Zero() {
       setEffect({
         tiltshift: true
       })
-    } else {
-      setVisible(false)
     }
-  }, [pathname, setCamera, setEffect])
+  }, [visible, setCamera, setEffect])
 
   return (
       <>

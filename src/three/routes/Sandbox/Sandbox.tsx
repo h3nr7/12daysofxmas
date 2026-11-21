@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
-import { AnimatePresence } from "framer-motion"
 import { Boids } from "../../components/Boids"
 import { BoidsGltf } from "../../components/Boids/BoidsGltf"
 const PATH = '/sandbox'
@@ -13,7 +12,7 @@ export function Sandbox() {
 
   const { pathname } = useLocation()
   const { setCamera, setEffect } = useFiberStore()
-  const [visible, setVisible] = useState(pathname === PATH)
+  const visible = pathname === PATH
 
 
   // useEffect(() => {
@@ -40,8 +39,7 @@ export function Sandbox() {
 
 
   useEffect(() => {
-    if(pathname === PATH) {
-      setVisible(true)
+    if(visible) {
       setCamera({
         isDefault: false,
         enabled: false,
@@ -52,13 +50,11 @@ export function Sandbox() {
         noise: false,
         tiltshift: false
       })
-    } else {
-      setVisible(false)
     }
-  }, [pathname, setCamera, setEffect])
+  }, [visible, setCamera, setEffect])
 
   return (
-    <AnimatePresence>
+    <>
       {visible && (
         <>
           {/* <mesh position={[0,0,0]}>
@@ -78,6 +74,6 @@ export function Sandbox() {
           </Boids>
         </>
       )}
-    </AnimatePresence>
+    </>
   )
 }

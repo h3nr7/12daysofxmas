@@ -23,7 +23,7 @@ export function EffectControls() {
         {noise ? <Noise premultiply blendFunction={BlendFunction.DARKEN} /> : <></>}
         {tiltshift ? <Tiltshift /> : <></>}
       </EffectComposer>
-      <fogExp2 attach="fog" color={UNIVERSE_BG_COLOR} density={0.15} />
+      <fogExp2 attach="fog" args={[UNIVERSE_BG_COLOR, 0.15]} />
     </>
   )
 }

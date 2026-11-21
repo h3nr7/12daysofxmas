@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router'
 import './navi.scss'
 import { useEffect, useMemo } from 'react'
 import { AnimText } from '../AnimText'
-import { AnimatePresence, motion} from 'framer-motion'
+import { AnimatePresence, motion} from 'motion/react'
 import { useAssetsLoader } from '../../hooks/AssetsLoader/AssetsLoader'
 
 export function Navi() {

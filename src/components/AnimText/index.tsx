@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, Variants, useInView } from "framer-motion";
+import { motion, AnimatePresence, Variants, useInView } from 'motion/react';
 import { ReactNode, useMemo, useRef } from "react";
 
 interface IAnimText {

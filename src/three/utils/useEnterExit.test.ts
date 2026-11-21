@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { easeInOut } from 'framer-motion'
+import { easeInOut } from 'motion/react'
 import { toSpring, TRANSFORM_SPRING } from './useEnterExit'
 
 describe('toSpring', () => {

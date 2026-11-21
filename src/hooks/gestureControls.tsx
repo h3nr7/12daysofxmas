@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, RefObject, useContext, useRef } from "react";
 
 const initials: {
-  ref: RefObject<HTMLDivElement> | null
+  ref: RefObject<HTMLDivElement | null> | null
   // movement: [number ,number]
 } = {
   ref: null,

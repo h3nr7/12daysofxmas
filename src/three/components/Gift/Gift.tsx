@@ -39,6 +39,7 @@ export function Gift({
       return m
     })
 
+    // eslint-disable-next-line react-hooks/immutability -- restyles the loaded model's meshes once per model
     s.children = meshes
     return s
   }, [nodes])

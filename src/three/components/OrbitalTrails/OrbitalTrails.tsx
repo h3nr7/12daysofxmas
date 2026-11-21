@@ -4,7 +4,7 @@ import { Texture, Vector3 } from "three";
 import { Trail } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { animated, useSpring } from '@react-spring/three'
-import { easeInOut } from 'framer-motion'
+import { easeInOut } from 'motion/react'
 import { RGBELoader } from "three/examples/jsm/Addons.js";
 import { randomOrbit } from "../../utils/vecs";
 import { toSpring, useEnterExit } from '../../utils/useEnterExit'

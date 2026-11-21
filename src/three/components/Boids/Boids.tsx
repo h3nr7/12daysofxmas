@@ -1,5 +1,5 @@
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer.js";
-import { PropsWithChildren, createContext, useContext, useEffect, useMemo } from 'react'
+import { PropsWithChildren, createContext, useContext, useEffect, useMemo, useRef } from 'react'
 import { BoidsProps, IBoidsCtx } from "./Boids.interface";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Vector3, RepeatWrapping } from 'three'
@@ -110,20 +110,24 @@ export function Boids({
   }, [gl, countSquare, preyRadius, sDistance, aDistance, cDistance, freedomFactor, vPredator])
 
 
-  let last = performance.now()
+  // Time of the previous frame. A ref, so a re-render doesn't reset it.
+  const last = useRef<number | null>(null)
   // use frame for rendered frames
+  // eslint-disable-next-line react-hooks/immutability -- the frame loop writes three.js uniforms by design
   useFrame(f => {
     if(!computationRenderer || !velocityUniform || !positionUniform || pause) return
     const now = f.clock.oldTime
-    let delta = ( now - last ) / 1000;
+    let delta = last.current === null ? 0 : ( now - last.current ) / 1000;
 
     if ( delta > 1 ) delta = 1; // safety cap on large deltas
-    last = now;
+    last.current = now;
 
+    /* eslint-disable react-hooks/immutability -- three.js uniforms are written every frame by design */
     velocityUniform[ 'time' ].value = now;
     velocityUniform[ 'delta' ].value = delta;
     positionUniform[ 'time' ].value = now;
     positionUniform[ 'delta' ].value = delta;
+    /* eslint-enable react-hooks/immutability */
 
     computationRenderer.compute()
   })

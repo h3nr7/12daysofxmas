@@ -1,5 +1,5 @@
 import { useTransition, type SpringConfig } from '@react-spring/three'
-import { easeInOut } from 'framer-motion'
+import { easeInOut } from 'motion/react'
 
 /**
  * Timing for one phase, written the way framer-motion wrote it (seconds).

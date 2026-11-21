@@ -6,7 +6,7 @@ import { useFiberStore } from "../../../stores/fiberStore"
 import { useRigControl } from "./rigControl"
 
 interface ICamControl {
-  ref?: RefObject<Group>
+  ref?: RefObject<Group | null>
 }
 
 export function CamControls({ ref }: ICamControl) {

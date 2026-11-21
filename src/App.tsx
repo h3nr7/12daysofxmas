@@ -1,5 +1,5 @@
 import './App.scss'
-import { MutableRefObject, Suspense, useMemo, useRef } from 'react'
+import { RefObject, Suspense, useMemo, useRef } from 'react'
 import { Route, Routes, useLocation } from 'react-router'
 import { Navi } from './components/Navi/Navi'
 import { DAYS } from './helpers/constants'
@@ -16,7 +16,7 @@ import { Loading } from './components/Loading/Loading'
 
 function App() {
   const main = useRef<HTMLDivElement>(null)
-  const evtSrc = useMemo(() => main as MutableRefObject<HTMLDivElement>, [main])
+  const evtSrc = useMemo(() => main as RefObject<HTMLDivElement>, [main])
   const { data: { debug } } = useFiberStore()
   return (
     <Suspense>

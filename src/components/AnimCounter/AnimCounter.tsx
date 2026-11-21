@@ -1,4 +1,4 @@
-import { useMotionValue, motion, animate, useTransform } from "framer-motion"
+import { useMotionValue, motion, animate, useTransform } from 'motion/react'
 import { PropsWithChildren, useEffect } from "react"
 
 export function AnimCounter({ children, value, duration = 2, delay = 0.5 }:PropsWithChildren<{

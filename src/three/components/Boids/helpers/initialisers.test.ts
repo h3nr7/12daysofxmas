@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import type { Texture } from 'three'
+import type { DataTexture } from 'three'
 import { fillPositionTexture, fillVelocityTexture } from './initialisers'
 
 const TEXELS = 1024
 
 const fakeTexture = () =>
-  ({ image: { data: new Float32Array(TEXELS * 4) } }) as unknown as Texture
+  ({ image: { data: new Float32Array(TEXELS * 4) } }) as unknown as DataTexture
 
-const texels = (texture: Texture) => {
+const texels = (texture: DataTexture) => {
   const data = texture.image.data as Float32Array
   const out: number[][] = []
   for (let k = 0; k < data.length; k += 4) out.push([data[k], data[k + 1], data[k + 2], data[k + 3]])

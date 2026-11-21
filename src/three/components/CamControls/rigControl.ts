@@ -1,5 +1,5 @@
 import { CameraControls } from "@react-three/drei"
-import { frame, SpringOptions, useMotionValueEvent, useSpring, useTransform } from "framer-motion"
+import { frame, SpringOptions, useMotionValueEvent, useSpring, useTransform } from 'motion/react'
 import { RefObject, useEffect, useState } from "react"
 import { Group, PerspectiveCamera, Vector3 } from "three"
 
@@ -23,9 +23,9 @@ const DEFAULT_SPRING:SpringOptions = {
  * @returns 
  */
 export function useRigControl(
-  ref: RefObject<Group>, 
-  controlRef:RefObject<CameraControls>, 
-  camRef: RefObject<PerspectiveCamera>,
+  ref: RefObject<Group | null>, 
+  controlRef:RefObject<CameraControls | null>, 
+  camRef: RefObject<PerspectiveCamera | null>,
   initialRigPosition: Vec3 = [0, 0, 0],
   initialCamPosition: Vec3 = [0, 0, 0]
 ) {
@@ -68,10 +68,12 @@ export function useRigControl(
     const onControlEnd = (e: { type: 'controlend' }) => {
       // camera-controls sets `target` on the events it dispatches, but its types don't declare it.
       const { camera } = (e as typeof e & { target: CameraControls }).target
+      // Move the springs to where the user left the camera without animating
+      // there (framer-motion 11's set(v, false); motion 14's jump(v)).
       frame.read(() =>{
-        cx.set(camera.position.x, false)
-        cy.set(camera.position.y, false)
-        cz.set(camera.position.z, false)
+        cx.jump(camera.position.x)
+        cy.jump(camera.position.y)
+        cz.jump(camera.position.z)
       })
     }
     controls.addEventListener('controlend', onControlEnd)

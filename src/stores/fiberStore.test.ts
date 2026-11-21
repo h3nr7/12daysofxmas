@@ -58,14 +58,4 @@ describe('fiberStore', () => {
     expected.gesture.drag.xy = [3, -4]
     expect(data()).toEqual(expected)
   })
-
-  it('setDebug turns debug on and off', () => {
-    useFiberStore.getState().setDebug(true)
-    const expected = fresh()
-    expected.debug = true
-    expect(data()).toEqual(expected)
-
-    useFiberStore.getState().setDebug(false)
-    expect(data()).toEqual(fresh())
-  })
 })

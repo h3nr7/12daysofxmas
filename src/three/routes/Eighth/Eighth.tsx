@@ -12,17 +12,13 @@ const SCENE_CENTERES:Vec3[] = [[0, 0, 0], [-5, 0, -5], [65, 0, 65]]
 export function Eighth() {
 
   const { pathname } = useLocation()
-  const { setCamera, setDebug } = useFiberStore()
+  const { setCamera } = useFiberStore()
   const index = PATH.indexOf(pathname)
   const visible = index >= 0
   const camPosition = CAM_POSITIONS[index]
   const sceneCenter = SCENE_CENTERES[index]
 
   useEffect(() => console.log('Eighth path: ', pathname), [pathname])
-
-  useEffect(() => {
-    setDebug(false)
-  }, [setDebug])
 
   useEffect(() => {
     if(visible) {

@@ -34,6 +34,21 @@ export default defineConfig([
     },
   },
   {
+    // Debug mode lives in the URL, and only the wrappers carry it from page
+    // to page. A raw Link or useNavigate would quietly drop it (H3N-78).
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/hooks/debugNavigation.tsx'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        paths: [{
+          name: 'react-router',
+          importNames: ['useNavigate', 'Link'],
+          message: 'Use useDebugNavigate or DebugLink from src/hooks/debugNavigation.tsx, so ?debug is carried between pages.',
+        }],
+      }],
+    },
+  },
+  {
     files: ['e2e/**/*.ts', '*.config.{ts,js}'],
     languageOptions: {
       globals: globals.node,

@@ -1,4 +1,5 @@
-import { useLocation, useNavigate } from 'react-router'
+import { useLocation } from 'react-router'
+import { useDebugNavigate } from '../../hooks/debugNavigation'
 import './navi.scss'
 import { useEffect, useMemo } from 'react'
 import { AnimText } from '../AnimText'
@@ -8,7 +9,7 @@ import { useAssetsLoader } from '../../hooks/AssetsLoader/AssetsLoader'
 export function Navi() {
 
   const { pathname } = useLocation()
-  const navi = useNavigate()
+  const navi = useDebugNavigate()
 
   const isVisible = useMemo(() => pathname !== '/', [pathname])
 

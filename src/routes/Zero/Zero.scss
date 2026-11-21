@@ -4,5 +4,11 @@
 
   &__ui {
     @include container.main_container;
+
+    // Outside December and January no countdown sits between the title and
+    // the button, so the button takes the gap the countdown's margin gives.
+    h1 + button {
+      margin-top: 2rem;
+    }
   }
 }

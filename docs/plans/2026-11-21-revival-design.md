@@ -3,7 +3,7 @@
 Date: 2026-11-21
 Status: approved
 Size: feature
-Linear: to be created
+Linear: H3N-63
 Project: 12daysofxmas
 Builds on: none. Follow-ups that depend on this: H3N-59 (WebGPU), H3N-60 (Cloudflare Workers hosting).
 
@@ -245,7 +245,8 @@ check.)
 
 One workflow, `.github/workflows/ci.yml`, on push and pull request:
 install with a pnpm cache, type-check, lint, build, unit tests, smoke test.
-The countdown tests run under two `TZ` values. The Playwright report is
+The countdown tests cover two time zones by building "now" in each zone,
+so CI runs them once. The Playwright report is
 uploaded when the smoke test fails.
 
 ### Step 5: the React 19 jump
@@ -387,7 +388,12 @@ The capture script runs again. The owner compares before and after for
 - Unmounted scenes are migrated to compile but not signed off.
 - A package that cannot reach latest is held and recorded without asking.
 - No coverage threshold.
-- The countdown tests run under two `TZ` values in CI.
+- The countdown tests cover two time zones (`Europe/London`,
+  `Pacific/Auckland`) by building "now" in each zone, not by changing
+  `TZ`, so they behave the same on every machine. (Settled in the plan.)
+- The 3D animation swap lands before the React 19 jump, as its own task,
+  since `@react-spring/three` also supports React 18. (Settled in the
+  plan.)
 
 ## How we will know it works
 

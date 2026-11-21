@@ -1,7 +1,7 @@
 # Implementation Plan: 12daysofxmas on WebGPU
 
 Design: [2026-11-21-webgpu-design.md](./2026-11-21-webgpu-design.md)
-Linear: H3N-59
+Linear: H3N-59 (sub-issues H3N-93 to H3N-99)
 
 ## Overview
 
@@ -40,6 +40,8 @@ renders, functions, no errors. Nothing is matched like for like.
 ## Tasks
 
 ### 1. The canvas on WebGPU
+
+**Linear:** H3N-93
 
 **Goal:** The app renders through `WebGPURenderer` with one copy of three,
 mounts no canvas without WebGPU and says so on the home page, and every
@@ -104,6 +106,8 @@ do not use the alias.
 
 ### 2. The boids on the flock reference
 
+**Linear:** H3N-94
+
 **Goal:** Eighth, Sandbox and Sixth draw parrots driven by the reference
 flock's compute passes, with their wings moving, and the old boids are
 gone.
@@ -167,6 +171,8 @@ texture's `minFilter`/`magFilter` to nearest and sample integer frames.
 
 ### 3. The effects on node post-processing
 
+**Linear:** H3N-95
+
 **Goal:** Bloom, ACES tone mapping, optional grain and optional tilt-shift
 run through three's `PostProcessing`, switched by the store as before.
 
@@ -219,6 +225,8 @@ run through three's `PostProcessing`, switched by the store as before.
 
 ### 4. Stars and Satellite on sprites
 
+**Linear:** H3N-96
+
 **Goal:** The star field is back on every route, on a `SpriteNodeMaterial`,
 and `Satellite` has no GLSL.
 
@@ -253,6 +261,8 @@ primitives at 1px, so `PointsNodeMaterial.sizeNode` is no use on
 **Depends on:** task 1.
 
 ### 5. Trail and the environment map
+
+**Linear:** H3N-97
 
 **Goal:** The orbital trails draw on fat lines, and the diamond and the
 text reflect the environment without a `CubeCamera`.
@@ -299,6 +309,8 @@ named.
 
 ### 6. Smoke test on headless WebGPU
 
+**Linear:** H3N-98
+
 **Goal:** The scene routes are back in the smoke test and run on WebGPU
 where the browser gives an adapter, skipped with the reason where not; the
 no-WebGPU note has a test; the capture script still records.
@@ -340,6 +352,8 @@ scene routes skipped with the reason, which is the agreed fallback; it is
 seen when the branch is pushed.
 
 ### 7. Cleanup and the issue's answers
+
+**Linear:** H3N-99
 
 **Goal:** Nothing WebGL-only is left in the project or its dependencies,
 and H3N-59's open questions are answered on the issue.

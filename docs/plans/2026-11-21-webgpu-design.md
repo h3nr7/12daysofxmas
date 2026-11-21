@@ -3,7 +3,7 @@
 Date: 2026-11-21
 Status: approved
 Size: feature
-Linear: H3N-59
+Linear: H3N-59 (sub-issues H3N-93 to H3N-99)
 Project: 12daysofxmas
 Builds on: 2026-11-21-webgpu-story-design.md (the story, feature 2); h3nr7-coding-tools docs/plans/2026-11-21-references-design.md (H3N-82, the references this pulls in); 2026-11-21-debug-mode-design.md (H3N-78)
 

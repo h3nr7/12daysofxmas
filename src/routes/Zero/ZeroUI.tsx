@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router";
 import { useDateTime } from "../../hooks/dateTime";
+import { DebugLink, useDebugNavigate } from "../../hooks/debugNavigation";
 import './Zero.scss'
 import { Button } from "../../components/Button/Button"
 import { motion, Variants } from 'motion/react'
@@ -32,7 +32,7 @@ const pickPhrase = () => WAITING_PHRASE[Math.round(Math.random()*(WAITING_PHRASE
 export default function ZeroUI() {
 
   const { isNearXmas, timeLeft, isXmas, xmasDayCount } = useDateTime()
-  const navi = useNavigate();
+  const navi = useDebugNavigate();
   // eslint-disable-next-line react-hooks/exhaustive-deps -- pick a new phrase when Christmas starts or ends
   const phrase = useMemo(() => pickPhrase(), [isXmas])
 
@@ -90,7 +90,7 @@ export default function ZeroUI() {
         }}
         transition={{ delay: 3 }}
       >
-        Well... Can't wait? <Link to={'/first'}>Begin here...</Link>
+        Well... Can't wait? <DebugLink to={'/first'}>Begin here...</DebugLink>
       </motion.h6>}
     </div>
   )

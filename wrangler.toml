@@ -1,0 +1,19 @@
+# Cloudflare Pages settings for the 12daysofxmas project (H3N-100).
+#
+# Cloudflare builds every push through its GitHub app: `main` is production,
+# every other branch a preview. With this file in the repo, Cloudflare reads
+# the settings below from it on each build, and the dashboard shows them
+# read-only. The build command, the production branch and the custom domains
+# can't be set here; they stay in the dashboard (see "Deploys" in README.md).
+#
+# Taken from the dashboard with `wrangler pages download config 12daysofxmas`.
+
+name = "12daysofxmas"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-12-12"
+
+# Production builds pin Node and pnpm. Preview builds set neither, as in the
+# dashboard before this file.
+[env.production.vars]
+NODE_VERSION = "v26.8.1"
+PNPM_VERSION = "10.30.3"

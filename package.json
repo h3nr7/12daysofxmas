@@ -15,7 +15,10 @@
     "capture": "node e2e/capture.ts",
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "pages:deployments": "wrangler pages deployment list --project-name 12daysofxmas",
+    "pages:production": "wrangler pages deployment list --project-name 12daysofxmas --environment production",
+    "pages:project": "wrangler pages project list"
   },
   "dependencies": {
     "@react-spring/three": "^10.1.2",
@@ -53,6 +56,7 @@
     "typescript-eslint": "^8.73.0",
     "vite": "^8.3.8",
     "vite-plugin-restart": "^2.0.0",
-    "vitest": "^5.1.1"
+    "vitest": "^5.1.1",
+    "wrangler": "^4.166.0"
   }
 }

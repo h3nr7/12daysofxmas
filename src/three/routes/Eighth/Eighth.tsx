@@ -1,8 +1,7 @@
 import { useEffect } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
-import { BoidsGltf } from "../../components/Boids/BoidsGltf"
-import { Boids } from "../../components/Boids"
+import { BOID_SCALE, Boids, BoidsParrot } from "../../components/Boids"
 import { useEnterExit } from "../../utils/useEnterExit"
 
 const PATH = ['/eighth', '/ninth', '/tenth']
@@ -52,17 +51,12 @@ export function Eighth() {
     leave: { duration: 3.25 },
   })
 
+  // The flock lives in boid units, placed and scaled by this group; the
+  // reference's default attractor stands in for the old predator.
   return transitions((_style, center) => (
-    <group position={center}>
-      <Boids
-        // countSquare={8}
-        predator={center}
-        separationDistance={0.1}
-        alignmentDistance={0.1}
-        cohesionDistance={0.1}
-        freedomFactor={0.1}>
-          {/* <BoidsSimple /> */}
-          <BoidsGltf url="/Parrot.glb" size={0.05}/>
+    <group position={center} scale={BOID_SCALE}>
+      <Boids count={256} preyRadius={50}>
+        <BoidsParrot url="/Parrot.glb" size={0.15} />
       </Boids>
     </group>
   ))

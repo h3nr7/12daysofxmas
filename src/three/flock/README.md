@@ -10,9 +10,9 @@ copy it in.
 
 Eleven files, self-contained. The only imports that leave the folder are
 `react`, `@react-three/fiber`, `three/webgpu` and `three/tsl`; the two
-specs also import `vitest`, and `forces.spec.ts` imports `three` to check
-the maths against three's own transforms (in a project with the alias on,
-that is the WebGPU build too, and the specs still pass).
+specs also import `vitest`, and `forces.spec.ts` checks the maths against
+three's own transforms from `three/webgpu` (which loads under Node), so
+no bare `three` import comes with the copy.
 
 | File | What it holds |
 |---|---|

@@ -13,6 +13,7 @@ import { Fifth } from "./routes/Fifth/Fifth"
 import { UNIVERSE_BG_COLOR } from "../helpers/constants"
 import { Sandbox } from "./routes/Sandbox/Sandbox"
 import { Eighth } from "./routes/Eighth/Eighth"
+import { PostFX } from "./components/EffectControls/PostFX"
 
 
 export interface ThreeViewProps {
@@ -62,7 +63,7 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
         {/* ligthing and controls */}
         <Lightings />
         <CamControls />
-        {/* The effects come back on node post-processing in H3N-95. */}
+        <PostFX />
     </WebGPUCanvas>
   )
 }

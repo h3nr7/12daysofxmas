@@ -1,10 +1,9 @@
-import { ENV_MAP_URL } from '../../utils/assets'
-import { CubeCamera, FontData, Text3D } from "@react-three/drei";
+import { useEnvTexture } from '../../utils/assets'
+import { FontData, Text3D } from "@react-three/drei";
 import { forwardRef, useEffect, useRef } from "react";
 import { animated, useSpring } from '@react-spring/three'
 import { Group, Mesh, Quaternion, Vector3 } from "three/webgpu";
-import { ThreeEvent, useLoader } from "@react-three/fiber";
-import { RGBELoader } from "three/examples/jsm/Addons.js";
+import { ThreeEvent } from "@react-three/fiber";
 import { toSpring, useEnterExit } from '../../utils/useEnterExit'
 
 const DEFAULT_FONT_URL = 'MrsEaves_Roman.json'
@@ -50,7 +49,7 @@ export const BlockText = forwardRef<IBlockTextRef, IBlockText>(({
 
   const textRef = useRef<Mesh>(null)
 
-  const texture = useLoader(RGBELoader, ENV_MAP_URL)
+  const texture = useEnvTexture()
 
   useEffect(() => {
     if(!textRef.current) return
@@ -90,32 +89,30 @@ export const BlockText = forwardRef<IBlockTextRef, IBlockText>(({
     onPointerOut?.(event)
   }
 
-  return (
-    <CubeCamera resolution={256} frames={1} envMap={texture}>
-    {tex => transitions((style) => (
-      <animated.group
-        onPointerOver={handlePointerOver}
-        onPointerOut={handlePointerOut}
-        onClick={onClick}
-        position-x={0}
-        position-y={1.6}
-        position-z={style.z}
-        rotation-x={hover.rotateX}
-      >
-        <Text3D
-          ref={textRef}
-          height={height}
-          letterSpacing={letterSpacing}
-          curveSegments={curveSegments}
-          bevelEnabled={bevelEnabled}
-          font={fonts || DEFAULT_FONT_URL}
-          size={size}>
-          {text}
-          <meshBasicMaterial color={'white'} envMap={tex} toneMapped={false} />
-
-        </Text3D>
-      </animated.group>
-    ))}</CubeCamera>
-  )
+  // The environment map reflects as it is: no CubeCamera pass (drei has no
+  // WebGPU version, and the reflection it added could not be told apart).
+  return transitions((style) => (
+    <animated.group
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+      onClick={onClick}
+      position-x={0}
+      position-y={1.6}
+      position-z={style.z}
+      rotation-x={hover.rotateX}
+    >
+      <Text3D
+        ref={textRef}
+        height={height}
+        letterSpacing={letterSpacing}
+        curveSegments={curveSegments}
+        bevelEnabled={bevelEnabled}
+        font={fonts || DEFAULT_FONT_URL}
+        size={size}>
+        {text}
+        <meshBasicMaterial color={'white'} envMap={texture} toneMapped={false} />
+      </Text3D>
+    </animated.group>
+  ))
 
 })

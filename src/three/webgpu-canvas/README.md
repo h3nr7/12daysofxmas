@@ -92,9 +92,11 @@ export { CubeRenderTarget as WebGLCubeRenderTarget } from 'three/webgpu';
 
 // The WebGPU build has no WebGL renderer and none of its GLSL tables. Some
 // dependencies (drei through three-stdlib and gainmap-js) import these names
-// at module scope without using them here. Each is a stand-in that passes
-// property reads through and throws only when called or constructed, so a
-// code path that really needs WebGL fails with a clear message.
+// at module scope without using them here, and some call them there too: in
+// dev, the dependency optimiser bundles all of three-stdlib untree-shaken, and
+// its Sky runs `UniformsUtils.clone(...)` as the module loads. So each name is
+// an inert stand-in: property reads and calls hand the stand-in back, and only
+// `new` throws, so creating a WebGL renderer fails with a clear message.
 function unavailable(name: string): never {
   throw new Error(`three's ${name} is not available: this project renders with three/webgpu`);
 }
@@ -102,7 +104,7 @@ function standIn(name: string): any {
   const target = function () {};
   const proxy: any = new Proxy(target, {
     get: (_t, key) => (key === Symbol.toPrimitive ? () => `[${name}]` : proxy),
-    apply: () => unavailable(name),
+    apply: () => proxy,
     construct: () => unavailable(name),
   });
   return proxy;
@@ -117,8 +119,24 @@ export const UniformsUtils = standIn('UniformsUtils');
 
 ```ts
 // vite.config.ts
-resolve: { alias: [{ find: /^three$/, replacement: '/src/three-webgpu.ts' }] }
+import { fileURLToPath } from 'node:url'
+// ...
+resolve: {
+  alias: [
+    { find: /^three$/, replacement: fileURLToPath(new URL('./src/three-webgpu.ts', import.meta.url)) },
+  ],
+},
 ```
+
+The target must be an absolute file path. A root-relative
+`'/src/three-webgpu.ts'` passes the production build but breaks `vite`
+dev: the dependency optimiser resolves it relative to each dependency
+and fails with "Could not load ../../../src/three-webgpu.ts". The
+`node:url` import needs `@types/node` as a dev dependency and
+`"types": ["node"]` in the tsconfig that covers `vite.config.ts`
+(`tsconfig.node.json` in Vite's template). After changing the shim, start
+the dev server once with `--force`: the optimiser bundles the shim into
+its pre-bundled chunk and does not see edits to it otherwise.
 
 The regex matches the bare specifier only, so `three/webgpu` and
 `three/tsl` resolve as they are. The second export line covers
@@ -136,7 +154,10 @@ node -e "const f=require('fs'),n=p=>new Set([...f.readFileSync(p,'utf8').matchAl
 
 Proved on 2026-11-21 with drei 10.7.9: build, type-check and the page on
 WebGPU all pass with drei's `OrbitControls` rendered
-(`docs/proofs/flock-proof/`).
+(`docs/proofs/flock-proof/`). Proved again on 2026-11-22 in 12daysofxmas
+(drei, three-stdlib, @react-spring/three, meshline gone): `vite` dev and
+`vite preview` both render four routes on WebGPU with no console errors,
+which is what found the absolute-path and inert-call fixes above.
 
 When it is needed: only when the project has a dependency that imports
 `three`. A project whose own code follows the one rule needs no alias.

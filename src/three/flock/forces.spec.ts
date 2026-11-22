@@ -10,7 +10,7 @@ import { describe, expect, it } from 'vitest';
  * independent implementation rather than against a copy of itself. Nothing
  * outside specs here imports `three` (the stage uses `three/webgpu`).
  */
-import { Group, PerspectiveCamera, Vector3 } from 'three';
+import { Group, PerspectiveCamera, Vector3 } from 'three/webgpu';
 import {
   DEPTH_RANGE,
   FLOCK_FORCE_DEFAULTS,

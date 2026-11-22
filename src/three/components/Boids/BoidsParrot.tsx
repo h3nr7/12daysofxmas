@@ -1,5 +1,5 @@
 import { useGLTF } from '@react-three/drei'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { cross, float, hash, instanceIndex, positionLocal, select, texture, time, vec2, vec3, vertexIndex } from 'three/tsl'
 import { InstancedBufferGeometry, type Mesh, type MeshStandardMaterial, MeshStandardNodeMaterial } from 'three/webgpu'
 import { useBoids } from '../../flock'
@@ -108,6 +108,13 @@ export function BoidsParrot({ url, size = 0.15, speed = 1 }: BoidsParrotProps) {
 
     return mat
   }, [positionBuffer, velocityBuffer, map, animation, size, speed])
+
+  // R3F disposes the mesh on unmount but not the material or baked texture
+  // handed to it; each mount builds its own, so free them. The instanced
+  // geometry is left alone: its attributes are the loaded bird's, shared
+  // with any other flock drawing the same model.
+  useEffect(() => () => material?.dispose(), [material])
+  useEffect(() => () => animation.texture.dispose(), [animation])
 
   if (!material) return null
 

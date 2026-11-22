@@ -34,13 +34,28 @@ export async function supportsWebGPU(nav: GPUNavigator): Promise<boolean> {
 
 export type WebGPUSupport = 'checking' | 'yes' | 'no'
 
-/** Runs the check once on mount; 'checking' until it answers. */
+/**
+ * A check that asks `nav` once and hands every caller the same answer. App
+ * and ZeroUI both need the answer, and ZeroUI remounts on every visit to
+ * `/`; without this each would make its own device, and could disagree.
+ */
+export function onceForPage(nav: GPUNavigator): () => Promise<boolean> {
+  let answer: Promise<boolean> | undefined
+  return () => (answer ??= supportsWebGPU(nav))
+}
+
+let pageCheck: (() => Promise<boolean>) | undefined
+let known: WebGPUSupport = 'checking'
+
+/** The page's one check; 'checking' until it answers, then the answer. */
 export function useWebGPUSupport(): WebGPUSupport {
-  const [support, setSupport] = useState<WebGPUSupport>('checking')
+  const [support, setSupport] = useState<WebGPUSupport>(known)
   useEffect(() => {
     let cancelled = false
-    supportsWebGPU(navigator).then((yes) => {
-      if (!cancelled) setSupport(yes ? 'yes' : 'no')
+    pageCheck ??= onceForPage(navigator)
+    pageCheck().then((yes) => {
+      known = yes ? 'yes' : 'no'
+      if (!cancelled) setSupport(known)
     })
     return () => { cancelled = true }
   }, [])

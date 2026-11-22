@@ -109,6 +109,16 @@ for (const clock of CLOCKS) {
 
         await Promise.race([page.waitForTimeout(SETTLE_MS), errors.firstUncaught])
         expect(errors.unexpected()).toEqual([])
+
+        // The canvas drew something. The context and data-engine exist before
+        // the first frame, so they can't tell a blank canvas from a scene.
+        // With the HTML hidden, the page must look different with the canvas
+        // than without it; a canvas that never drew is transparent.
+        await page.addStyleTag({ content: 'body * { visibility: hidden !important } canvas { visibility: visible !important }' })
+        const withCanvas = await page.screenshot()
+        await page.addStyleTag({ content: 'canvas { visibility: hidden !important }' })
+        const withoutCanvas = await page.screenshot()
+        expect(withCanvas.equals(withoutCanvas), 'the canvas drew nothing').toBe(false)
       })
     }
   })

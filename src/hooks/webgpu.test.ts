@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { supportsWebGPU } from './webgpu'
+import { onceForPage, supportsWebGPU } from './webgpu'
 
 /** An adapter whose device request resolves; `destroyed` records the release. */
 function adapterWithDevice() {
@@ -33,5 +33,17 @@ describe('supportsWebGPU', () => {
   it('is false when asking for an adapter throws', async () => {
     const gpu = { requestAdapter: async () => { throw new Error('no GPU') } }
     expect(await supportsWebGPU({ gpu })).toBe(false)
+  })
+})
+
+describe('onceForPage', () => {
+  it('asks the browser once and gives every caller the same answer', async () => {
+    let asked = 0
+    const { adapter } = adapterWithDevice()
+    const check = onceForPage({ gpu: { requestAdapter: async () => { asked += 1; return adapter } } })
+    const [a, b] = await Promise.all([check(), check()])
+    expect(await check()).toBe(true)
+    expect([a, b]).toEqual([true, true])
+    expect(asked).toBe(1)
   })
 })

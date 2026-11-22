@@ -1,6 +1,6 @@
 import { useFrame, useThree } from "@react-three/fiber"
 import { useEffect, useMemo, useRef } from "react"
-import { RenderPipeline } from "three/webgpu"
+import { RenderPipeline, RTTNode } from "three/webgpu"
 import { float, pass } from "three/tsl"
 import BloomNode, { bloom } from "three/examples/jsm/tsl/display/BloomNode.js"
 import { film } from "three/examples/jsm/tsl/display/FilmNode.js"
@@ -50,9 +50,13 @@ export function PostFX() {
     pipeline.outputNode = noise ? film(out, float(0.15)) : out
     pipeline.needsUpdate = true
     return () => {
-      // Bloom and the blur own render targets; free them when the chain changes.
+      // Bloom, the blur and the texture the blur renders its input into
+      // (gaussianBlur's convertToTexture makes an RTTNode) each own a render
+      // target; free them when the chain changes.
       out.traverse(node => {
-        if (node instanceof BloomNode || node instanceof GaussianBlurNode) node.dispose()
+        if (node instanceof BloomNode || node instanceof GaussianBlurNode || node instanceof RTTNode) {
+          node.dispose()
+        }
       })
     }
   }, [renderer, scenePass, noise, tiltshift])

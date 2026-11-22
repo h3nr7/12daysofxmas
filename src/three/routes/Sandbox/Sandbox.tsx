@@ -1,11 +1,12 @@
 import { useEffect } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
-import { Boids } from "../../components/Boids"
-import { BoidsGltf } from "../../components/Boids/BoidsGltf"
+import { BOID_SCALE, Boids, BoidsParrot } from "../../components/Boids"
 const PATH = '/sandbox'
 
-const camPosition :Vec3 = [300, 300, 300]
+// Close enough to see a flock a few world units across (BOID_SCALE); the
+// old 300-unit stand-off was for the old boid space.
+const camPosition :Vec3 = [5, 0, 5]
 const sceneCenter:Vec3 = [0, 0, 0]
 
 export function Sandbox() {
@@ -56,23 +57,11 @@ export function Sandbox() {
   return (
     <>
       {visible && (
-        <>
-          {/* <mesh position={[0,0,0]}>
-            <simpleBirdGeometry scale={0.1}/>
-            <meshBasicMaterial color='white' />
-          </mesh> */}
-          <Boids 
-          // countSquare={8}
-          // predator={p}
-          preyRadius={100}
-          separationDistance={0.1}
-          alignmentDistance={0.1}
-          cohesionDistance={0.1}
-          freedomFactor={0.1}>
-            {/* <BoidsSimple /> */}
-            <BoidsGltf url="/Parrot.glb" size={0.1}/>
+        <group position={sceneCenter} scale={BOID_SCALE}>
+          <Boids count={256} preyRadius={100}>
+            <BoidsParrot url="/Parrot.glb" size={0.15} />
           </Boids>
-        </>
+        </group>
       )}
     </>
   )

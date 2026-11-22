@@ -1,6 +1,5 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
-import glsl from 'vite-plugin-glsl';
 import react from '@vitejs/plugin-react-swc'
 import restart from 'vite-plugin-restart'
 // https://vite.dev/config/
@@ -9,14 +8,12 @@ export default defineConfig({
     react(),
     restart({ 
       restart: [
-        './src/**/*.glsl',
         './public/**'
       ],
       reload: [
         './src/**/*.(tsx|ts|scss)'
       ]
     }),
-    glsl()
   ],
   // One copy of three: the bare name, which dependencies such as drei import,
   // resolves to the WebGPU build through the shim. `three/webgpu` and

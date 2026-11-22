@@ -58,7 +58,7 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
         <Suspense fallback={null}><Sandbox /></Suspense>
         {/* default element that can appear and disappear in each scene */}
         <Ground visible={groundVisible}/>
-        {/* drei's Stars are GLSL and draw nothing on WebGPU; H3N-96 replaces them. */}
+        {/* the star field, instanced sprites on a node material */}
         <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />
         {/* ligthing and controls */}
         <Lightings />

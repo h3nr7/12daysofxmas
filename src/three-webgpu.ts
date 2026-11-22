@@ -4,9 +4,11 @@ export { CubeRenderTarget as WebGLCubeRenderTarget } from 'three/webgpu';
 
 // The WebGPU build has no WebGL renderer and none of its GLSL tables. Some
 // dependencies (drei through three-stdlib and gainmap-js) import these names
-// at module scope without using them here. Each is a stand-in that passes
-// property reads through and throws only when called or constructed, so a
-// code path that really needs WebGL fails with a clear message.
+// at module scope without using them here, and some call them there too: in
+// dev, the dependency optimiser bundles all of three-stdlib untree-shaken, and
+// its Sky runs `UniformsUtils.clone(...)` as the module loads. So each name is
+// an inert stand-in: property reads and calls hand the stand-in back, and only
+// `new` throws, so creating a WebGL renderer fails with a clear message.
 function unavailable(name: string): never {
   throw new Error(`three's ${name} is not available: this project renders with three/webgpu`);
 }
@@ -16,7 +18,7 @@ function standIn(name: string): any {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- the proxy hands itself back for every property
   const proxy: any = new Proxy(target, {
     get: (_t, key) => (key === Symbol.toPrimitive ? () => `[${name}]` : proxy),
-    apply: () => unavailable(name),
+    apply: () => proxy,
     construct: () => unavailable(name),
   });
   return proxy;

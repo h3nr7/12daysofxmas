@@ -231,6 +231,7 @@ shows its HTML.
 **Feature 1. The flock and canvas references, and the skill, in
 h3nr7-coding-tools.**
 Project: h3nr7 coding tools. Linear: H3N-82. Depends on nothing.
+Status: built 2026-11-21 on h3nr7-coding-tools `feature/references`.
 
 - `references/webgpu-canvas/`: the lab's `webgpu-canvas.tsx` as is:
   `WebGPUCanvas` (async `WebGPURenderer` factory, no MSAA, `extend` at
@@ -261,8 +262,10 @@ Project: h3nr7 coding tools. Linear: H3N-82. Depends on nothing.
   version goes to 0.4.0.
 
 **Feature 2. 12daysofxmas on WebGPU.**
-Project: 12daysofxmas. Linear: H3N-59. Depends on feature 1. Its own design
-is written when feature 1 is done, and covers:
+Project: 12daysofxmas. Linear: H3N-59. Depends on feature 1.
+Status: built 2026-11-22 on `feature/webgpu` (design and plan:
+`2026-11-21-webgpu-design.md`, `2026-11-21-webgpu-plan.md`). Its own design
+covers:
 
 - the canvas: the skill run for `webgpu-canvas`, `ThreeView.tsx` on
   `WebGPUCanvas`, the alias and its shim module for drei, ACES tone mapping
@@ -291,6 +294,7 @@ is written when feature 1 is done, and covers:
 **Feature 3. The ui reference in h3nr7-coding-tools.**
 Project: h3nr7 coding tools. Linear: H3N-83. Depends on nothing; can be
 built beside feature 2.
+Status: built 2026-11-21, merged into `feature/references`.
 
 - `references/ui/`: h3nr7's own components, the lib, `tokens.css` with the
   font families over system fallbacks, and `scramble.css`. Not shadcn's set,

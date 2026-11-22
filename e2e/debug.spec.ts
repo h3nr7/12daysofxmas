@@ -2,6 +2,7 @@
 // by the site's own links (H3N-78).
 
 import { expect, test, type Page } from '@playwright/test'
+import { NO_ADAPTER, WEBGPU_CANVAS, hasWebGPU } from './browser'
 
 test.describe.configure({ timeout: 90_000 })
 
@@ -99,9 +100,11 @@ test.describe('overlays and the Begin here link (H3N-81)', () => {
     expect(errors).toEqual([])
   })
 
+  // The scene behind this page mounts only with WebGPU (H3N-59).
   test('/eighth?debug keeps Stats once its scene has mounted', async ({ page }) => {
     await open(page, NOV_21, '/eighth?debug')
-    await expect(page.locator('canvas[data-engine]')).toHaveCount(1, { timeout: 60_000 })
+    test.skip(!(await hasWebGPU(page)), NO_ADAPTER)
+    await expect(page.locator(WEBGPU_CANVAS)).toHaveCount(1, { timeout: 60_000 })
     await page.waitForTimeout(2000)
     await expect(stats(page)).toBeVisible()
   })

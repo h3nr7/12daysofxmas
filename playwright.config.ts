@@ -1,5 +1,5 @@
 import { defineConfig } from '@playwright/test'
-import { LAUNCH_ARGS, VIEWPORT } from './e2e/browser'
+import { CHANNEL, LAUNCH_ARGS, VIEWPORT } from './e2e/browser'
 
 const PORT = 4173
 
@@ -7,8 +7,8 @@ export default defineConfig({
   testDir: './e2e',
   testMatch: '**/*.spec.ts',
   fullyParallel: true,
-  // WebGL runs on the CPU (SwiftShader) here, so too many pages at once
-  // starve each other's main thread.
+  // Every scene page renders on WebGPU, so too many pages at once compete
+  // for the GPU and each other's main thread.
   workers: process.env.CI ? 2 : 4,
   forbidOnly: !!process.env.CI,
   retries: 0,
@@ -16,6 +16,9 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}`,
     browserName: 'chromium',
+    // The full Chromium, not the headless shell, which has no WebGPU adapter
+    // (e2e/browser.ts).
+    channel: CHANNEL,
     viewport: VIEWPORT,
     launchOptions: { args: LAUNCH_ARGS },
   },

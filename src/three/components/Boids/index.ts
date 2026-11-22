@@ -1,7 +1,11 @@
-export { Boids } from './Boids'
-export { BoidsSimple } from './BoidsSimple'
+export { Boids, useBoids } from '../../flock'
+export { BoidsParrot } from './BoidsParrot'
 
-export const SIZE_LIMIT = 5
-export const WIDTH = 16;
-export const BIRDS = WIDTH * WIDTH;
-export const BOUNDS = 10, BOUNDS_HALF = BOUNDS / 2
+/**
+ * Boid units to world units, for the group a scene puts `Boids` in. The
+ * reference scatters its birds within ±250 boid units and pulls them to the
+ * centre; at this scale the flock settles a few world units across, which
+ * fills the view from a camera about seven units off the scene centre
+ * (Eighth's). Tuned by eye.
+ */
+export const BOID_SCALE = 0.01

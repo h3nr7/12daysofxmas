@@ -1,6 +1,7 @@
 import { useDateTime } from "../../hooks/dateTime";
 import { DebugLink, useDebugNavigate } from "../../hooks/debugNavigation";
 import { useDebug } from "../../hooks/debug";
+import { useWebGPUSupport } from "../../hooks/webgpu";
 import './Zero.scss'
 import { Button } from "../../components/Button/Button"
 import { motion, Variants } from 'motion/react'
@@ -33,6 +34,7 @@ export default function ZeroUI() {
   const { isNearXmas, timeLeft, isXmas, xmasDayCount } = useDateTime()
   const navi = useDebugNavigate();
   const { on: debug } = useDebug();
+  const webgpu = useWebGPUSupport();
   // eslint-disable-next-line react-hooks/exhaustive-deps -- pick a new phrase when Christmas starts or ends
   const phrase = useMemo(() => pickPhrase(), [isXmas])
 
@@ -92,6 +94,21 @@ export default function ZeroUI() {
         transition={{ delay: 3 }}
       >
         Well... Can't wait? <DebugLink to={'/first'}>Begin here...</DebugLink>
+      </motion.h6>}
+      {/* The scenes need WebGPU; without it no canvas is mounted (App.tsx). */}
+      {webgpu === 'no' && <motion.h6
+        className="zero__webgpu"
+        initial={{
+          opacity: 0,
+          y: -15
+        }}
+        animate={{
+          opacity: 1,
+          y: 0
+        }}
+        transition={{ delay: 3 }}
+      >
+        These scenes need a browser with WebGPU: Chrome, Edge, Safari 26 or Firefox.
       </motion.h6>}
     </div>
   )

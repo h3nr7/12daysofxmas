@@ -4,6 +4,7 @@
 import { expect, test, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
+import { NO_ADAPTER, WEBGPU_CANVAS, probeWebGPU } from './browser'
 
 // Day routes come from DAYS in src/helpers/constants.tsx. That file imports
 // React components and styles, so it is read as text instead of imported.
@@ -15,10 +16,12 @@ const ROUTES = ['/', ...DAY_ROUTES, '/sandbox']
 // Routes with a 3D scene mounted in src/three/ThreeView.tsx.
 const SCENE_ROUTES = ['/', '/first', '/fifth', '/eighth', '/sandbox']
 
-// Until 2026-11-21 every route ran under both clocks (29 tests). The scenes
-// are about to be reworked, so the owner cut it back to the routes with a
-// scene, plus the countdown on / before Christmas. The rest are listed as
+// Until 2026-11-21 every route ran under both clocks (29 tests). While the
+// scenes were reworked the owner cut it back to the routes with a scene,
+// plus the countdown on / before Christmas (H3N-68). The rest are listed as
 // skipped. To run them all again, set `runs` to ROUTES on both clocks.
+// Every route that runs waits for a WebGPU canvas, so all of them skip with
+// NO_ADAPTER when the browser has no usable adapter (see e2e/browser.ts).
 const CLOCKS = [
   { name: 'during Christmas', time: '2026-12-27T12:00:00', runs: SCENE_ROUTES },
   { name: 'before Christmas', time: '2026-11-21T12:00:00', runs: ['/'] },
@@ -35,6 +38,12 @@ test.describe.configure({ timeout: 90_000 })
 
 test('finds all 12 day routes in DAYS', () => {
   expect(DAY_ROUTES).toHaveLength(12)
+})
+
+// Asked once per worker, in the worker's own browser.
+let webgpu = false
+test.beforeAll(async ({ browser }, testInfo) => {
+  webgpu = await probeWebGPU(browser, testInfo.project.use.baseURL!)
 })
 
 const isAllowed = (error: string) => ALLOWED_ERRORS.some((a) => a.pattern.test(error))
@@ -60,29 +69,29 @@ function watchErrors(page: Page) {
 
 async function waitUntilReady(page: Page) {
   // three.js marks the canvas it renders into with data-engine, so this
-  // fails if the renderer never started, not just if a canvas exists.
-  const canvas = page.locator('canvas[data-engine]')
+  // fails if the WebGPU renderer never started, not just if a canvas exists.
+  const canvas = page.locator(WEBGPU_CANVAS)
   await expect(canvas).toHaveCount(1, { timeout: 60_000 })
 
   await page.waitForLoadState('networkidle')
   await expect(page.locator('.loading__container')).toHaveCount(0, { timeout: 60_000 })
 
-  return canvas.evaluate((el: HTMLCanvasElement) => {
-    const ctx = el.getContext('webgl2') ?? el.getContext('webgl')
-    return {
-      width: el.width,
-      height: el.height,
-      hasContext: !!ctx,
-      lost: ctx ? ctx.isContextLost() : true,
-    }
-  })
+  // The scenes render on WebGPU only. The canvas has no 'webgpu' context if
+  // three fell back to WebGL2, and a WebGPU context has no "lost" state to
+  // ask about, unlike WebGL's isContextLost.
+  return canvas.evaluate((el: HTMLCanvasElement) => ({
+    width: el.width,
+    height: el.height,
+    hasContext: el.getContext('webgpu') !== null,
+  }))
 }
 
 for (const clock of CLOCKS) {
   test.describe(clock.name, () => {
     for (const route of ROUTES) {
       test(`${route} mounts with a live canvas and no errors`, async ({ page }) => {
-        test.skip(!clock.runs.includes(route), 'cut back while the scenes are reworked; see CLOCKS')
+        test.skip(!clock.runs.includes(route), 'cut back to the routes with a scene; see CLOCKS')
+        test.skip(!webgpu, NO_ADAPTER)
         const errors = watchErrors(page)
         // index.html loads the Adobe Fonts (Typekit) stylesheet. Fonts aren't
         // what this test checks, so a slow or failed third-party download
@@ -97,10 +106,19 @@ for (const clock of CLOCKS) {
         expect(gl.width).toBeGreaterThan(0)
         expect(gl.height).toBeGreaterThan(0)
         expect(gl.hasContext).toBe(true)
-        expect(gl.lost).toBe(false)
 
         await Promise.race([page.waitForTimeout(SETTLE_MS), errors.firstUncaught])
         expect(errors.unexpected()).toEqual([])
+
+        // The canvas drew something. The context and data-engine exist before
+        // the first frame, so they can't tell a blank canvas from a scene.
+        // With the HTML hidden, the page must look different with the canvas
+        // than without it; a canvas that never drew is transparent.
+        await page.addStyleTag({ content: 'body * { visibility: hidden !important } canvas { visibility: visible !important }' })
+        const withCanvas = await page.screenshot()
+        await page.addStyleTag({ content: 'canvas { visibility: hidden !important }' })
+        const withoutCanvas = await page.screenshot()
+        expect(withCanvas.equals(withoutCanvas), 'the canvas drew nothing').toBe(false)
       })
     }
   })

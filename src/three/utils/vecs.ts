@@ -1,5 +1,6 @@
-import { CatmullRomCurve3, Vector3 } from "three";
-import { lerp } from "three/src/math/MathUtils.js";
+import { CatmullRomCurve3, MathUtils, Vector3 } from "three/webgpu";
+
+const { lerp } = MathUtils
 
 export function randomDistance(diameter: number) {
   return {

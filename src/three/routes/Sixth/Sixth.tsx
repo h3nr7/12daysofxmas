@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useLocation } from "react-router"
 import { useFiberStore } from "../../../stores/fiberStore"
-import { Boids, BoidsSimple } from "../../components/Boids"
+import { BOID_SCALE, Boids, BoidsParrot } from "../../components/Boids"
 import { useEnterExit } from "../../utils/useEnterExit"
 const PATH = '/sixth'
 
@@ -34,14 +34,9 @@ export function Sixth() {
   })
 
   return transitions(() => (
-    <group position={sceneCenter}>
-      <Boids
-        // countSquare={8}
-        separationDistance={0.1}
-        alignmentDistance={0.1}
-        cohesionDistance={0.1}
-        freedomFactor={0.1}>
-          <BoidsSimple />
+    <group position={sceneCenter} scale={BOID_SCALE}>
+      <Boids count={256} preyRadius={50}>
+        <BoidsParrot url="/Parrot.glb" size={0.15} />
       </Boids>
     </group>
   ))

@@ -1,7 +1,7 @@
 import { useGLTF } from '@react-three/drei'
 import { animated } from '@react-spring/three'
 import { PropsWithChildren, useMemo } from 'react'
-import { Material, Mesh } from 'three'
+import { Material, Mesh } from 'three/webgpu'
 import { Timing, useEnterExit } from '../../utils/useEnterExit'
 
 interface ITree {

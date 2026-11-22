@@ -1,11 +1,11 @@
 import { RefObject, Suspense, useMemo } from "react"
 import { CamControls } from "./components/CamControls/CamControls"
-import { EffectControls } from "./components/EffectControls/EffectControls"
 import { Lightings } from "./components/Lightings/Lightings"
-import { Canvas } from "@react-three/fiber"
+import { WebGPUCanvas } from "./webgpu-canvas/WebGPUCanvas"
+import { ACESFilmicToneMapping } from "three/webgpu"
 import Zero from "./routes/Zero/Zero"
 import { First } from "./routes/First/First"
-import { Stars } from "@react-three/drei"
+import { Stars } from "./components/Stars/Stars"
 import { useWindowSize } from "../hooks/windowSize"
 import { Ground } from "./components/Ground/Ground"
 import { useLocation } from "react-router"
@@ -13,6 +13,7 @@ import { Fifth } from "./routes/Fifth/Fifth"
 import { UNIVERSE_BG_COLOR } from "../helpers/constants"
 import { Sandbox } from "./routes/Sandbox/Sandbox"
 import { Eighth } from "./routes/Eighth/Eighth"
+import { PostFX } from "./components/EffectControls/PostFX"
 
 
 export interface ThreeViewProps {
@@ -33,9 +34,15 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
 
 
   return eventSource && (
-    <Canvas className='canvas' eventSource={eventSource} style={{ width, height }}>
+    <WebGPUCanvas
+      className='canvas'
+      eventSource={eventSource}
+      style={{ width, height }}
+      onCreated={({ gl }) => { gl.toneMapping = ACESFilmicToneMapping }}
+    >
         {/* colour matching the rerendering colour background */}
         <color attach="background" args={[UNIVERSE_BG_COLOR]} />
+        <fogExp2 attach="fog" args={[UNIVERSE_BG_COLOR, 0.15]} />
         {/* routing each day, not using react-router directly as I can effectively manage the exit cycle */}
         {/*
           Each scene waits on its own for models it loads on first visit.
@@ -51,11 +58,12 @@ export function ThreeView({ eventSource }: ThreeViewProps) {
         <Suspense fallback={null}><Sandbox /></Suspense>
         {/* default element that can appear and disappear in each scene */}
         <Ground visible={groundVisible}/>
+        {/* the star field, instanced sprites on a node material */}
         <Stars radius={200} depth={10} count={1500} factor={4} saturation={10} fade speed={1} />
         {/* ligthing and controls */}
         <Lightings />
         <CamControls />
-        <EffectControls />
-    </Canvas>
+        <PostFX />
+    </WebGPUCanvas>
   )
 }

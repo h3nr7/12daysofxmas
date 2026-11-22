@@ -2,7 +2,7 @@ import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { BallCollider, CylinderCollider, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { useRef } from "react";
-import { Mesh, MeshLambertMaterial, MeshStandardMaterial, SphereGeometry } from "three";
+import { Mesh, MeshLambertMaterial, MeshStandardMaterial, SphereGeometry } from "three/webgpu";
 
 interface IBauble {
   visible?: boolean

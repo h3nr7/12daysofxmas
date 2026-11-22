@@ -1,11 +1,10 @@
-import { ENV_MAP_URL } from '../../utils/assets'
+import { useEnvTexture } from '../../utils/assets'
 import { useEffect, useMemo, useRef } from "react";
-import { Texture, Vector3 } from "three";
-import { Trail } from "@react-three/drei";
-import { useFrame, useLoader } from "@react-three/fiber";
+import { Texture, Vector3 } from "three/webgpu";
+import { Trail } from "./Trail";
+import { useFrame } from "@react-three/fiber";
 import { animated, useSpring } from '@react-spring/three'
 import { easeOut } from 'motion/react'
-import { RGBELoader } from "three/examples/jsm/Addons.js";
 import { randomOrbit } from "../../utils/vecs";
 import { toSpring, useEnterExit } from '../../utils/useEnterExit'
 
@@ -49,7 +48,7 @@ export function OrbitalTrails({
   // eslint-disable-next-line react-hooks/exhaustive-deps -- orbits are randomised once per particle count; callers pass a new center array each render
   }, [numParticles])
 
-  const texture = useLoader(RGBELoader, ENV_MAP_URL)
+  const texture = useEnvTexture()
 
   // The trails group's enter (1.25 s after 1 s) only ever faded an opacity
   // three.js ignores; what showed was the particles. It stays mounted for
@@ -68,15 +67,9 @@ export function OrbitalTrails({
       {curvePoints.map((points, i) => (
         <Trail
           key={`orbital_trail_${i}`}
-          width={0.05} // Width of the line
-          color={'rgb(198, 198, 198)'} // Color of the line
-          length={5} // Length of the line
-          decay={2} // How fast the line fades away
-          local={false} // Wether to use the target's world or local positions
-          stride={0} // Min distance between previous and current point
-          interval={1} // Number of frames to wait before next calculation
-          target={undefined} // Optional target. This object will produce the trail.
-          attenuation={(width) => width} // A function to define the width in each point along it.
+          width={0.05} // in world units
+          colour={'rgb(198, 198, 198)'}
+          length={20} // frames kept; it fades toward the background along them
         >
           <OrbitParticle points={points} leaving={!visible} texture={texture} />
         </Trail>

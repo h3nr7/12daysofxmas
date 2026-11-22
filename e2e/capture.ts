@@ -6,21 +6,22 @@
 //
 // Per scene it writes a video (<scene>.webm), still frames at fixed times
 // (<scene>/enter-<ms>.png, <scene>/exit-<ms>.png) and a log of console
-// errors and the WebGL renderer (<scene>/log.json).
+// errors, the WebGL renderer and the WebGPU adapter (<scene>/log.json).
 
 import { build, preview } from 'vite'
 import { chromium, type Page } from '@playwright/test'
 import { mkdir, readdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { LAUNCH_ARGS, VIEWPORT } from './browser.ts'
+import { CHANNEL, LAUNCH_ARGS, VIEWPORT, WEBGPU_CANVAS } from './browser.ts'
 
-// Captures should play at a real frame rate. Software WebGL (SwiftShader)
-// runs these scenes at about 2 fps, and react-spring caps each frame's step
-// at 64 ms, so its animations would crawl. On Windows, use the GPU through
-// Direct3D; elsewhere fall back to the shared flags. log.json records which
-// renderer was used.
+// Captures should play at a real frame rate, and the scenes render on
+// WebGPU only (H3N-59). On Windows, use the GPU through Direct3D; elsewhere
+// fall back to the shared flags. log.json records which renderer and
+// adapter were used.
 const CAPTURE_ARGS =
-  process.platform === 'win32' ? ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist'] : LAUNCH_ARGS
+  process.platform === 'win32'
+    ? ['--enable-unsafe-webgpu', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist']
+    : LAUNCH_ARGS
 
 const PORT = 4174
 const BASE_URL = `http://localhost:${PORT}`
@@ -60,7 +61,7 @@ async function navigateInApp(page: Page, to: string) {
 }
 
 async function waitForLoaded(page: Page) {
-  await page.waitForSelector('canvas', { timeout: 60_000 })
+  await page.waitForSelector(WEBGPU_CANVAS, { timeout: 60_000 })
   await page.waitForLoadState('networkidle', { timeout: 60_000 })
   await page.waitForFunction(() => !document.querySelector('.loading__container'), null, {
     timeout: 60_000,
@@ -86,7 +87,8 @@ async function main() {
   for (const entry of await readdir(outDir)) {
     await rm(path.join(outDir, entry), { recursive: true, force: true })
   }
-  const browser = await chromium.launch({ args: CAPTURE_ARGS })
+  // The full Chromium: the default headless shell has no WebGPU adapter.
+  const browser = await chromium.launch({ channel: CHANNEL, args: CAPTURE_ARGS })
 
   try {
     for (const scene of SCENES) {
@@ -114,6 +116,10 @@ async function main() {
         const info = gl.getExtension('WEBGL_debug_renderer_info')
         return info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : 'unknown'
       })
+      const adapter = await page.evaluate(async () => {
+        const a = await navigator.gpu?.requestAdapter()
+        return a ? `${a.info.vendor} ${a.info.architecture}`.trim() || 'unknown' : 'no adapter'
+      })
 
       await navigateInApp(page, scene.path)
       await framesAt(page, sceneDir, 'enter', ENTER_FRAMES_MS)
@@ -128,7 +134,7 @@ async function main() {
       await writeFile(
         path.join(sceneDir, 'log.json'),
         JSON.stringify(
-          { startAt: STAGING_PATH, path: scene.path, exitTo: scene.exitTo, renderer, errors },
+          { startAt: STAGING_PATH, path: scene.path, exitTo: scene.exitTo, renderer, adapter, errors },
           null,
           2,
         ),

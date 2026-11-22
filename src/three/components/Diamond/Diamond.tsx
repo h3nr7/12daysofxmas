@@ -1,12 +1,11 @@
-import { ENV_MAP_URL } from '../../utils/assets'
-import { CubeCamera, useGLTF } from '@react-three/drei'
-import { useLoader } from '@react-three/fiber'
+import { useEnvTexture } from '../../utils/assets'
+import { useGLTF } from '@react-three/drei'
 import { animated } from '@react-spring/three'
 import { useEffect } from 'react'
-import { Mesh } from 'three'
-import { RGBELoader } from 'three/examples/jsm/Addons.js'
-import { degToRad } from 'three/src/math/MathUtils.js'
+import { MathUtils, Mesh } from 'three/webgpu'
 import { useEnterExit } from '../../utils/useEnterExit'
+
+const { degToRad } = MathUtils
 
 interface IDiamond {
   visible?: boolean
@@ -21,7 +20,7 @@ export default function Diamond({
   position = [0, 0, 0],
   scale = 0.12
 }: IDiamond) {
-  const texture = useLoader(RGBELoader, ENV_MAP_URL)
+  const texture = useEnvTexture()
   const { nodes } = useGLTF(URL)
 
   useEffect(() => {
@@ -45,22 +44,20 @@ export default function Diamond({
     leave: { duration: 1.15, delay: 1.7 },
   })
 
-  return (
-    <CubeCamera resolution={256} frames={1} envMap={texture}>
-      {(texture) => transitions((style) => (
-        <animated.mesh
-          scale={style.scale}
-          rotation-x={style.rotateX}
-          rotation-z={style.rotateZ}
-          position-x={style.x}
-          position-y={style.y}
-          position-z={style.z}
-          geometry={(nodes.Cylinder002 as Mesh).geometry}>
+  // The environment map reflects as it is; the CubeCamera that once
+  // re-rendered it into a cube was a pass for a reflection nobody could see
+  // at this size, and drei has no WebGPU version of it.
+  return transitions((style) => (
+    <animated.mesh
+      scale={style.scale}
+      rotation-x={style.rotateX}
+      rotation-z={style.rotateZ}
+      position-x={style.x}
+      position-y={style.y}
+      position-z={style.z}
+      geometry={(nodes.Cylinder002 as Mesh).geometry}>
 
-          <meshBasicMaterial envMap={texture} toneMapped={false} />
-          {/* <MeshRefractionMaterial envMap={texture} {...config} toneMapped={false} /> */}
-        </animated.mesh>
-      ))}
-    </CubeCamera>
-  )
+      <meshBasicMaterial envMap={texture} toneMapped={false} />
+    </animated.mesh>
+  ))
 }
